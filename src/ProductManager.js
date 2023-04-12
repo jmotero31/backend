@@ -16,7 +16,7 @@ const leerTxt = async (ruta) =>{
         return console.log(error)
     }
 }
-class ProductManager{
+export class ProductManager{
     constructor(ruta){
        this.producto =[]
        this.ide = 0
@@ -47,7 +47,8 @@ class ProductManager{
     }
     async getProdcuts(){
         const leido = await leerTxt(this.path)
-        console.log(leido)        
+        //console.log(leido)      
+        return leido  
     }
     async getProductById(id){
         const consulta = await leerTxt(this.path)
@@ -93,8 +94,8 @@ const prod5 = new Producto('cuatro', 'description2', 'price2', 'thumbnail2', '5'
 const prod6 = new Producto('cinco', 'description2', 'price2', 'thumbnail2', '6','stock2')
 const prod7 = new Producto('seis', 'description2', 'price2', 'thumbnail2', '7','stock2')
 const prod8 = new Producto('siete', 'description2', 'price2', 'thumbnail2', '8','stock2')
-const rut = './bd.txt'
-const admi = new ProductManager(rut)
+
+const admi = new ProductManager('./bd.txt')
 await admi.addProduct(prod1)
 await admi.addProduct(prod2)
 await admi.addProduct(prod3)
@@ -103,8 +104,10 @@ await admi.addProduct(prod5)
 await admi.addProduct(prod6)
 await admi.addProduct(prod7)
 await admi.addProduct(prod8)
+/*
 await admi.getProdcuts()
 await admi.getProductById(3)
 await admi.updateProduct(3, {title: "Actualizado", description: 'Actualizado', price: 'Actualizado', thumbnail: 'Actualizado', code: 'Actualizado', stock: 'Actualizado'})
 await admi.deleteProduct(5)
 await admi.getProdcuts()
+*/
