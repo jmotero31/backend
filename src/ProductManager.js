@@ -23,7 +23,7 @@ export class ProductManager{
        this.path = ruta
        escribirTxt(this.path, this.producto)
     }
-    static incrementarID() {
+    /*static incrementarID() {
         if (this.idIncrement) {
             this.idIncrement++
         } else {
@@ -31,6 +31,7 @@ export class ProductManager{
         }
         return this.idIncrement
     }
+    */
     async addProduct(prod){
         if(prod.title && prod.description && prod.price && prod.thumbnail && prod.code  && prod.stock){
            if(!await leerTxt(this.path)){
@@ -71,9 +72,15 @@ export class ProductManager{
         const consultaUp = await leerTxt(this.path)
         this.producto = [...consultaUp]
         let indexId = this.producto.findIndex(prof => prof.id === id)
-        const productoInUpdate = Object.assign(this.producto[indexId],productUpdate)
-        this.producto[indexId] = productoInUpdate
-        await escribirTxt(this.path, this.producto)
+        if(indexId || 1){
+            const productoInUpdate = Object.assign(this.producto[indexId],productUpdate)
+            this.producto[indexId] = productoInUpdate
+            await escribirTxt(this.path, this.producto)
+            return `Se actualizo producto con identificador ${id}`
+        }else{
+            return `NO EXISTE producto con identificador ${id}`
+            
+        }
     }
     async deleteProduct(id){
         const consultaDe = await leerTxt(this.path)

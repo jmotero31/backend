@@ -56,7 +56,14 @@ APP.post('/products', async (req, res)=>{
     const objNuevo = { title: title, description: description, price: price, thumbnail: thumbnail, code: code, stock: stock}
     await produ.addProduct(objNuevo)
     res.send('Producto agregado')
+})
 
+APP.put("/products/:puid", async (req, res) => {
+    let puid = parseInt(req.params.puid)
+    //const { title, description, price, thumbnail, code, stock } = req.body
+    const objetoUpdat = req.body
+    const update = await produ.updateProduct(puid, objetoUpdat)
+    res.send(update)
 })
 
 APP.listen(PORT, ()=>{
