@@ -5,14 +5,21 @@ const APP = express()
 const PORT = 4000
 APP.use(express.urlencoded({extended: true}))
 
-const produ = new ProductManager()
+const produ = new ProductManager('./bd.txt')
 
+APP.get('/', async (req, res)=>{
+    res.send('Bienvenido al servidor que hasta ahora esta FOUND')
+})
 
-APP.get('/user', async (req, res)=>{
-    //res.send('hola')
+APP.get('/products', async (req, res)=>{
+    let limit = req.query.limit
     const producto = await produ.getProdcuts()
-    //console.log(producto)
-    res.send(JSON.stringify(producto))
+    if(limit){
+        const productoLimite = producto.slice(0, parseInt(limit))
+        res.send(JSON.stringify(productoLimite))
+    }else{
+        res.send(JSON.stringify(producto))
+    }
 })
 
 APP.listen(PORT, ()=>{

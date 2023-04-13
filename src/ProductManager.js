@@ -47,8 +47,8 @@ export class ProductManager{
     }
     async getProdcuts(){
         const leido = await leerTxt(this.path)
-        //console.log(leido)      
         return leido  
+        //console.log(leido)      
     }
     async getProductById(id){
         const consulta = await leerTxt(this.path)
