@@ -21,6 +21,15 @@ export class ProductManager{
        this.producto =[]
        this.ide = 0
        this.path = ruta
+       escribirTxt(this.path, this.producto)
+    }
+    static incrementarID() {
+        if (this.idIncrement) {
+            this.idIncrement++
+        } else {
+            this.idIncrement = 1
+        }
+        return this.idIncrement
     }
     async addProduct(prod){
         if(prod.title && prod.description && prod.price && prod.thumbnail && prod.code  && prod.stock){
@@ -30,8 +39,8 @@ export class ProductManager{
            }
            let  verificado = this.producto.find(produc => (prod.code === produc.code) )
            if(!verificado){
-               //const leido = await leerTxt(this.path) 
-               //this.producto = [...leido]
+               const leido = await leerTxt(this.path) 
+               this.producto = [...leido]
                this.producto.push(prod)
                this.ide = this.ide + 1 
                prod.id = this.ide
@@ -47,8 +56,7 @@ export class ProductManager{
     }
     async getProdcuts(){
         const leido = await leerTxt(this.path)
-        return leido  
-        //console.log(leido)      
+        return leido       
     }
     async getProductById(id){
         const consulta = await leerTxt(this.path)
@@ -75,7 +83,7 @@ export class ProductManager{
         await escribirTxt(this.path, this.producto)
     }
 }
-class Producto{
+export class Producto{
     constructor(title, description, price, thumbnail, code, stock){
         this.title = title
         this.description = description
@@ -86,14 +94,7 @@ class Producto{
     }
 }
 
-const prod1 = new Producto('uno', 'description1', 'price1', 'thumbnail1', 'code1', 'stock1')
-const prod2 = new Producto('dos', 'description2', 'price2', 'thumbnail2', 'code2','stock2')
-const prod3 = new Producto('tres', 'description3', 'price3', 'thumbnail3', 'code3','stock3')
-const prod4 = new Producto('cuatro', 'description4', 'price4', 'thumbnail4', 'code4','stock4')
-const prod5 = new Producto('cinco', 'description5', 'price5', 'thumbnail5', 'code5','stock5')
-const prod6 = new Producto('seis', 'description6', 'price6', 'thumbnail6', 'code6','stock6')
-const prod7 = new Producto('siete', 'description7', 'price7', 'thumbnail7', 'code7','stock7')
-const prod8 = new Producto('ocho', 'description8', 'price8', 'thumbnail8', 'code8','stock8')
+/*
 
 const admi = new ProductManager('./bd.txt')
 await admi.addProduct(prod1)
