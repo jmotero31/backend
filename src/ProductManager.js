@@ -86,14 +86,14 @@ class Producto{
     }
 }
 
-const prod1 = new Producto('uno', 'description', 'price', '1', 'pepe', 'hgf')
-const prod2 = new Producto('dos', 'description2', 'price2', 'thumbnail2', '2','stock2')
-const prod3 = new Producto('ocho', 'description2', 'price2', 'thumbnail2', '3','stock2')
-const prod4 = new Producto('tres', 'description2', 'price2', 'thumbnail2', '4','stock2')
-const prod5 = new Producto('cuatro', 'description2', 'price2', 'thumbnail2', '5','stock2')
-const prod6 = new Producto('cinco', 'description2', 'price2', 'thumbnail2', '6','stock2')
-const prod7 = new Producto('seis', 'description2', 'price2', 'thumbnail2', '7','stock2')
-const prod8 = new Producto('siete', 'description2', 'price2', 'thumbnail2', '8','stock2')
+const prod1 = new Producto('uno', 'description1', 'price1', 'thumbnail1', 'code1', 'stock1')
+const prod2 = new Producto('dos', 'description2', 'price2', 'thumbnail2', 'code2','stock2')
+const prod3 = new Producto('tres', 'description3', 'price3', 'thumbnail3', 'code3','stock3')
+const prod4 = new Producto('cuatro', 'description4', 'price4', 'thumbnail4', 'code4','stock4')
+const prod5 = new Producto('cinco', 'description5', 'price5', 'thumbnail5', 'code5','stock5')
+const prod6 = new Producto('seis', 'description6', 'price6', 'thumbnail6', 'code6','stock6')
+const prod7 = new Producto('siete', 'description7', 'price7', 'thumbnail7', 'code7','stock7')
+const prod8 = new Producto('ocho', 'description8', 'price8', 'thumbnail8', 'code8','stock8')
 
 const admi = new ProductManager('./bd.txt')
 await admi.addProduct(prod1)

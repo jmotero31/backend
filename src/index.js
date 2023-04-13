@@ -1,4 +1,4 @@
-import express from 'express'
+import express, { application } from 'express'
 import { ProductManager } from './ProductManager.js'
 
 const APP = express()
@@ -22,6 +22,19 @@ APP.get('/products', async (req, res)=>{
     }
 })
 
+APP.get('/products/:pid', async (req, res)=>{
+    let pid = parseInt(req.params.pid)
+    const producto = await produ.getProdcuts()
+    const productoId = producto.find(pro => pro.id === pid)
+    if(productoId){
+        res.send(JSON.stringify(productoId))
+    }else{
+        res.send(`No existe producto con ese Identificador = ${pid}`)
+    }
+})
+
 APP.listen(PORT, ()=>{
     console.log(`Server on Port ${PORT}`)
 })
+
+
