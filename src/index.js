@@ -1,4 +1,4 @@
-import express, { application } from 'express'
+import express from 'express'
 import { ProductManager, Producto } from './ProductManager.js'
 
 const APP = express()
