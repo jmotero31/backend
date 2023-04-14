@@ -31,7 +31,6 @@ APP.get('/', async (req, res)=>{
 APP.get('/products', async (req, res)=>{
     let limit = req.query.limit
     const producto = await produ.getProdcuts()
-    console.log(producto)
     if(limit){
         const productoLimite = producto.slice(0, parseInt(limit))
         res.send(JSON.stringify(productoLimite))
@@ -54,16 +53,22 @@ APP.get('/products/:pid', async (req, res)=>{
 APP.post('/products', async (req, res)=>{
     const { title, description, price, thumbnail, code, stock } = req.body
     const objNuevo = { title: title, description: description, price: price, thumbnail: thumbnail, code: code, stock: stock}
-    await produ.addProduct(objNuevo)
-    res.send('Producto agregado')
+    const agregar = await produ.addProduct(objNuevo)
+    res.send(agregar)
 })
 
-APP.put("/products/:puid", async (req, res) => {
+APP.put('/products/:puid', async (req, res) => {
     let puid = parseInt(req.params.puid)
     //const { title, description, price, thumbnail, code, stock } = req.body
     const objetoUpdat = req.body
     const update = await produ.updateProduct(puid, objetoUpdat)
     res.send(update)
+})
+
+APP.delete('/products/:did', async(req, res)=>{
+    let pdid = parseInt(req.params.did)
+    const dele = await produ.deleteProduct(pdid)
+    res.send(dele)
 })
 
 APP.listen(PORT, ()=>{

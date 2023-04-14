@@ -37,24 +37,23 @@ export class ProductManager{
            if(!await leerTxt(this.path)){
                 await escribirTxt(this.path, this.producto)
                 console.log('Se aca de Crear archivo txt para el guardado de sus datos')
-           }
-           let  verificado = this.producto.find(produc => (prod.code === produc.code) )
-           if(!verificado){
+           }         
+           if(!this.producto.some(produc => (prod.code === produc.code))){
                const leido = await leerTxt(this.path) 
                this.producto = [...leido]
                this.producto.push(prod)
                this.ide = this.ide + 1 
                prod.id = this.ide
                await escribirTxt(this.path, this.producto)
+               return `Se agrego el producto con identificador ${prod.id}`
            }else{
-            console.log('Este producto ya se encuentra en el array:   ')
-            console.log(prod)
+            return `Este producto ya se encuentra en el array:   ${JSON.stringify(prod)}`
            }
         }else{
-            console.log("No fue incluido por faltar valores en campo:  ")
-            console.log(prod)
+            return `No fue incluido por faltar valores en campo:  ${JSON.stringify(prod)}`
         }
     }
+    
     async getProdcuts(){
         const leido = await leerTxt(this.path)
         return leido       
@@ -76,7 +75,7 @@ export class ProductManager{
             const productoInUpdate = Object.assign(this.producto[indexId],productUpdate)
             this.producto[indexId] = productoInUpdate
             await escribirTxt(this.path, this.producto)
-            return `Se actualizo producto con identificador ${id}`
+            return `Se actualizo el producto con identificador ${id}`
         }else{
             return `NO EXISTE producto con identificador ${id}`
             
@@ -85,9 +84,14 @@ export class ProductManager{
     async deleteProduct(id){
         const consultaDe = await leerTxt(this.path)
         this.producto = [...consultaDe]
-        const resultado = this.producto.filter(prod => prod.id != id);
-        this.producto = [...resultado]
-        await escribirTxt(this.path, this.producto)
+        if(this.producto.some(prod => prod.id === id)){
+            const resultado = this.producto.filter(prod => prod.id != id);
+            this.producto = [...resultado]
+            await escribirTxt(this.path, this.producto)
+            return `Se elimino el producto con identificador ${id}`
+        }else{
+            return `NO EXISTE producto con identificador ${id}`
+        }
     }
 }
 export class Producto{
