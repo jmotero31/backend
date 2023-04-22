@@ -47,10 +47,14 @@ export class cartManager{
         //console.log(consulta)
         let carritoSelec = carrosTodos.find(car => car.id === cid)
         //console.log(consultaId)
-        if(!carritoSelec){
+        if(carritoSelec){
+            if(carritoSelec.producto.length){
+                return `Los productos alojados del carrito ${cid} contiene estos producto: ${JSON.stringify(carritoSelec.producto)}`              
+            }else{
+                return `No existe productos en este carrito ${cid}`
+            }
+        }else{           
             return `No se encuentra carro con ese CID: ${cid}`
-        }else{
-            return `Los productos alojados del carrito ${cid} contiene estos producto: ${JSON.stringify(carritoSelec.producto)}`    
         }
     }
     async addCartProduct(cid, pid, quantityNew){

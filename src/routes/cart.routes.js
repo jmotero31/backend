@@ -33,7 +33,7 @@ cartRoute.post('/:cid/product/:pid', async (req, res)=>{
     try {
         let cid = parseInt(req.params.cid) 
         let pid = parseInt(req.params.pid)
-        let {quantity , stock} = req.body
+        let {quantity} = req.body
         //const respuesta = await carrito.addCartProduct(cid, pid, quantity, stock)
         res.send(await carrito.addCartProduct(cid, pid, quantity))
     } catch (error) {

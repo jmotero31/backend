@@ -5,6 +5,8 @@ import userRoute from './routes/user.routes.js'
 import cartRoute from './routes/cart.routes.js'
 import { __dirname } from './path.js'
 import multer from 'multer'
+import { engine } from 'express-handlebars'
+import * as path from 'path'
 
 
 //Configuracion express
@@ -19,6 +21,9 @@ const storage = multer.diskStorage({
     }
 }) // destino de imagenes con multer
 
+APP.engine('handlebars', engine()) //voy a usar handlebars
+APP.set('view engine', 'handlebars') //setea una valor
+APP.set('views', path.resolve(__dirname, './views')) // paht concatena ruta //src mas /views
 // Middleware Para trabajar con Json desde mi servidor y acceder a los query mas complejas de la url
 APP.use(express.json())
 APP.use(express.urlencoded({extended: true}))
@@ -39,6 +44,17 @@ APP.post('/upload', upload.single('product'), (req,res)=>{
     res.send('Imagen guardada')
 } )
 //upload.single('product') este product es la key
+
+//Handlebars
+APP.get('/', (req,res) =>{
+    const tutor = {
+        nombre: "hola",
+        email: '',
+        rol:''
+    }
+    res.render()
+})
+
 APP.listen(PORT, ()=>{
     console.log(`Server on Port ${PORT}`)
 }) 
