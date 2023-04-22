@@ -1,78 +1,44 @@
-import express from 'express'
-import { ProductManager, Producto } from './ProductManager.js'
+import express, { application } from 'express'
+import productRouter from './routes/product.routes.js'
+import raizRouter from './routes/raiz.routes.js'
+import userRoute from './routes/user.routes.js'
+import cartRoute from './routes/cart.routes.js'
+import { __dirname } from './path.js'
+import multer from 'multer'
 
+
+//Configuracion express
 const APP = express()
 const PORT = 4000
+const storage = multer.diskStorage({
+    destination: (req, file, cb) =>{
+       cb(null, 'src/public/img') 
+    },
+    filename: (req, file, cb)=>{
+        cb(null, `${file.originalname}`)
+    }
+}) // destino de imagenes con multer
+
+// Middleware Para trabajar con Json desde mi servidor y acceder a los query mas complejas de la url
 APP.use(express.json())
 APP.use(express.urlencoded({extended: true}))
+const upload = (multer({storage: storage})) // instancia objeto con la conf de multer, se guarde en la ruta que especifique
 
-const prod1 = new Producto('uno', 'description1', 'price1', 'thumbnail1', 'code1', 'stock1')
-const prod2 = new Producto('dos', 'description2', 'price2', 'thumbnail2', 'code2','stock2')
-const prod3 = new Producto('tres', 'description3', 'price3', 'thumbnail3', 'code3','stock3')
-const prod4 = new Producto('cuatro', 'description4', 'price4', 'thumbnail4', 'code4','stock4')
-const prod5 = new Producto('cinco', 'description5', 'price5', 'thumbnail5', 'code5','stock5')
-const prod6 = new Producto('seis', 'description6', 'price6', 'thumbnail6', 'code6','stock6')
-const prod7 = new Producto('siete', 'description7', 'price7', 'thumbnail7', 'code7','stock7')
-const prod8 = new Producto('ocho', 'description8', 'price8', 'thumbnail8', 'code8','stock8')
-const produ = new ProductManager('./bd.txt')
-await produ.addProduct(prod1)
-await produ.addProduct(prod2)
-await produ.addProduct(prod3)
-await produ.addProduct(prod4)
-await produ.addProduct(prod5)
-await produ.addProduct(prod6)
-await produ.addProduct(prod7)
-await produ.addProduct(prod8)
 
-APP.get('/', async (req, res)=>{
-    res.send('Bienvenido al servidor que hasta ahora esta FOUND')
-})
-
-APP.get('/products', async (req, res)=>{
-    let limit = req.query.limit
-    const producto = await produ.getProdcuts()
-    if(limit){
-        const productoLimite = producto.slice(0, parseInt(limit))
-        res.send(JSON.stringify(productoLimite))
-    }else{
-        res.send(JSON.stringify(producto))
-    }
-})
-
-APP.get('/products/:pid', async (req, res)=>{
-    let pid = parseInt(req.params.pid)
-    const producto = await produ.getProdcuts()
-    const productoId = producto.find(pro => pro.id === pid)
-    if(productoId){
-        res.send(JSON.stringify(productoId))
-    }else{
-        res.send(`No existe producto con ese Identificador = ${pid}`)
-    }
-})
-
-APP.post('/products', async (req, res)=>{
-    const { title, description, price, thumbnail, code, stock } = req.body
-    const objNuevo = { title: title, description: description, price: price, thumbnail: thumbnail, code: code, stock: stock}
-    const agregar = await produ.addProduct(objNuevo)
-    res.send(agregar)
-})
-
-APP.put('/products/:puid', async (req, res) => {
-    let puid = parseInt(req.params.puid)
-    //const { title, description, price, thumbnail, code, stock } = req.body
-    const objetoUpdat = req.body
-    const update = await produ.updateProduct(puid, objetoUpdat)
-    res.send(update)
-})
-
-APP.delete('/products/:did', async(req, res)=>{
-    let pdid = parseInt(req.params.did)
-    const dele = await produ.deleteProduct(pdid)
-    res.send(dele)
-})
-
+// Rutas
+APP.use('/', raizRouter)
+APP.use('/product', productRouter)
+APP.use('/user', userRoute)
+APP.use('/cart', cartRoute)
+APP.use('/static',express.static(__dirname + '/public')) //express.static()defino como una carpeta publica para que el usuario pueda ver estos elementos. con 'static' termino de define que cualquier elemento que suba en la carpeta lo pueda acceder el usuario
+//generar un ruta aparte para que no este todo en localhost. static representa lo que es la carpeta publica
+// digo que en la direccions stactic vaya a la carpeta publica 
+APP.post('/upload', upload.single('product'), (req,res)=>{
+    console.log(req.body)
+    console.log(req.file)
+    res.send('Imagen guardada')
+} )
+//upload.single('product') este product es la key
 APP.listen(PORT, ()=>{
     console.log(`Server on Port ${PORT}`)
-})
-
-
+}) 
