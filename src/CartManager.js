@@ -18,7 +18,6 @@ const leerTxt = async (ruta) =>{
         return console.log(error)
     }
 }
-
 export class cartManager{
     constructor(ruta){
         this.ide = 0
@@ -39,21 +38,20 @@ export class cartManager{
                 producto: []
            }
            */
-           this.cart.push({id: this.id, producto: []})
+           this.cart.push({id: this.ide, producto: []})
            await escribirTxt(this.path, this.cart)
            //console.log(this.cart[1].id)
            return `Se agrego el carrito ${this.ide} al Carro General`      
     }
     async getCartById(cid){
-        const consulta = await leerTxt(this.path)
+        const carrosTodos = await leerTxt(this.path)
         //console.log(consulta)
-        let consultaId = consulta.find(car => car.id === cid)
+        let carritoSelec = carrosTodos.find(car => car.id === cid)
         //console.log(consultaId)
-        if(!consultaId){
+        if(!carritoSelec){
             return `No se encuentra carro con ese CID: ${cid}`
         }else{
-            //console.log('Su consulta es ', consultaId.id)    
-            return consultaId.producto    
+            return `Los productos alojados del carrito ${cid} contiene estos producto: ${JSON.stringify(carritoSelec.producto)}`    
         }
     }
     async addCartProduct(cid, pid, quantityNew, stock){
@@ -67,19 +65,19 @@ export class cartManager{
             if(carritoSelec.producto.some(produ => produ.idProducto === pid)){
                 const indexProductoId = carritoSelec.producto.findIndex(producto => producto.idProducto === pid)
                 let quantity = carrosTodos[indexCarritoId].producto[indexProductoId].quantity + quantityNew
-                if(stock >= quantity){
+                if(producto.stock >= quantity){
                     carrosTodos[indexCarritoId].producto[indexProductoId].quantity = quantity
                     this.cart = carrosTodos
                     await escribirTxt(this.path, this.cart)
-                    return `Se actualizo la cantidad a ${quantity} de producto ${producto.title}`
+                    return `Se actualizo la cantidad a ${quantity} de producto: ${producto.title}`
                 }else{
-                    return `No hay Stock suficiente de producto ${producto.title}`
+                    return `No hay Stock suficiente de producto: ${producto.title}`
                 }
             }else{ 
                 carrosTodos[indexCarritoId].producto.push({idProducto: pid, quantity: quantityNew})
                 this.cart = carrosTodos
                 await escribirTxt(this.path, this.cart)
-                return `Se agrego al carrito un nuevo producto ${producto.title}`
+                return `Se agrego al carrito un nuevo producto: ${producto.title}`
             }
         }else{
             return 'No existe carrito'
