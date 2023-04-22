@@ -1,4 +1,4 @@
-import express, { application } from 'express'
+import express from 'express'
 import productRouter from './routes/product.routes.js'
 import raizRouter from './routes/raiz.routes.js'
 import userRoute from './routes/user.routes.js'

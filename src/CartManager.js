@@ -1,5 +1,4 @@
-import { Console } from 'console'
-import {promises as fs} from 'fs'
+import { promises as fs } from 'fs'
 
 //Funciones para leer y escribir con las conversiones JSON
 const escribirTxt = async (ruta, carrito) =>{
@@ -54,13 +53,13 @@ export class cartManager{
             return `Los productos alojados del carrito ${cid} contiene estos producto: ${JSON.stringify(carritoSelec.producto)}`    
         }
     }
-    async addCartProduct(cid, pid, quantityNew, stock){
+    async addCartProduct(cid, pid, quantityNew){
         const carrosTodos = await leerTxt(this.path)
         if(carrosTodos.some(carrito => carrito.id === cid)){
             const carritoSelec = carrosTodos.find(carrito => carrito.id === cid)
             const indexCarritoId = carrosTodos.findIndex(carrit => carrit.id === cid) 
             //Averiguo que producto es para mencionar el nombre del producto
-            const consultaProducto = await leerTxt('./productos.txt')
+            const consultaProducto = await leerTxt('./productos.txt')    // Tendria que ver de donde sacar la ruta para que se dinamico
             const producto = consultaProducto.find(carrito => carrito.id === pid)
             if(carritoSelec.producto.some(produ => produ.idProducto === pid)){
                 const indexProductoId = carritoSelec.producto.findIndex(producto => producto.idProducto === pid)
