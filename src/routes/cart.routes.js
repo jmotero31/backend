@@ -6,7 +6,9 @@ const carrito = new cartManager('./carro.txt')
 
 cartRoute.get('/', async (req, res)=>{
     try {
-        res.send('Se encuentra en la seccion CARRITO')    
+        res.render('cart',{
+            dondeEstas: 'Se encuentra en la seccion CARRITO'
+        })    
     } catch (error) {
         res.send(error)
     }
@@ -23,8 +25,8 @@ cartRoute.get('/:cid', async (req, res)=>{
     try {
         let cid = parseInt(req.params.cid)
         const productoCid = await carrito.getCartById(cid)
-        //console.log(productoCid)
-        res.send(JSON.stringify(productoCid))    
+        //res.send(JSON.stringify(productoCid))  
+        res.render('cart', {carrito: productoCid})  
     } catch (error) {
         res.send(error)
     }

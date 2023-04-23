@@ -49,7 +49,8 @@ export class cartManager{
         //console.log(consultaId)
         if(carritoSelec){
             if(carritoSelec.producto.length){
-                return `Los productos alojados del carrito ${cid} contiene estos producto: ${JSON.stringify(carritoSelec.producto)}`              
+                //return `Los productos alojados del carrito ${cid} contiene estos producto: ${JSON.stringify(carritoSelec.producto)}`  
+                return carritoSelec.producto            
             }else{
                 return `No existe productos en este carrito ${cid}`
             }
@@ -77,7 +78,7 @@ export class cartManager{
                     return `No hay Stock suficiente de producto: ${producto.title}`
                 }
             }else{ 
-                carrosTodos[indexCarritoId].producto.push({idProducto: pid, quantity: quantityNew})
+                carrosTodos[indexCarritoId].producto.push({idProducto: pid, quantity: quantityNew, nameProduct: producto.title})
                 this.cart = carrosTodos
                 await escribirTxt(this.path, this.cart)
                 return `Se agrego al carrito un nuevo producto: ${producto.title}`
