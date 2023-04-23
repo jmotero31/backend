@@ -1,0 +1,15 @@
+
+{{#each producto}}
+<div class="card" style="width: 18rem;">
+  <img src="..." class="card-img-top" alt="...">
+  <div class="card-body">
+    <h5 class="card-title">{{ this.title }}</h5>
+    <p class="card-text"> {{ this.category }}</p>
+  </div>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">{{ this.description }}</li>
+    <li class="list-group-item">Producto Listado Identificado: {{ this.id }}</li>
+    <li class="list-group-item">Cantidad: {{ this.stock }}</li>
+  </ul>
+</div>
+{{/each}}

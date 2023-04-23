@@ -4,7 +4,10 @@ const raizRouter = Router()
 
 raizRouter.get('/', async (req, res)=>{
     try {
-        res.send('Bienvenido al servidor @ Usted se encuentra en la Pagina Principal')
+        res.render('home', {
+            titulo: "Curso de Banckend",
+            cuerpo: 'Estamos en la Raiz de la APP'
+        })
     } catch (error) {
         res.send(error)
     }

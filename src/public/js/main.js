@@ -1,0 +1,1 @@
+console.log("Probando que el Js funcione, despues vemos como desarrollarlo con los eventos")

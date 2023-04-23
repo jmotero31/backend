@@ -32,9 +32,20 @@ productRouter.get('/', async (req, res)=>{
         const producto = await produ.getProdcuts()
         if(limit){
             const productoLimite = producto.slice(0, parseInt(limit))
-            res.send(JSON.stringify(productoLimite))
+            //res.send(JSON.stringify(productoLimite))
+            res.render('product', {
+                /*
+                titulo: productoLimite.title,
+                categoria: prproductoLimiteoductoId.category,
+                stock: productoLimite.stock,
+                ide: productoLimite.id,
+                descripticion: productoLimite.description
+                */
+               producto: productoLimite
+            })
         }else{
-            res.send(JSON.stringify(producto))
+            //res.send(JSON.stringify(producto))
+            res.render('product',{producto: producto})
         }       
     } catch (error) {
         res.send(error)
@@ -46,8 +57,21 @@ productRouter.get('/:pid', async (req, res)=>{
         let pid = parseInt(req.params.pid)
         const producto = await produ.getProdcuts()
         const productoId = producto.find(pro => pro.id === pid)
+        //console.log(productoId)
+        const arra =[]
+        arra.push(productoId)
         if(productoId){
-            res.send(JSON.stringify(productoId))
+            //res.send(JSON.stringify(productoId))
+            res.render('product', {
+                /*
+                titulo: productoId.title,
+                categoria: productoId.category,
+                stock: productoId.stock,
+                ide: productoId.id,
+                descripticion: productoId.description
+                */
+               producto: arra
+            })
         }else{
             res.send(`No existe producto con ese Identificador = ${pid}`)
         }      
@@ -55,7 +79,6 @@ productRouter.get('/:pid', async (req, res)=>{
         res.send(error)
     }
 })
-
 productRouter.post('/', async (req, res)=>{
     try {
         const { title, description, price, status, stock, category, thumbnail, code } = req.body
