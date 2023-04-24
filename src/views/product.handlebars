@@ -1,23 +1,22 @@
 
 {{#each producto}}
 <div class='estilo'> 
-        <div >
-          <div class='contenedorIm'>
-            <img src="" style= "width: '220px', height: '220px'" alt="">Imagen</img>
-          </div>
-          <br></br>
-          <div class='contenedorcont'>
-            <h4 class='categoria'>{{this.category}}</h4>
-            <h2>{{ this.title }}</h2>
-            <text>{{ this.description }}</text>
-            <br></br>
-            
-            <div class="marcar">
-              <p ><span class='resaltar'>Precio: </span>$ {{ this.price }}</p>
-              <p ><span class='resaltar'>Stock disponible: </span> {{ this.stock }}</p>
-            </div>
-          </div>
-        </div>
+  <div >
+    <div class='contenedorIm'>
+      <img src="" style= "width: '220px', height: '220px'" alt="">Imagen</img>
+      </div>
+      <br></br>
+      <div class='contenedorcont'>
+        <h4 class='categoria'>{{this.category}}</h4>
+        <h2>{{ this.title }}</h2>
+        <text>{{ this.description }}</text>
+        <br></br>
+      <div class="marcar">
+        <p><span class='resaltar'>Precio: </span>$ {{ this.price }}</p>
+        <p><span class='resaltar'>Stock disponible: </span> {{ this.stock }}</p>
+      </div>
+    </div>
+  </div>
 </div>
 {{/each}}
 

@@ -44,6 +44,9 @@ APP.use('/cart', cartRoute)
 APP.use('/',express.static(__dirname + '/public')) //express.static()defino como una carpeta publica para que el usuario pueda ver estos elementos. con 'static' termino de define que cualquier elemento que suba en la carpeta lo pueda acceder el usuario
 //generar un ruta aparte para que no este todo en localhost. static representa lo que es la carpeta publica
 // digo que en la direccions stactic vaya a la carpeta publica 
+APP.use('/product',express.static(__dirname + '/public'))
+APP.use('/cart',express.static(__dirname + '/public'))
+
 APP.post('/upload', upload.single('product'), (req,res)=>{
     console.log(req.body)
     console.log(req.file)

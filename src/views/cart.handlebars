@@ -1,10 +1,43 @@
 <div>{{ dondeEstas }}</div>
 
+<div class="e">
+            <table striped bordered hover class="i">
+            <thead class="o">
+              <tr>
+                <th>Producto</th>
+                <th></th>
+                <th>Cant</th>
+                <th>Subtotal</th>
+                <th></th>
+              </tr>
+            </thead>
+            <br></br>
+            <tbody class="er">
 {{#each carrito}}
-<div class="card" style="width: 18rem;">
-  <img src="..." class="card-img-top" alt="...">
-  <div class="card-body">
-    <h5 class="card-title">Producto: {{ this.nameProduct }}</h5>
-    <p class="card-text">Cantidad: {{ this.quantity }}</p>
-  </div>
+            <tr class="aa">
+                <td ><img src="" style= "width: '60px', height: '60px', padding: '0.1rem'" alt=""></img></td>
+                <td>{{ this.nameProduct }}</td>
+                <td>{{ this.quantity }}</td>
+                <td>$ </td>
+                <td><button onClick="{() => remover(prod.id)}" class="buttondel"> X </button></td>
+
+              </tr>
 {{/each}}
+
+            </tbody>
+            <br /><br />
+            <tfoot>
+              <tr class="u">
+                <td>TOTAL</td>
+                <td></td>
+                <td>$</td>
+                <td></td>
+                <td></td>
+              </tr>
+            </tfoot>
+            </table>
+            <button onClick="" class="buttonAddCart buttonAddCart1 buttonAddCart2">Comprar</button>
+            <button onClick="" class="buttonAddCart buttonAddCart1 buttonAddCart2">Vaciar</button>
+      </div>
+
+

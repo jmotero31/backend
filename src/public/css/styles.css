@@ -2,6 +2,8 @@
     color: brown;
 }
 
+/* Estilos de product.handlebars*/
+
 * {
     margin: 0;
     padding: 0;
@@ -89,4 +91,117 @@
 
 
     }
+}
+/* Estilos de cart.handlebars */
+
+.e{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-color: white;
+    padding: 10px;
+    box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.2);
+    width: 60%;
+    margin: 4% auto;
+}
+.i{
+    width: 100%;
+}
+.o{
+    color:  rgba(73, 177, 177, 0.665);
+    font-size: x-large;
+}
+.u{
+    color:  rgba(73, 177, 177, 0.665);
+    font-size: x-large;
+}
+.aa{
+    font-size: large;
+    margin-top: 23rem;
+    
+}
+.buttondel{
+    width: 30px;
+    height: 30px;
+    margin: 10px 0px;
+    background-color: rgba(73, 177, 177, 0.665);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    transition: 0.3s;
+}
+.car{
+    color: rgba(73, 177, 177, 0.665);
+    font-size: 120%;
+    -webkit-text-stroke-width: medium;
+    margin-top: 0.6rem;
+}
+.car:hover {
+    color: rgba(10, 68, 68, 0.665);
+    font-size: 120%;
+}
+.caar{
+    color: rgba(73, 177, 177, 0.665);
+    font-size: 120%;
+    -webkit-text-stroke-width: medium;
+    margin-top: 0.6rem;
+}
+
+@media (max-width:768px) {
+    .cartContainer{
+        width: 10%;
+        margin: 15px auto;
+        padding: 15px;
+    }
+    thead .cartRows {
+        display: none;
+    }
+
+    tbody .cartRows {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    tfoot .cartRows {
+        display: flex;
+        flex-direction: row-reverse;
+    }
+
+}
+
+@media(max-width: 399px){
+    .i{
+        width: 100%;
+        margin-right: auto;
+    }
+    .o{
+        font-size: small;
+    }
+    .er{
+        font-size: small;
+    }
+    .aa{
+        font-size:small;
+    }
+    .e{
+        width: 100%;
+        padding: 0rem;
+    }
+    .buttondel{
+        width: 15px;
+        height: 15px;
+        font-size: smaller;
+    }
+    .u{
+        font-size: small;
+    }
+    .buttonAddCart2{
+        height: 70%;
+        width: 60%;
+        font-size: small;
+    }
+
 }

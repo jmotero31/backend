@@ -1,1 +1,1 @@
-[]
+[{"id":1,"producto":[{"idProducto":5,"quantity":3,"nameProduct":"Zapatillas Jaguar Oficial"},{"idProducto":4,"quantity":3,"nameProduct":"Canon EOS Rebel Kit T100"},{"idProducto":3,"quantity":3,"nameProduct":"Celular Motorola Moto E13 64gb"}]},{"id":2,"producto":[{"idProducto":3,"quantity":3,"nameProduct":"Celular Motorola Moto E13 64gb"}]},{"id":3,"producto":[]},{"id":4,"producto":[]}]
