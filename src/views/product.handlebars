@@ -1,15 +1,23 @@
 
 {{#each producto}}
-<div class="card" style="width: 18rem;">
-  <img src="..." class="card-img-top" alt="...">
-  <div class="card-body">
-    <h5 class="card-title">{{ this.title }}</h5>
-    <p class="card-text"> {{ this.category }}</p>
-  </div>
-  <ul class="list-group list-group-flush">
-    <li class="list-group-item">{{ this.description }}</li>
-    <li class="list-group-item">Producto Listado Identificado: {{ this.id }}</li>
-    <li class="list-group-item">Cantidad: {{ this.stock }}</li>
-  </ul>
+<div class='estilo'> 
+        <div >
+          <div class='contenedorIm'>
+            <img src="" style= "width: '220px', height: '220px'" alt="">Imagen</img>
+          </div>
+          <br></br>
+          <div class='contenedorcont'>
+            <h4 class='categoria'>{{this.category}}</h4>
+            <h2>{{ this.title }}</h2>
+            <text>{{ this.description }}</text>
+            <br></br>
+            
+            <div class="marcar">
+              <p ><span class='resaltar'>Precio: </span>$ {{ this.price }}</p>
+              <p ><span class='resaltar'>Stock disponible: </span> {{ this.stock }}</p>
+            </div>
+          </div>
+        </div>
 </div>
 {{/each}}
+

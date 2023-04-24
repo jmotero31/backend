@@ -7,7 +7,7 @@ import { __dirname } from './path.js'
 import multer from 'multer'
 import { engine } from 'express-handlebars' //configuracion basica de handlebars
 import * as path from 'path' //importo todo de path y lo llamo path para el manejo de las rutas
-
+// import { Server } from 'socket.io'
 
 //Configuracion express
 const APP = express()
@@ -21,6 +21,8 @@ const storage = multer.diskStorage({
     }
 }) // destino de imagenes con multer
 
+
+
 APP.engine('handlebars', engine()) // voy a usar handlebars
 APP.set('view engine', 'handlebars') //setea una valor, asignar a una constatnte un valor / en mis vistas voy a implementar handlebars
 APP.set('views', path.resolve(__dirname, './views')) // paht resolve concatena ruta //src mas /views  ---- dirname devuellve la carpeta actual concatena con el valor ./view
@@ -28,6 +30,10 @@ APP.set('views', path.resolve(__dirname, './views')) // paht resolve concatena r
 APP.use(express.json())
 APP.use(express.urlencoded({extended: true}))
 const upload = (multer({storage: storage})) // instancia objeto con la conf de multer, se guarde en la ruta que especifique
+
+//ServerIO
+//const io = new Server(server)
+
 
 
 // Rutas

@@ -1,3 +1,92 @@
 .colorPrueba{
     color: brown;
 }
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    list-style: none;
+    text-decoration: none;
+    
+}
+.estilo{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.2);
+    width: 55%;
+    margin: 4% auto;
+}
+.categoria{
+    background-color: rgba(73, 177, 177, 0.665);
+    color: azure;
+    font-size: x-large;
+    font-style:normal;
+    font-family: 'Times New Roman', Times, serif;
+    border-radius: 1rem;
+    border: 0.1rem solid rgba(254, 254, 254, 0.519); 
+    font-weight: 900;
+}
+.contenedorcont{
+    width: 50vw;
+    display: flex;
+    flex-direction: column;
+    margin: 0 20px;
+    flex-grow: 1;
+}
+.buttonAddCart {
+    width: 180px;
+    height: 30px;
+    margin: 10px 0px;
+    background-color: rgba(73, 177, 177, 0.665);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    transition: all 0.3s;
+  }
+.buttonAddCart:hover {
+    color: rgba(10, 68, 68, 0.665);
+    
+}
+.ui{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.resaltar{
+    text-decoration: double;
+    color: rgba(73, 177, 177, 0.665);
+    font-size: x-large;
+    font-weight: 680;
+    font-style: italic;
+    text-align:justify;
+}
+.marcar{
+    color: rgba(122, 51, 51, 0.854);
+    font-size: x-large;
+    font-weight: 690;
+    font-style: oblique;
+}
+
+@media(max-width: 440px ){
+    .estilo{
+        padding: 0px;
+        width: 95%;
+    }
+    .contenedorcont{
+        width: 80%;
+    }
+    .containerItemCount{
+        width: 80%;
+    }
+    .buttonAddCart1{
+        width: 80%;
+        font-size: small;
+
+
+    }
+}
