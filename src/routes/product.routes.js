@@ -5,6 +5,7 @@ import { ProductManager, Producto } from "../ProductManager.js";
 const productRouter = Router()
 const produ = new ProductManager('./productos.txt')
 
+
 //Genero productos y adjunto a la base de datos temporal TXT
 const prod1 = new Producto('Set Juego De Llaves Tubos', 'Set Juego De Llaves Tubos Y Puntas Combinadas 108 Pza Valija', '23000', 'true', '20', 'Herramientas', 'thumbnail1', 'code1')
 const prod2 = new Producto('Caja De Herramientas Makita 24', 'sta caja Makita CH24 te brindará el espacio, la comodidad y practicidad ', '15900', 'true', '15', 'Herramientas', 'thumbnail2', 'code2')

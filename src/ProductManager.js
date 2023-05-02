@@ -34,7 +34,7 @@ export class ProductManager{
     }
     */
     async addProduct(prod){
-        if(prod.title && prod.description && prod.price && prod.status && prod.stock && prod.category &&prod.thumbnail && prod.code){
+        if(prod.title && prod.description && prod.price && prod.status && prod.stock && prod.category && prod.thumbnail && prod.code){
            if(!await leerTxt(this.path)){
                 await escribirTxt(this.path, this.producto)
                 console.log('Se acaba de Crear archivo txt para el guardado de sus datos')
@@ -54,7 +54,29 @@ export class ProductManager{
             return `No fue incluido por faltar valores en campo:  ${JSON.stringify(prod)}`
         }
     }
-    
+   
+    async addProductSocket(prod, id){
+        if(prod.title && prod.description && prod.price && prod.status && prod.stock && prod.category && prod.thumbnail && prod.code){
+           if(!await leerTxt(this.path)){
+                await escribirTxt(this.path, this.producto)
+                console.log('Se acaba de Crear archivo txt para el guardado de sus datos')
+           }         
+           if(!this.producto.some(produc => (prod.code === produc.code))){
+               const leido = await leerTxt(this.path) 
+               this.producto = [...leido]
+               this.producto.push(prod)
+               this.ide = id + 1 
+               prod.id = this.ide
+               await escribirTxt(this.path, this.producto)
+               return `Se agrego el producto con identificador ${prod.id}`
+           }else{
+            return `Este producto ya se encuentra en el array:   ${JSON.stringify(prod)}`
+           }
+        }else{
+            return `No fue incluido por faltar valores en campo:  ${JSON.stringify(prod)}`
+        }
+    }
+
     async getProdcuts(){
         const leido = await leerTxt(this.path)
         return leido       
