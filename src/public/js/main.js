@@ -36,7 +36,7 @@ socket.on('server:lista', pro =>{
                     <p><span class='resaltar'>Precio: </span>$ ${ mensaje.price }</p>
                     <p><span class='resaltar'>Stock disponible: </span> ${ mensaje.stock }</p>
                     </div>
-                    <button type="button" class="btn btn-secondary mb-2" onclick="modificar(${mensaje.id})">Modificar</button>
+                    
                     <button type="button" class="btn btn-danger" onclick="borrar(${mensaje.id})">Eliminar</button>
                   </div>
                   </div>
@@ -77,7 +77,7 @@ formProduct.addEventListener('submit', (e)=>{
                     <p><span class='resaltar'>Precio: </span>$ ${ mensaje.price }</p>
                     <p><span class='resaltar'>Stock disponible: </span> ${ mensaje.stock }</p>
                     </div>
-                  <button type="button" class="btn btn-secondary mb-2" onclick="modificar(${mensaje.id})">Modificar</button>
+                  
                   <button type="button" id="eliminar" data-id="${mensaje.id}" class="btn btn-danger" onclick="borrar(${mensaje.id})")'>Eliminar</button>
                   </div>
                   </div>
