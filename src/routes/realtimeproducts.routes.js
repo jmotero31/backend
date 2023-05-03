@@ -31,6 +31,15 @@ realtimeproducts.get('/', async (req, res)=>{
                 socket.emit('server:agrego', productoagregar)
                
             })
+            socket.on('cliente:borrar', async (info)=>{
+                console.log(info, "borro")
+                await produ.deleteProduct(info)
+                const auxproducto = await produ.getProdcuts()
+                socket.emit('server:lista', auxproducto)
+            })
+            socket.on('cliente:modificar', async (info)=>{
+                console.log(info, "modifico")
+            })
         })
         const produc = await produ.getProdcuts()
         res.render('realtimeproducts',{producto: produc})  
