@@ -9,9 +9,17 @@ import multer from 'multer'
 import { engine } from 'express-handlebars' //configuracion basica de handlebars
 import * as path from 'path' //importo todo de path y lo llamo path para el manejo de las rutas
 import { Server } from 'socket.io' // genero mi servidor para enviar informacion
-
+import mongoose from 'mongoose'
+//import { productsModel } from './models/products.js'
 //Configuracion express
 const APP = express()
+
+/*
+mongoose.connect("mongodb+srv://jotero:Coder2023@cluster0.jjelctg.mongodb.net/?retryWrites=true&w=majority")
+    .then(()=> console.log("DB is connected"))
+    .catch((error) => console.log("Error en MongoDB Atlas : " , error))
+
+*/
 const PORT = 4000
 const storage = multer.diskStorage({
     destination: (req, file, cb) =>{
