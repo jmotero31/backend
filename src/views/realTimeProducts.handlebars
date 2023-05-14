@@ -29,7 +29,11 @@
           <button type="submit" class="btn btn-primary">Agregar Producto</button>
     </form>
   </div>
+ {{#if producto.length}}
   <div class="col-md-8" id="productoshtml" style=" display: flex; flex-wrap: wrap; justify-content: space-evenly;">
+ {{else}}
+    <div class="col-md-8" style=" display: flex; flex-wrap: wrap; justify-content: space-evenly;"><p>No se encontraron Productos en la BDD  {{ producto.length }}</p></div>
+ {{/if}}   
   </div>
 </div>
 
