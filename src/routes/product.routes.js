@@ -24,13 +24,13 @@ await produ.addProduct(prod6)
 await produ.addProduct(prod7)
 await produ.addProduct(prod8)
 
-
 //Rutas del Proyecto
 
 productRouter.get('/', async (req, res)=>{
     try {
         let limit = req.query.limit
         const producto = await produ.getProdcuts()
+        //console.log(producto)
         if(limit){
             const productoLimite = producto.slice(0, parseInt(limit))
             //res.send(JSON.stringify(productoLimite))

@@ -10,17 +10,25 @@ import { engine } from 'express-handlebars' //configuracion basica de handlebars
 import * as path from 'path' //importo todo de path y lo llamo path para el manejo de las rutas
 import { Server } from 'socket.io' // genero mi servidor para enviar informacion
 import mongoose from 'mongoose'
-//import { productsModel } from './models/products.js'
+import 'dotenv/config' // impplemento las variables de entorno
+//import { userModel } from './models/Users.js'
+//import { cartModel} from './models/Cart.js'
+
 //Configuracion express
 const APP = express()
 
-/*
-mongoose.connect("mongodb+srv://jotero:Coder2023@cluster0.jjelctg.mongodb.net/?retryWrites=true&w=majority")
+//const PORT = 4000
+
+mongoose.connect(process.env.URL_MONGODB_ATLAS)
     .then(()=> console.log("DB is connected"))
     .catch((error) => console.log("Error en MongoDB Atlas : " , error))
 
-*/
-const PORT = 4000
+//const leo= await userModel.find()
+//console.log(leo[2].first_name)
+/*
+const valor= await userModel.find().explain('executionStats')
+console.log(valor)
+*/ 
 const storage = multer.diskStorage({
     destination: (req, file, cb) =>{
        cb(null, 'src/public/img') 
@@ -30,8 +38,8 @@ const storage = multer.diskStorage({
     }
 }) // destino de imagenes con multer
 
-const server = APP.listen(PORT, ()=>{
-    console.log(`Server on Port ${PORT}`)
+const server = APP.listen(process.env.PORT, ()=>{
+    console.log(`Server on Port ${process.env.PORT}`)
 }) 
 
 
@@ -62,15 +70,6 @@ APP.use((req, res, next)=>{
     */
  //   })
 
-
-
-
-
-
-
-
-
- 
 /*
 io.on('connection', (socket)=>{
     console.log("Cliente conectado")
@@ -109,7 +108,6 @@ APP.post('/upload', upload.single('product'), (req,res)=>{
     res.send('Imagen guardada')
 } )
 //upload.single('product') este product es la key
-
 
 
 /*

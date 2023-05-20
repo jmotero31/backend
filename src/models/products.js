@@ -1,15 +1,36 @@
 import { Schema, model } from "mongoose";
 
-const productsCollection = "products"
-
-const productsSchema = new Schema({
-    nombre: String,
-    apellido: String,
-    email: {
+const productSchema = new Schema({
+    title: {
         type: String,
-        unique: true  // es unico en la base 
+        require: true
     },
-    password: String
+    description: {
+        type: String,
+        require: true
+    },
+    category: {
+        type: String,
+        require: true
+    },
+    price: {
+        type: Number,
+        require: true
+    },
+    stock: {
+        type: Number,
+        require: true
+    },
+    status: {
+        type: Boolean,
+        default: true
+    },
+    code: {
+        type: String,
+        require: true
+    },
+    thumbmail: []
+   
 })
 
-export const productsModel = model('products', productsSchema)
+export const productModel = model("products", productSchema)
