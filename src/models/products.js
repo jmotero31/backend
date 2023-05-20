@@ -9,15 +9,7 @@ const productSchema = new Schema({
         type: String,
         require: true
     },
-    category: {
-        type: String,
-        require: true
-    },
     price: {
-        type: Number,
-        require: true
-    },
-    stock: {
         type: Number,
         require: true
     },
@@ -25,12 +17,20 @@ const productSchema = new Schema({
         type: Boolean,
         default: true
     },
-    code: {
+    stock: {
+        type: Number,
+        require: true
+    },
+    category: {
         type: String,
         require: true
     },
-    thumbmail: []
-   
+    thumbmail: [],
+    code: {
+        type: String,
+        require: true,
+        unique: true
+    } 
 })
 
 export const productModel = model("products", productSchema)
