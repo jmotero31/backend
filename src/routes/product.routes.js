@@ -18,16 +18,20 @@ await productModel.create([
 productRouter.get('/', async (req, res)=>{
     try {
         let limite = req.query.limit
-        console.log(limite)
+        //console.log(limite)
         const producto = await productModel.find({},{_id: 0, __v: 0})
         //console.log(producto)
         if(limite){
-            const productoLimite = await productModel.find({},{_id: 0, __v: 0}).limit(limite)        
-            //res.render('product', { producto: productoLimite})
-            res.send(productoLimite)
+            const productoLimite = await productModel.find({},{_id: 0, __v: 0}).limit(limite)  
+            const adapProductoLimite = productoLimite.map((p)=>p.toJSON())
+            //console.log(productoLimite)    
+            res.render('product', { pro: adapProductoLimite})
+            //res.send(productoLimite)
         }else{
-            res.send(producto)
-            //res.render('product',{ producto: producto })
+            const adapProducto = producto.map((p)=>p.toJSON())
+            //res.send(producto)
+           //console.log(li)
+            res.render('product',{ pro: adapProducto})
         }       
     } catch (error) {
         res.send(error)
@@ -38,10 +42,11 @@ productRouter.get('/:pid', async (req, res)=>{
     try {
         let pid = req.params.pid      
         const productoId = await productModel.findOne({_id: pid}, {_id: 0, __v: 0})
-        console.log(productoId)       
+        const adapProductoId = productoId.map((p)=>p.toJSON())
+        ///console.log(productoId)       
         if(productoId){
-            res.send(productoId)
-            //res.render('product', {producto: productoId})
+            //res.send(productoId)
+            res.render('product', {producto: adapProductoId})
         }else{
             res.send(`No existe producto con ese Identificador = ${pid}`)
         }      

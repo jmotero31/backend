@@ -38,6 +38,7 @@ cartRoute.get('/:cid', async (req, res)=>{
         res.send(error)
     }
 })
+/*
 cartRoute.post('/:cid/product/:pid', async (req, res)=>{
     try {
         let cid = req.params.cid
@@ -72,10 +73,10 @@ cartRoute.post('/:cid/product/:pid', async (req, res)=>{
         await cartModel.create({products: producto})
         res.send(await cartModel.find({},{_id: 0, __v: 0}))
         */
-    } catch (error) {
-        res.send(error)
-    }
-})
+   // } catch (error) {
+  //      res.send(error)
+ //   }
+//})
 
 export default cartRoute
 
