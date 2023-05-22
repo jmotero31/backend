@@ -11,8 +11,6 @@ import * as path from 'path' //importo todo de path y lo llamo path para el mane
 import { Server } from 'socket.io' // genero mi servidor para enviar informacion
 import mongoose from 'mongoose'
 import 'dotenv/config' // impplemento las variables de entorno
-//import { userModel } from './models/Users.js'
-//import { cartModel} from './models/Cart.js'
 
 //Configuracion express
 const APP = express()
