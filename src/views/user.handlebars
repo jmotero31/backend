@@ -1,8 +1,11 @@
 
    <div style="display: flex; flex-wrap: wrap; margin-top: 2rem;">
-    {{#with usuarios}}
+    <h3>Usuarios</h3>
+    {{#with usu}}
+        <ul> 
         {{#each this}}
-            <p>{{first_name}}</p>
+            <li>{{first_name}}</li>
         {{/each}}
+        </ul>
     {{/with}}    
   </div>

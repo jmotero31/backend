@@ -8,8 +8,9 @@ const cartRoute = Router()
 cartRoute.get('/', async (req, res)=>{
     try {
         const carrito = await cartModel.find({},{__v: 0})
-        console.log(carrito)
-        res.send(carrito)
+        const adapCarrito = carrito.map((p)=>p.toJSON())
+        //console.log(carrito)
+        res.send(adapCarrito)
         /*
         res.render('cart',{
             dondeEstas: 'Se encuentra en la seccion CARRITO'
@@ -19,7 +20,6 @@ cartRoute.get('/', async (req, res)=>{
         res.send(error)
     }
 })
-
 cartRoute.post('/', async(req,res) =>{
     try {
         await cartModel.create({})
@@ -31,40 +31,75 @@ cartRoute.post('/', async(req,res) =>{
 cartRoute.get('/:cid', async (req, res)=>{
     try {
         let cid = req.params.cid
-        const productoCid = await cartModel.findOne({_id: cid}, {_id: 0, __v: 0}) // objeto
-        res.send(productoCid) 
-        //res.render('cart', {carrito: productoCid})  
+        const carritoCid = await cartModel.findOne({_id: cid}, {_id: 0, __v: 0}) // objeto
+        const adapCarritoCid = carritoCid.map((p)=>p.toJSON())
+        //res.send(adapCarritoCid) 
+        res.render('cart', {carrito: adapCarritoCid})  
     } catch (error) {
         res.send(error)
     }
 })
-/*
+
 cartRoute.post('/:cid/product/:pid', async (req, res)=>{
     try {
-        let cid = req.params.cid
-        //console.log(cid)
+        let cid = req.params.cid   
         let pid = req.params.pid
-        //console.log(pid)
         let {quantity} = req.body
-        //console.log(quantity)
-        const productoCid = await cartModel.findOne({_id: cid}) // objeto
-        const productoPid = await productModel.findOne({_id: pid})
+        const carritoCid = await cartModel.findOne({_id: cid}) // objeto carrito
+        //console.log(carritoCid)
+        const productoPid = await productModel.findOne({_id: pid}) // objeto producto
+        console.log(productoPid.stock)
+        //console.log(productoPid)
+        if(productoPid && carritoCid){
+            console.log(carritoCid)
+            const valor = carritoCid.products.find(car => car.id_prod == pid)
+            if(valor){
+                if(quantity < productoPid.stock){
+                    //sumar cantidad
+                    console.log(`sumar cantidad`)
+                    const indexProductoId = carritoCid.products.findIndex(car => car.id_prod == pid)
+                    //console.log(indexProductoId)
+                    carritoCid.products[indexProductoId].cant = valor.cant + quantity
+                    //console.log(carritoCid)
+                    await cartModel.updateOne({_id: cid}, carritoCid)
+                    await productModel.updateOne({_id: pid}, {stock: productoPid.stock - quantity })
+                    res.send(carritoCid)
+                }else{
+                    //la cantidad es superior al stock
+                    console.log(`la cantidad es superior al stock`)
+                    res.send(`la cantidad es superior al stock`)
+                }
+            }else{
+                //Se agrego un producto que no estaba en el carrito
+                if(quantity < productoPid.stock){
+                    console.log(`Se agrego un producto que no estaba en el carrito`)
+                    carritoCid.products.push({id_prod: pid, cant: quantity})
+                    await cartModel.updateOne({_id: cid}, carritoCid)
+                    await productModel.updateOne({_id: pid}, {stock: productoPid.stock - quantity })
+                    res.send(carritoCid)
+                }else{
+                    //No podes ingresar un producto al carrito si la cantidad es superior a el stock declarado
+                    res.send(`No hay stock suficiente para ingresar producto al carrito.`)
+                }
+            }
         
-        console.log(stockProducto)
-        if(productoCid){
-            if(productoPid){
+            //console.log(valor.cant)
+            //res.send(valor)
+        }else{
+            console.log(`no existe carro o producto`)// no existe carro o prooducto
+            res.send(`no existe carro o producto`)
+        }    
+           /*     
                 if(productoPid.stock >= quantity){
                     res.send(`No hay Cantidad suficiente de ese producto`)
                 }else{
-                    productoCid.products.push({id_prod: pid, cant: quantity})
-                    await cartModel.updateOne({_id: cid}, productoCid)
-                    res.send(productoCid)
-            
+                    carritoCid.products.push({id_prod: pid, cant: quantity})
+                    await cartModel.updateOne({_id: cid}, carritoCid)
+                    res.send(carritoCid)
+                }
                 //res.send(`No existe PRODUCTO con ese id: ${pid}`)
-            }    
-        }else{
-            res.send(`No existe CARRITO con es id: ${cid}`)
-        }
+             */ 
+       
         //console.log(productoCid)
         //console.log(productoCid)
         //console.log(productoCid.products)
@@ -73,10 +108,10 @@ cartRoute.post('/:cid/product/:pid', async (req, res)=>{
         await cartModel.create({products: producto})
         res.send(await cartModel.find({},{_id: 0, __v: 0}))
         */
-   // } catch (error) {
-  //      res.send(error)
- //   }
-//})
+    } catch (error) {
+        res.send(error)
+    }
+})
 
 export default cartRoute
 
