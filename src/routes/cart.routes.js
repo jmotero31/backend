@@ -1,4 +1,4 @@
-import { Router, json } from "express";
+import { Router } from "express";
 //import { cartManager } from "../CartManager.js";
 import { cartModel } from "../models/Cart.js"
 import { productModel } from "../models/Products.js"
@@ -10,12 +10,8 @@ cartRoute.get('/', async (req, res)=>{
         const carrito = await cartModel.find({},{__v: 0})
         const adapCarrito = carrito.map((p)=>p.toJSON())
         //console.log(carrito)
-        res.send(adapCarrito)
-        /*
-        res.render('cart',{
-            dondeEstas: 'Se encuentra en la seccion CARRITO'
-        })   
-        */ 
+        //console.log(carrito[0].products)
+        res.send(adapCarrito)       
     } catch (error) {
         res.send(error)
     }
@@ -31,10 +27,17 @@ cartRoute.post('/', async(req,res) =>{
 cartRoute.get('/:cid', async (req, res)=>{
     try {
         let cid = req.params.cid
+        //console.log(cid)
         const carritoCid = await cartModel.findOne({_id: cid}, {_id: 0, __v: 0}) // objeto
-        const adapCarritoCid = carritoCid.map((p)=>p.toJSON())
+        
+        //console.log(carritoCid.products)
+        //const adapCarritoCid = carritoCid.map((p)=>p.toJSON())
+        const valor = carritoCid.products.map((p)=>p.toJSON())
+        //console.log(valor)
         //res.send(adapCarritoCid) 
-        res.render('cart', {carrito: adapCarritoCid})  
+        
+        //res.render('cart',{car: adapCarrito[0].products})  
+        res.render('cart', {car: valor})  
     } catch (error) {
         res.send(error)
     }

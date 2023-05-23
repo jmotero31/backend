@@ -4,6 +4,7 @@ import raizRouter from './routes/raiz.routes.js'
 import userRoute from './routes/user.routes.js'
 import cartRoute from './routes/cart.routes.js'
 import realtimeproducts from './routes/realTimeProducts.routes.js'
+import chatRoute from './routes/chat.routes.js'
 import { __dirname } from './path.js'
 import multer from 'multer'
 import { engine } from 'express-handlebars' //configuracion basica de handlebars
@@ -94,6 +95,7 @@ APP.use('/product', productRouter)
 APP.use('/user', userRoute)
 APP.use('/cart', cartRoute)
 APP.use('/real', realtimeproducts)
+APP.use('/chat', chatRoute)
 APP.use('/',express.static(__dirname + '/public')) //express.static()defino como una carpeta publica para que el usuario pueda ver estos elementos. con 'static' termino de define que cualquier elemento que suba en la carpeta lo pueda acceder el usuario
 //generar un ruta aparte para que no este todo en localhost. static representa lo que es la carpeta publica
 // digo que en la direccions stactic vaya a la carpeta publica 
