@@ -1,12 +1,36 @@
 
 <div>{{ dondeEstas }}</div>
 
-<h2>Chat Mensajes</h2>
+<div class="row h-100">
+  <div class="col-md-4 my-5" >
+    <h1 class="title">Consulta</h1>
+    <form action="/chat" method="POST" class="form-group" id="chat">
+      <label for="email">Correo: </label>
+      <input type="email" id="email" name="email" required>
+      <br>
+      <label for="sms">Mensaje: </label>
+      <textarea id="sms" name="sms" required></textarea>
+      <br>
+      <button type="submit" class="submit-button">Enviar</button>
+    </form>
+    <div id="alerta-enviado"></div>
+  </div>
+ {{#if producto.length}}
+  <div class="col-md-8" id="productoshtml" style=" display: flex; flex-wrap: wrap; justify-content: space-evenly;">
+ {{else}}
+    <div class="col-md-8" style=" display: flex; flex-wrap: wrap; justify-content: space-evenly;"><p>No se encontraron Productos en la BDD  {{ producto.length }}</p></div>
+ {{/if}}   
+  </div>
+</div>
 
-<div>
-    <input type="text" id="chatBox">
-    <button id="botonChat">Enviar</button>
-</div>
-<div>
-    <p id="parrafosMensajes"></p>
-</div>
+<script>
+  $(document).ready(() => {
+    $('#chat').submit((event) => {
+      event.preventDefault();
+      $('#email').val('');
+      $('#message').val('');          
+    });
+  });
+</script>
+
+

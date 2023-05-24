@@ -37,7 +37,6 @@ productRouter.get('/', async (req, res)=>{
         res.send(error)
     }
 })
-
 productRouter.get('/:pid', async (req, res)=>{
     try {
         let pid = req.params.pid      
@@ -64,7 +63,6 @@ productRouter.post('/', async (req, res)=>{
         res.send(error)
     }
 })
-
 productRouter.put('/:puid', async (req, res) => {
     try {
         let puid = req.params.puid
@@ -76,7 +74,6 @@ productRouter.put('/:puid', async (req, res) => {
         res.send(error)
     }
 })
-
 productRouter.delete('/:did', async(req, res)=>{
     try {
         let pdid = req.params.did
