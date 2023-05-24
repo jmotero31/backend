@@ -3,11 +3,11 @@ import { Schema, model } from "mongoose";
 const userSchema = new Schema({
     first_name: {
         type: String,
-        require: true
+        required: true
     },
     last_name: {
         type: String,
-        require: true
+        required: true
     },
     email: {
         type: String,
@@ -15,7 +15,7 @@ const userSchema = new Schema({
     },
     gender: {
         type: String,
-        require: true
+        required: true
     }
 })
 

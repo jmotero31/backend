@@ -3,11 +3,11 @@ import { Schema, model} from "mongoose";
 const messageSchema = new Schema({
     user: {
         type: String,
-        require: true
+        required: true
     },
     message:{
         type: String,
-        require: true
+        required: true
     } 
 
 })
