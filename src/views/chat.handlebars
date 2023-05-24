@@ -3,15 +3,15 @@
 
 <div class="row h-100">
   <div class="col-md-4 my-5" >
-    <h1 class="title">Consulta</h1>
-    <form action="/chat" method="POST" class="form-group" id="chat">
-      <label for="email">Correo: </label>
-      <input type="email" id="email" name="email" required>
+    <form action="/chat" method="POST" class="card card-body rounded-0" id="chat">
+      <h2 class="title" style="color:rgba(73, 177, 177, 0.665)">Consulta</h2>
+      <label for="email" class="form-label">Correo: </label>
+      <input type="email" id="email" name="email" class="form-control" required>
       <br>
-      <label for="sms">Mensaje: </label>
-      <textarea id="sms" name="sms" required></textarea>
+      <label for="sms" class="form-label">Mensaje: </label>
+      <textarea id="sms" name="sms" class="form-control" required></textarea>
       <br>
-      <button type="submit" class="submit-button">Enviar</button>
+      <button type="submit" class="btn btn-primary">Enviar</button>
     </form>
     <div id="alerta-enviado"></div>
   </div>
