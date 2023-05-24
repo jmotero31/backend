@@ -3,7 +3,8 @@ import { Schema, model } from "mongoose";
 const productSchema = new Schema({
     title: {
         type: String,
-        required: true
+        required: true,
+        index: true
     },
     description: {
         type: String,
@@ -28,9 +29,9 @@ const productSchema = new Schema({
     thumbmail: [],
     code: {
         type: String,
-        required: true,
-        unique: true
+        unique: true,
+        index: true
     } 
-})
+});
 
-export const productModel = model("products", productSchema)
+export const productModel = model("products", productSchema);

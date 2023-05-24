@@ -95,6 +95,7 @@ APP.use('/product', productRouter)
 APP.use('/user', userRoute)
 APP.use('/cart', cartRoute)
 APP.use('/real', realtimeproducts)
+APP.use('/user', userRoute)
 APP.use('/chat', chatRoute)
 APP.use('/',express.static(__dirname + '/public')) //express.static()defino como una carpeta publica para que el usuario pueda ver estos elementos. con 'static' termino de define que cualquier elemento que suba en la carpeta lo pueda acceder el usuario
 //generar un ruta aparte para que no este todo en localhost. static representa lo que es la carpeta publica

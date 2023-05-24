@@ -7,16 +7,18 @@ const userSchema = new Schema({
     },
     last_name: {
         type: String,
-        required: true
+        required: true,
+        index: true
     },
     email: {
         type: String,
-        unique: true
+        unique: true,
+        index: true
     },
     gender: {
         type: String,
         required: true
     }
-})
+});
 
-export const userModel = model("users", userSchema)
+export const userModel = model("users", userSchema);

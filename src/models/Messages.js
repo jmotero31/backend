@@ -10,6 +10,6 @@ const messageSchema = new Schema({
         required: true
     } 
 
-})
+});
 
-export const messageModel = model("messages", messageSchema) // la collection
+export const messageModel = model("messages", messageSchema); // la collection

@@ -28,12 +28,12 @@ cartRoute.get('/:cid', async (req, res)=>{
     try {
         let cid = req.params.cid
         //console.log(cid)
-        const carritoCid = await cartModel.findOne({_id: cid}, {_id: 0, __v: 0}) // objeto
-        
+        const carritoCid = await cartModel.findOne({_id: cid}, {_id: 0, __v: 0}).populate("products.id_prod") // objeto
+        //console.log(carritoCid.products[0].id_prod.title)
         //console.log(carritoCid.products)
         //const adapCarritoCid = carritoCid.map((p)=>p.toJSON())
         const valor = carritoCid.products.map((p)=>p.toJSON())
-        //console.log(valor)
+        console.log(valor)
         //res.send(adapCarritoCid) 
         
         //res.render('cart',{car: adapCarrito[0].products})  
