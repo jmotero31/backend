@@ -57,8 +57,10 @@ productRouter.post('/', async (req, res)=>{
     try {
         const { title, description, price, status, stock, category, thumbnail, code } = req.body
         const objNuevo = { title: title, description: description, price: price, status: status, stock: stock, category: category, thumbnail: thumbnail, code: code}
-        await productModel.insertMany(objNuevo)
-        res.send(objNuevo)  
+        setTimeout(async()  =>{
+            await productModel.insertMany(objNuevo)
+            res.redirect('product')             
+          }, 1000);       
     } catch (error) {
         res.send(error)
     }
