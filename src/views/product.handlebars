@@ -27,7 +27,7 @@
         </div>
         <div class="mb-3">
           <label for="code" class="form-label">Codigo</label>
-          <input type="text" class="form-control" name="code" required>
+          <input type="text" class="form-control" name="code" readonly>
         </div>
           <button type="submit" class="btn btn-primary">Agregar</button>
   </form>
@@ -43,20 +43,20 @@
         <h5 class="card-title" style="overflow: hidden">{{ this.title }}</h5>
       </div>
       <ul class="list-group list-group-flush">
-        <li class="list-group-item">  {{ this.description }}</li>
+        <li class="list-group-item">  {{ this._id }}</li>
         <li class="list-group-item">{{ this.stock }}</li>
         <li class="list-group-item">$ {{ this.price }}</li>
       </ul>
       <div class="card-body">
         <input class="list-group-item" name="cantidad" type="text" placeholder="Cantidad">
-        <button type="button" id="agregar" data-id="" class="btn btn-primary" onclick="">Agregar</button>
+        <button type="button" id="borrar" data-id="" class="btn btn-danger" action="/product" method="delete" name=" {{ this._id}}">Borrar</button>
       </div>
     </div> 
     {{/each}}
   </div>
 
 <script>
-  document.getElementById('btnMostrarFormulario').addEventListener('click', function() {
+  document.getElementById('btnMostrarFormulario').addEventListener('click', () => {
   var formulario = document.getElementById('formulario');
   if (formulario.style.display === 'none') {
     formulario.style.display = 'block';

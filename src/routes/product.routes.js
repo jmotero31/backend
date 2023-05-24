@@ -19,7 +19,7 @@ productRouter.get('/', async (req, res)=>{
     try {
         let limite = req.query.limit
         //console.log(limite)
-        const producto = await productModel.find({},{_id: 0, __v: 0})
+        const producto = await productModel.find({},{__v: 0})
         //console.log(producto)
         if(limite){
             const productoLimite = await productModel.find({},{_id: 0, __v: 0}).limit(limite)  
@@ -30,7 +30,7 @@ productRouter.get('/', async (req, res)=>{
         }else{
             const adapProducto = producto.map((p)=>p.toJSON())
             //res.send(producto)
-           //console.log(li)
+           console.log(adapProducto)
             res.render('product',{ pro: adapProducto})
         }       
     } catch (error) {

@@ -33,7 +33,7 @@ cartRoute.get('/:cid', async (req, res)=>{
         //console.log(carritoCid.products)
         //const adapCarritoCid = carritoCid.map((p)=>p.toJSON())
         const valor = carritoCid.products.map((p)=>p.toJSON())
-        console.log(valor)
+        //console.log(valor)
         //res.send(adapCarritoCid) 
         
         //res.render('cart',{car: adapCarrito[0].products})  
@@ -51,15 +51,15 @@ cartRoute.post('/:cid/product/:pid', async (req, res)=>{
         const carritoCid = await cartModel.findOne({_id: cid}) // objeto carrito
         //console.log(carritoCid)
         const productoPid = await productModel.findOne({_id: pid}) // objeto producto
-        console.log(productoPid.stock)
+        //console.log(productoPid.stock)
         //console.log(productoPid)
         if(productoPid && carritoCid){
-            console.log(carritoCid)
+            //console.log(carritoCid)
             const valor = carritoCid.products.find(car => car.id_prod == pid)
             if(valor){
                 if(quantity < productoPid.stock){
                     //sumar cantidad
-                    console.log(`sumar cantidad`)
+                    //console.log(`sumar cantidad`)
                     const indexProductoId = carritoCid.products.findIndex(car => car.id_prod == pid)
                     //console.log(indexProductoId)
                     carritoCid.products[indexProductoId].cant = valor.cant + quantity
@@ -69,13 +69,13 @@ cartRoute.post('/:cid/product/:pid', async (req, res)=>{
                     res.send(carritoCid)
                 }else{
                     //la cantidad es superior al stock
-                    console.log(`la cantidad es superior al stock`)
+                    //console.log(`la cantidad es superior al stock`)
                     res.send(`la cantidad es superior al stock`)
                 }
             }else{
                 //Se agrego un producto que no estaba en el carrito
                 if(quantity < productoPid.stock){
-                    console.log(`Se agrego un producto que no estaba en el carrito`)
+                    //console.log(`Se agrego un producto que no estaba en el carrito`)
                     carritoCid.products.push({id_prod: pid, cant: quantity})
                     await cartModel.updateOne({_id: cid}, carritoCid)
                     await productModel.updateOne({_id: pid}, {stock: productoPid.stock - quantity })
