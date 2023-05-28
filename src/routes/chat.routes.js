@@ -10,11 +10,9 @@ chatRoute.get('/', async (req, res)=>{
         res.send(error)
     }
 })
-
 chatRoute.post('/', async(req, res)=>{
     try {
-        const { email, sms } = req.body;
-        //console.log(email, sms)      
+        const { email, sms } = req.body;     
         setTimeout(async()  =>{
             await messageModel.insertMany({user: email, message: sms})
             res.redirect('/')

@@ -34,10 +34,6 @@ productRouter.get('/', async (req, res)=>{
             const renderizado = await productModel.paginate(filtro, paginacion) //ESTE ES EL OBJETO QUE DEVUELVE
             const adapRenderizado = renderizado.docs.map((p)=>p.toJSON())
             res.render('product', { pro: adapRenderizado})                
-            //const productoLimite = await productModel.find({},{_id: 0, __v: 0}).limit(limit)  
-            //const adapProductoLimite = productoLimite.map((p)=>p.toJSON())
-            //console.log(productoLimite)    
-            //res.send(productoLimite)
         }       
     } catch (error) {
         res.send(error)
@@ -47,10 +43,8 @@ productRouter.get('/:pid', async (req, res)=>{
     try {
         let pid = req.params.pid      
         const productoId = await productModel.findOne({_id: pid}, {_id: 0, __v: 0})
-        const adapProductoId = productoId.map((p)=>p.toJSON())
-        ///console.log(productoId)       
+        const adapProductoId = productoId.map((p)=>p.toJSON())     
         if(productoId){
-            //res.send(productoId)
             res.render('product', {producto: adapProductoId})
         }else{
             res.send(`No existe producto con ese Identificador = ${pid}`)
@@ -77,7 +71,6 @@ productRouter.post('/', async (req, res)=>{
 productRouter.put('/:puid', async (req, res) => {
     try {
         let puid = req.params.puid
-        //const { title, description, price, thumbnail, code, stock } = req.body
         const objetoUpdat = req.body
         await productModel.updateOne({_id: puid}, objetoUpdat)
         res.send(objetoUpdat)     
