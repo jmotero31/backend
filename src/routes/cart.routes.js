@@ -4,14 +4,15 @@ import { cartModel } from "../models/Cart.js"
 import { productModel } from "../models/Products.js"
 
 const cartRoute = Router()
-
 cartRoute.get('/', async (req, res)=>{
     try {
         const carrito = await cartModel.find({},{__v: 0})
+        //const carrito = await cartModel.find({},{__v: 0}).populate('products.id_prod') como cree un pre en el model ya viene todo relacionado con el find
         const adapCarrito = carrito.map((p)=>p.toJSON())
+        console.log(adapCarrito[0].products)
         //console.log(carrito)
         //console.log(carrito[0].products)
-        res.send(adapCarrito)       
+        res.render('cart', adapCarrito[0])       
     } catch (error) {
         res.send(error)
     }
@@ -28,7 +29,7 @@ cartRoute.get('/:cid', async (req, res)=>{
     try {
         let cid = req.params.cid
         //console.log(cid)
-        const carritoCid = await cartModel.findOne({_id: cid}, {_id: 0, __v: 0}).populate("products.id_prod") // objeto
+        const carritoCid = await cartModel.findOne({_id: cid}, {_id: 0, __v: 0}) // objeto
         //console.log(carritoCid.products[0].id_prod.title)
         //console.log(carritoCid.products)
         //const adapCarritoCid = carritoCid.map((p)=>p.toJSON())

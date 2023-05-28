@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Router, json, query } from "express";
 //import { ProductManager, Producto } from "../ProductManager.js";
 import { productModel } from "../models/Products.js";
 
@@ -17,21 +17,27 @@ await productModel.create([
 */
 productRouter.get('/', async (req, res)=>{
     try {
-        let limite = req.query.limit
-        //console.log(limite)
-        const producto = await productModel.find({},{__v: 0})
-        //console.log(producto)
-        if(limite){
-            const productoLimite = await productModel.find({},{_id: 0, __v: 0}).limit(limite)  
-            const adapProductoLimite = productoLimite.map((p)=>p.toJSON())
-            //console.log(productoLimite)    
-            res.render('product', { pro: adapProductoLimite})
-            //res.send(productoLimite)
-        }else{
+        // ESTA ES LA CONSULTA ----> http://localhost:4000/product?limit=4&category=Tecnologia&sort=1
+        const {limit=10, page=1, category, status, sort} = req.query      
+        const filtro = {}
+        const paginacion = {limit: limit, page: page}
+
+        if (category !== undefined) {filtro.category = category}
+        if (status !== undefined) {filtro.status = status}
+        if (sort !== undefined) {paginacion.sort = {price: parseInt(sort)}}
+
+        if(JSON.stringify(req.query) == '{}'){        
+            const producto = await productModel.find({},{__v: 0})
             const adapProducto = producto.map((p)=>p.toJSON())
-            //res.send(producto)
-           console.log(adapProducto)
-            res.render('product',{ pro: adapProducto})
+            res.render('product',{ pro: adapProducto})           
+        }else{            
+            const renderizado = await productModel.paginate(filtro, paginacion) //ESTE ES EL OBJETO QUE DEVUELVE
+            const adapRenderizado = renderizado.docs.map((p)=>p.toJSON())
+            res.render('product', { pro: adapRenderizado})                
+            //const productoLimite = await productModel.find({},{_id: 0, __v: 0}).limit(limit)  
+            //const adapProductoLimite = productoLimite.map((p)=>p.toJSON())
+            //console.log(productoLimite)    
+            //res.send(productoLimite)
         }       
     } catch (error) {
         res.send(error)
@@ -57,6 +63,9 @@ productRouter.post('/', async (req, res)=>{
     try {
         const { title, description, price, status, stock, category, thumbnail, code } = req.body
         const objNuevo = { title: title, description: description, price: price, status: status, stock: stock, category: category, thumbnail: thumbnail, code: code}
+        const objProductoNew = req.body
+        console.log(objProductoNew)
+        console.log(objNuevo)
         setTimeout(async()  =>{
             await productModel.insertMany(objNuevo)
             res.redirect('product')             
