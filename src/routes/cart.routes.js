@@ -116,6 +116,44 @@ cartRoute.post('/:cid/product/:pid', async (req, res)=>{
         res.send(error)
     }
 })
+cartRoute.put('/:cid/product/:pid', async (req, res) => {
+    try {
+        let cid = req.params.cid   
+        let pid = req.params.pid
+        let {quantity} = req.body
+        const carritoCid = await cartModel.findOne({_id: cid})
+        const indexProductoId = carritoCid.products.findIndex(car => car.id_prod == pid)
+        carritoCid.products[indexProductoId].cant = quantity
+        await cartModel.updateOne({_id: cid}, carritoCid)
+        res.send(carritoCid)     
+    } catch (error) {
+        res.send(error)
+    }
+})
+cartRoute.delete('/:cid', async(req, res)=>{
+    try {
+        let cid = req.params.cid
+        const carritoCid = await cartModel.findOne({_id: cid})
+        carritoCid.products = []
+        await cartModel.updateOne({_id: cid}, carritoCid)
+        res.send(carritoCid)   
+    } catch (error) {
+        res.send(error)
+    }
+})
+cartRoute.delete('/:cid/product/:pid', async(req, res)=>{
+    try {       
+        let cid = req.params.cid   
+        let pid = req.params.pid
+        const carritoCid = await cartModel.findOne({_id: cid})
+        const indexProductoId = carritoCid.products.findIndex(car => car.id_prod == pid)
+        carritoCid.products.splice(indexProductoId,1) 
+        await cartModel.updateOne({_id: cid}, carritoCid)     
+        res.send(carritoCid)   
+    } catch (error) {
+        res.send(error)
+    }
+})
 
 export default cartRoute
 
