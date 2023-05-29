@@ -7,7 +7,7 @@ cartRoute.get('/', async (req, res)=>{
     try {
         const carrito = await cartModel.find({},{__v: 0})
         const adapCarrito = carrito.map((p)=>p.toJSON())
-        console.log(adapCarrito[0].products)
+        //console.log(adapCarrito[0].products)
         res.render('cart', adapCarrito[0])       
     } catch (error) {
         res.send(error)
@@ -25,9 +25,9 @@ cartRoute.get('/:cid', async (req, res)=>{
     try {
         let cid = req.params.cid
         const carritoCid = await cartModel.findOne({_id: cid}, {_id: 0, __v: 0}).populate('products.id_prod') // objeto
-        console.log(carritoCid)
+        //console.log(carritoCid)
         const valor = carritoCid.products.map((p)=>p.toJSON()) 
-        console.log('carrito', valor)
+        //console.log('carrito', valor)
         res.render('cart', {car: valor})  
     } catch (error) {
         res.send(error)
@@ -35,7 +35,7 @@ cartRoute.get('/:cid', async (req, res)=>{
 })
 cartRoute.post('/:cid/product/:pid', async (req, res)=>{
     try {
-        console.log('ruta')
+        //console.log('ruta')
         let cid = req.params.cid  
         let pid = req.params.pid
         const {quantity} = req.body

@@ -80,7 +80,6 @@ productRouter.put('/:puid', async (req, res) => {
 })
 productRouter.delete('/:did', async(req, res)=>{
     try {
-        console.log('aca')
         let pdid = req.params.did
         await productModel.deleteOne({_id: pdid})
         res.send(dele)   
