@@ -5,10 +5,9 @@ import { productModel } from "../models/Products.js"
 const cartRoute = Router()
 cartRoute.get('/', async (req, res)=>{
     try {
-        const carrito = await cartModel.find({},{__v: 0})
-        const adapCarrito = carrito.map((p)=>p.toJSON())
-        //console.log(adapCarrito[0].products)
-        res.render('cart', adapCarrito[0])       
+        const carrito = await cartModel.findOne({}, {_id: 0, __v: 0}).populate('products.id_prod') // objeto
+        const valor = carrito.products.map((p)=>p.toJSON())
+        res.render('cart', {car: valor})       
     } catch (error) {
         res.send(error)
     }
