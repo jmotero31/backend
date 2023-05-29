@@ -48,8 +48,8 @@
         <li class="list-group-item">$ {{ this.price }}</li>
       </ul>
       <div class="card-body">
-        <input class="list-group-item" name="cantidad" type="text" placeholder="Cantidad">
-        <button type="button" id="borrar" data-id="" class="btn btn-danger" action="/product" method="delete" name=" {{ this._id}}">Borrar</button>
+        <input type="number" id="quantity" class="form-control" placeholder="Cantidad" required>
+        <button id="btnAddCart" data-producto-id="{{ this._id }}" style="margin: 1rem" class="btn btn-primary">Agregar al carrito</button>
       </div>
     </div> 
     {{/each}}
@@ -57,15 +57,37 @@
 
 <script>
   document.getElementById('btnMostrarFormulario').addEventListener('click', () => {
-  var formulario = document.getElementById('formulario');
+  var formulario = document.getElementById('formulario')
   if (formulario.style.display === 'none') {
-    formulario.style.display = 'block';
+    formulario.style.display = 'block'
   } else {
-    formulario.style.display = 'none';
+    formulario.style.display = 'none'
   }
-});
+})
+
+  document.getElementById('btnAddCart').addEventListener('click', () => {
+    console.log('hola')
+    const carritoId = '64749e36cf5a2f56927e9d30' // Reemplaza con el ID real del carrito
+    const productoId = document.getElementById('btnAddCart').dataset.productoId; 
+    const quantity = document.getElementById('quantity').value;
+
+    const url = 'http://localhost:4000/cart/' + carritoId + '/product/' + productoId;
+    console.log(url)
+    const data = { quantity: quantity };
+
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log(data)
+    })
+    .catch(error => {
+      console.error(error)
+    })
+  })
 </script>
-
-
-
-

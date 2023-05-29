@@ -34,26 +34,38 @@ cartRoute.get('/:cid', async (req, res)=>{
 })
 cartRoute.post('/:cid/product/:pid', async (req, res)=>{
     try {
-        let cid = req.params.cid   
+        console.log('ruta')
+        let cid = req.params.cid 
+        //console.log(cid) 
         let pid = req.params.pid
-        let {quantity} = req.body
+        //console.log(pid)
+        const {quantity} = req.body
+        
+        console.log(typeof quantity)
         const carritoCid = await cartModel.findOne({_id: cid}) // objeto carrito
+        //console.log(carritoCid.products)
         const productoPid = await productModel.findOne({_id: pid}) // objeto producto
         if(productoPid && carritoCid){
             const valor = carritoCid.products.find(car => car.id_prod == pid)
+            console.log(valor)
             if(valor){
+                console.log(productoPid.stock)
+                console.log(quantity)
                 if(quantity < productoPid.stock){
                     const indexProductoId = carritoCid.products.findIndex(car => car.id_prod == pid)
-                    carritoCid.products[indexProductoId].cant = valor.cant + quantity
+                    console.log(carritoCid.products[indexProductoId].cant)
+                    carritoCid.products[indexProductoId].cant = carritoCid.products[indexProductoId].cant + parseInt(quantity)
                     await cartModel.updateOne({_id: cid}, carritoCid)
-                    await productModel.updateOne({_id: pid}, {stock: productoPid.stock - quantity })
+                    await productModel.updateOne({_id: pid}, {stock: productoPid.stock - parseInt(quantity) })
                     res.send(carritoCid)
                 }else{
                     //la cantidad es superior al stock
+                    console.log(`la cantidad es superior al stock`)
                     res.send(`la cantidad es superior al stock`)
                 }
             }else{
                 //Se agrego un producto que no estaba en el carrito
+                console.log(productoPid.stock)
                 if(quantity < productoPid.stock){
                     carritoCid.products.push({id_prod: pid, cant: quantity})
                     await cartModel.updateOne({_id: cid}, carritoCid)
@@ -61,6 +73,7 @@ cartRoute.post('/:cid/product/:pid', async (req, res)=>{
                     res.send(carritoCid)
                 }else{
                     //No podes ingresar un producto al carrito si la cantidad es superior a el stock declarado
+                    console.log(`No hay stock suficiente para ingresar producto al carrito.`)
                     res.send(`No hay stock suficiente para ingresar producto al carrito.`)
                 }
             }
