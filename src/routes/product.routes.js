@@ -1,5 +1,4 @@
 import { Router, json, query } from "express";
-//import { ProductManager, Producto } from "../ProductManager.js";
 import { productModel } from "../models/Products.js";
 
 const productRouter = Router()
@@ -43,6 +42,7 @@ productRouter.get('/:pid', async (req, res)=>{
     try {
         let pid = req.params.pid      
         const productoId = await productModel.findOne({_id: pid}, {_id: 0, __v: 0})
+        //console.log(productoId)
         const adapProductoId = productoId.map((p)=>p.toJSON())     
         if(productoId){
             res.render('product', {producto: adapProductoId})
@@ -80,6 +80,7 @@ productRouter.put('/:puid', async (req, res) => {
 })
 productRouter.delete('/:did', async(req, res)=>{
     try {
+        console.log('aca')
         let pdid = req.params.did
         await productModel.deleteOne({_id: pdid})
         res.send(dele)   
