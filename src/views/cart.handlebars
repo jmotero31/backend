@@ -11,16 +11,14 @@
                 <th></th>
               </tr>
             </thead>
-            <br></br>
             <tbody class="er">
 {{#each car}}
-            <tr class="aa">
-                <td ><img src="" style= "width: '60px', height: '60px', padding: '0.1rem'" alt=""></img></td>
+            <tr id="carrito-container"class="aa">
+                <td ><img src="" style= "width:60px;height:60px;padding:0.1rem" alt=""></img></td>
                 <td>{{ this.id_prod.title }}</td>
                 <td>{{ this.cant }}</td>
                 <td>Unitario  $ {{this.id_prod.price}}</td>
-                <td><button onClick="{() => remover(prod.id)}" class="buttondel"> X </button></td>
-
+                <td><button data-cart-id="{{idcarrito}}" data-producto-id="{{ this.id_prod._id }}" class="buttondel cartdelete"> X </button></td>
               </tr>
 {{/each}}
 
@@ -36,8 +34,43 @@
               </tr>
             </tfoot>
             </table>
-            <button onClick="" class="buttonAddCart buttonAddCart1 buttonAddCart2">Comprar</button>
-            <button onClick="" class="buttonAddCart buttonAddCart1 buttonAddCart2">Vaciar</button>
+            <button class="buttonAddCart buttonAddCart1 buttonAddCart2">Comprar</button>
+            <button data-cart-id="{{idcarrito}}" class="buttonAddCart buttonAddCart1 buttonAddCart2 btndelete">Vaciar</button>
       </div>
 
 
+
+<script>
+  document.addEventListener('click', (event) => {
+  if (event.target.classList.contains('btndelete')) {
+    const cartId = event.target.dataset.cartId;//'64749e36cf5a2f56927e9d30'//event.target.dataset.cartId; // Reemplaza con el ID real del carrito
+    const url = 'http://localhost:4000/cart/' + cartId;
+    const data={}
+    fetch(url, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data); 
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Vacio carrito',
+          showConfirmButton: false,
+          timer: 2000
+        }).then(() => {
+          const carritoContainer = document.getElementById('carrito-container');
+          carritoContainer.innerHTML = ''; // Eliminar los elementos del carrito 
+          //location.reload(); // Recargar la página
+          }) 
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }
+})
+</script>
