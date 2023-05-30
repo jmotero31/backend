@@ -8,6 +8,7 @@ cartRoute.get('/', async (req, res)=>{
         const carrito = await cartModel.findOne({}, {__v: 0}).populate('products.id_prod') // objeto
         const id = carrito._id.toString()
         const valor = carrito.products.map((p)=>p.toJSON())
+        if(valor.length){valor[0].idCarrito = id}
         res.render('cart', {car: valor, idcarrito: id})       
     } catch (error) {
         res.send(error)
@@ -89,7 +90,6 @@ cartRoute.put('/:cid/product/:pid', async (req, res) => {
 })
 cartRoute.delete('/:cid', async(req, res)=>{
     try {
-        console.log('hola')
         let cid = req.params.cid
         const carritoCid = await cartModel.findOne({_id: cid})
         carritoCid.products = []
@@ -100,14 +100,14 @@ cartRoute.delete('/:cid', async(req, res)=>{
     }
 })
 cartRoute.delete('/:cid/product/:pid', async(req, res)=>{
-    try {       
+    try { 
         let cid = req.params.cid   
-        let pid = req.params.pid
+        let pid = req.params.pid    
         const carritoCid = await cartModel.findOne({_id: cid})
         const indexProductoId = carritoCid.products.findIndex(car => car.id_prod == pid)
         carritoCid.products.splice(indexProductoId,1) 
         await cartModel.updateOne({_id: cid}, carritoCid)     
-        res.send(carritoCid)   
+        res.send(carritoCid)
     } catch (error) {
         res.send(error)
     }
