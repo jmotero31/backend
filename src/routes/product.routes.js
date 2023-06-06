@@ -1,4 +1,4 @@
-import { Router, json, query } from "express";
+import { Router} from "express";
 import { productModel } from "../models/Products.js";
 
 const productRouter = Router()

@@ -12,6 +12,7 @@ userRoute.get('/', async (req, res)=>{
         res.send(`El dato se encuentra registrado: ${error}`)
     }
 })
+
 export default userRoute
 
 /*

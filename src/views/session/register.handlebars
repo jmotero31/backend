@@ -1,0 +1,40 @@
+
+<div id="formulario" style="display: none; margin: 0 auto; text-align: left;"></div>
+<form action="/session/register" method="POST" class="card card-body" style="max-width: 400px;" id="regis">
+        <h2 style="color:rgba(73, 177, 177, 0.665)">Nuevo Usuario</h2>
+        <div class="mb-3">
+          <label for="first_name" class="form-label">Nombre</label>
+          <input id="first_name" type="text" class="form-control" name="first_name" required>
+        </div>
+        <div class="mb-3">
+          <label for="last_name" class="form-label">Apellido</label>
+          <input id="last_name" type="text" class="form-control" name="last_name" required> 
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label">Correo</label>
+          <input id="email" type="email" class="form-control" name="email" required>
+        </div>
+        <div class="mb-3">
+          <label for="gender" class="form-label">Genero</label>
+          <input id="gender" type="text" class="form-control" name="gender" required>
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Contrasena</label>
+          <input id="password" type="password" class="form-control" name="password" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Agregar</button>
+  </form>
+  </div>
+
+<script>
+  $(document).ready(() => {
+    $('#regis').submit((event) => {
+      event.preventDefault();
+      $('#first_name').val('');
+      $('#last_name').val('');  
+      $('#email').val('');
+      $('#gender').val(''); 
+      $('#password').val('');       
+    });
+  });
+</script>

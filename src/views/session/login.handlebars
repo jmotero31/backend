@@ -1,0 +1,25 @@
+<div class="row h-100">
+  <div class="col-md-4 my-5" >
+    <form action="/session/login" method="POST" class="card card-body rounded-0" id="login">
+      <h2 class="title" style="color:rgba(73, 177, 177, 0.665)">Login</h2>
+      <label for="email" class="form-label">Correo: </label>
+      <input type="email" id="email" name="email" class="form-control" required>
+      <br>
+      <label for="password" class="form-label">Clave: </label>
+      <input type="password" id="password" name="password" class="form-control" required></input>
+      <br>
+      <button type="submit" class="btn btn-primary">Ingresar</button>
+    </form>
+    <div id="alerta-enviado"></div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(() => {
+    $('#login').submit((event) => {
+      event.preventDefault();
+      $('#email').val('');
+      $('#password').val('');          
+    });
+  });
+</script>

@@ -42,7 +42,7 @@ cartRoute.post('/:cid/product/:pid', async (req, res)=>{
         if(productoPid && carritoCid){
             const valor = carritoCid.products.find(car => car.id_prod == pid)
             if(valor){
-                if(parseInt(quantity) < productoPid.stock){
+                if(parseInt(quantity) <= productoPid.stock){
                     const indexProductoId = carritoCid.products.findIndex(car => car.id_prod == pid)
                     carritoCid.products[indexProductoId].cant = carritoCid.products[indexProductoId].cant + parseInt(quantity)
                     await cartModel.updateOne({_id: cid}, carritoCid)
@@ -55,7 +55,7 @@ cartRoute.post('/:cid/product/:pid', async (req, res)=>{
                 }
             }else{
                 //Se agrego un producto que no estaba en el carrito
-                if(parseInt(quantity) < productoPid.stock){
+                if(parseInt(quantity) <= productoPid.stock){
                     carritoCid.products.push({id_prod: pid, cant: parseInt(quantity)})
                     await cartModel.updateOne({_id: cid}, carritoCid)
                     await productModel.updateOne({_id: pid}, {stock: productoPid.stock - parseInt(quantity) })
