@@ -1,17 +1,9 @@
 import { Router } from "express";
-import { userModel } from "../models/Users.js";
+import { getUserAll } from "../controllers/user.controllers.js";
 
 const userRoute = Router()
 
-userRoute.get('/', async (req, res)=>{
-    try {     
-        const usuariosTodos = await userModel.find({},{_id: 0, __v: 0}).sort({last_name: 1})
-        const adapUsuariosTodos = usuariosTodos.map((p)=>p.toJSON())
-        res.render('user',{usu: adapUsuariosTodos})      
-    } catch (error) {
-        res.send(`El dato se encuentra registrado: ${error}`)
-    }
-})
+userRoute.get('/', getUserAll)
 
 export default userRoute
 

@@ -1,16 +1,8 @@
 import { Router } from "express";
+import { getRaiz } from "../controllers/raiz.controllers.js";
 
 const raizRouter = Router()
 
-raizRouter.get('/', async (req, res)=>{
-    try {
-        res.render('home', {
-            titulo: "Curso de Banckend",
-            cuerpo: 'Estamos en la Raiz de la APP'
-        })
-    } catch (error) {
-        res.send(error)
-    }
-})
+raizRouter.get('/', getRaiz)
 
 export default raizRouter

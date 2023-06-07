@@ -10,7 +10,13 @@
     <title>{{ titulo }}</title>
 </head>
 <body>
-    {{>navbar}}
+
+    {{#if valorNav}}
+        {{> navbar}}
+    {{else}}
+        {{> navbarOne}}
+    {{/if}}
+    
     <div class="container h-100">
         {{{body}}}   
     </div>

@@ -9,8 +9,12 @@
       <input type="password" id="password" name="password" class="form-control" required></input>
       <br>
       <button type="submit" class="btn btn-primary">Ingresar</button>
+      <br>
+      <a href="/session/register" class="btn btn-warning" style="color:white">Registrarse</a>
     </form>
-    <div id="alerta-enviado"></div>
+    {{#if error}}
+      <div id="alerta-enviado" style="color: red">{{error}}</div>
+    {{/if}}
   </div>
 </div>
 

@@ -1,9 +1,9 @@
 
 
-<button id="btnMostrarFormulario" style="margin: 1rem" class="btn btn-primary">Agregar</button>
-{{#with log}}
-  <div>{{ this.first_name }}</div>
-{{/with}}
+
+{{#if rol}}
+  <button id="btnMostrarFormulario" style="margin: 1rem" class="btn btn-primary">Agregar</button>
+{{/if}}
 
 <div id="formulario" style="display: none; margin: 0 auto; text-align: left;">
   <form action="/product" method="POST" class="card card-body" style="max-width: 400px;">

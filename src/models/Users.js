@@ -23,6 +23,11 @@ const userSchema = new Schema({
     password: {
         type: String,
         require: true
+    },
+    rol: {
+        type: String,
+        enum: ["administrador", "usuario"],
+        default: "usuario"
     }
 });
 userSchema.plugin(paginate)

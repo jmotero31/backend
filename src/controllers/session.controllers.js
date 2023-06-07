@@ -2,7 +2,6 @@ import { buscarUser, createUser } from "../controllers/user.controllers.js";
 
 //Controladores para el Registro con direccionamiento
 export const getRegister = (req, res, next)=>{
-    console.log('aca')
     res.render('session/register')
 }
 export const postRegister = async(req, res, next)=>{
@@ -18,20 +17,23 @@ export const postRegister = async(req, res, next)=>{
 
 //Controladores para el Logueo con direccionamiento
 export const getLogin = (req, res, next) =>{
-    console.log('a')
     res.render('session/login')
 }
 export const postLogin = async(req, res, next) =>{
     const {email, password} = req.body
+    console.log('aca')
     try {
         const usuario = await buscarUser(email, password)
         if(usuario){
+            console.log('hola')
             req.session.login = true
+            req.session.user = {nombre: 'Hola, ' + usuario.first_name, rol: usuario.rol=="administrador"? true:false}
             //res.status(200).json({message: 'Usuario logueado'})
             res.redirect('/product')
         }else{
-            // return res.status(401).render('/errors/base', {error: 'Error en email y/o password})
-            res.status(401).json({message: 'Usuario NO logueado'})
+            return res.status(401).render('session/login', {error: 'Error en email y/o password'})
+            //res.status(401).json({message: 'Usuario NO logueado'})
+            //res.render('session/login', {valor: res.status(401).json({message: 'Usuario NO logueado'})})
         }
     } catch (error) {
         res.status(500).json({ message: error.message })
@@ -39,12 +41,17 @@ export const postLogin = async(req, res, next) =>{
 }
 
 export const destroySession = (req, res, next) =>{
-    if(req.session.login){
-        req.session.destroy(()=>{
-            res.status(200).json({message: 'Session destruida'})
-        })
-    }else{
-        res.redirect('/session/login')
+    try {
+        if(req.session.login){
+            req.session.destroy(()=>{
+                //res.status(200).json({message: 'Session destruida'})
+                return res.redirect('/session/login')
+            })
+        }else{
+            return res.redirect('/session/login')
+        } 
+    } catch (error) {
+        console.log(error)
     }
 }
 

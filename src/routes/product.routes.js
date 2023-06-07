@@ -1,7 +1,22 @@
 import { Router} from "express";
-import { productModel } from "../models/Products.js";
+import { getProductAll, getPoductId, postProduct, putProductUpdateId, deleteProductId} from "../controllers/product.controllers.js";
 
 const productRouter = Router()
+
+//Middleware de autenticacion para continuar con el proceso de la ruta
+const auth = (req, res, next) =>{
+    if(req.session.login) return next()
+    return res.redirect('session/login')
+    //return res.send('Error de autenticacion')
+}
+
+productRouter.get('/', auth , getProductAll)
+productRouter.get('/:pid', getPoductId)
+productRouter.post('/', postProduct)
+productRouter.put('/:puid', putProductUpdateId)
+productRouter.delete('/:did', deleteProductId)
+
+export default productRouter
 /*
 await productModel.create([
     {title:'Set Juego De Llaves Tubos', description: 'Set Juego De Llaves Tubos Y Puntas Combinadas 108 Pza Valija', price: 23000, status: 'true', stock: 20, category: 'Herramientas', thumbmail: 'thumbnail1', code: 'code1'},
@@ -14,78 +29,3 @@ await productModel.create([
     {title:'Planchita de pelo BaBylissPRO Nano Titanium Iónica Digital BABNT2091T azul 220V', description: 'Conseguí un lacio perfecto con la planchita BaBylissPRO Iónica Digital. Con su tecnología y calidad vas a lucir tus looks siempre impecables', price: 45990, status: 'true', stock: 20, category: 'Belleza', thumbmail: 'thumbnail8', code: 'code8'}
 ])
 */
-productRouter.get('/', async (req, res)=>{
-    try {
-        // ESTA ES LA CONSULTA ----> http://localhost:4000/product?limit=4&category=Tecnologia&sort=1
-        const {limit=10, page=1, category, status, sort} = req.query      
-        const filtro = {}
-        const paginacion = {limit: limit, page: page}
-
-        if (category !== undefined) {filtro.category = category}
-        if (status !== undefined) {filtro.status = status}
-        if (sort !== undefined) {paginacion.sort = {price: parseInt(sort)}}
-
-        if(JSON.stringify(req.query) == '{}'){        
-            const producto = await productModel.find({},{__v: 0})
-            const adapProducto = producto.map((p)=>p.toJSON())
-            res.render('product',{ pro: adapProducto})           
-        }else{            
-            const renderizado = await productModel.paginate(filtro, paginacion) //ESTE ES EL OBJETO QUE DEVUELVE
-            const adapRenderizado = renderizado.docs.map((p)=>p.toJSON())
-            res.render('product', { pro: adapRenderizado})                
-        }       
-    } catch (error) {
-        res.send(error)
-    }
-})
-productRouter.get('/:pid', async (req, res)=>{
-    try {
-        let pid = req.params.pid      
-        const productoId = await productModel.findOne({_id: pid}, {_id: 0, __v: 0})
-        //console.log(productoId)
-        const adapProductoId = productoId.map((p)=>p.toJSON())     
-        if(productoId){
-            res.render('product', {producto: adapProductoId})
-        }else{
-            res.send(`No existe producto con ese Identificador = ${pid}`)
-        }      
-    } catch (error) {
-        res.send(error)
-    }
-})
-productRouter.post('/', async (req, res)=>{
-    try {
-        const { title, description, price, status, stock, category, thumbnail, code } = req.body
-        const objNuevo = { title: title, description: description, price: price, status: status, stock: stock, category: category, thumbnail: thumbnail, code: code}
-        const objProductoNew = req.body
-        console.log(objProductoNew)
-        console.log(objNuevo)
-        setTimeout(async()  =>{
-            await productModel.insertMany(objNuevo)
-            res.redirect('product')             
-          }, 1000);       
-    } catch (error) {
-        res.send(error)
-    }
-})
-productRouter.put('/:puid', async (req, res) => {
-    try {
-        let puid = req.params.puid
-        const objetoUpdat = req.body
-        await productModel.updateOne({_id: puid}, objetoUpdat)
-        res.send(objetoUpdat)     
-    } catch (error) {
-        res.send(error)
-    }
-})
-productRouter.delete('/:did', async(req, res)=>{
-    try {
-        let pdid = req.params.did
-        await productModel.deleteOne({_id: pdid})
-        res.send(dele)   
-    } catch (error) {
-        res.send(error)
-    }
-})
-
-export default productRouter

@@ -9,25 +9,25 @@
         <li class="nav-item">
           <a class="nav-link" href="/product">Producto</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/real">realTimeProducts</a>
-        </li>
+        {{#if rol}}
         <li class="nav-item">
           <a class="nav-link" href="/user">Usuarios</a>
         </li>
+        {{/if}}
         <li class="nav-item">
           <a class="nav-link" href="/chat">Consulta</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/session">Login</a>
+          <a class="nav-link" href="/session/logout">LogOut</a>
         </li>
       </ul>
     </div>
-    <div class="cart-container">
-      <a class="nav-link" href="/cart">
-        <img src="https://cdn.pixabay.com/photo/2016/10/10/14/46/icon-1728552_640.jpg" alt="Carrito" style="height: 45px; border-radius: 50%;">
-      </a>
-    </div>
+        <div class="cart-container" style="display: flex; align-items: center;">
+          <span style="left: 2rem;">{{ name }}</span>
+          <a class="nav-link" href="/cart">
+            <img src="https://cdn.pixabay.com/photo/2016/10/10/14/46/icon-1728552_640.jpg" alt="Carrito" style="height: 45px; border-radius: 50%;">
+          </a>
+        </div>
   </div>
 </nav>
 
