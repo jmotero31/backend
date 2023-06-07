@@ -1,8 +1,8 @@
 import { userModel } from "../models/Users.js"
 
-export const buscarUser = async (email, password) =>{
+export const buscarUser = async (email) =>{
     try {
-        const usuario = await userModel.findOne({email: email, password: password})
+        const usuario = await userModel.findOne({email: email})
         //console.log('aca', usuario)
         return usuario
     } catch (error) {

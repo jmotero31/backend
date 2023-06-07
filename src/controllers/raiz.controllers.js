@@ -4,8 +4,7 @@ export const getRaiz =  async (req, res)=>{
             titulo: "Curso de Banckend",
             cuerpo: 'Estamos en la Raiz de la APP',
             valorNav: req.session.login,
-            name: req.session.login? req.session.user.nombre : "Logueate",
-            rol: req.session.user.rol
+            name: req.session.login? req.session.user.nombre : "Logueate"
         })
     } catch (error) {
         res.send(error)

@@ -1,4 +1,5 @@
 import { buscarUser, createUser } from "../controllers/user.controllers.js";
+import { createHash, validatePassword} from "../utils/bcrypt.js";
 
 //Controladores para el Registro con direccionamiento
 export const getRegister = (req, res, next)=>{
@@ -6,6 +7,8 @@ export const getRegister = (req, res, next)=>{
 }
 export const postRegister = async(req, res, next)=>{
     const userNew = req.body
+    let pass = userNew.password
+    userNew.password = createHash(pass)
     try {
         const user = await createUser(userNew)
         console.log(user)
@@ -21,17 +24,20 @@ export const getLogin = (req, res, next) =>{
 }
 export const postLogin = async(req, res, next) =>{
     const {email, password} = req.body
-    console.log('aca')
     try {
-        const usuario = await buscarUser(email, password)
+
+        const usuario = await buscarUser(email)
         if(usuario){
-            console.log('hola')
-            req.session.login = true
-            req.session.user = {nombre: 'Hola, ' + usuario.first_name, rol: usuario.rol=="administrador"? true:false}
-            //res.status(200).json({message: 'Usuario logueado'})
-            res.redirect('/product')
+            if(validatePassword(password, usuario.password)){
+                req.session.login = true
+                req.session.user = {nombre: 'Hola, ' + usuario.first_name, rol: usuario.rol=="administrador"? true:false}
+                //res.status(200).json({message: 'Usuario logueado'})
+                res.redirect('/product')
+            }else{
+                return res.status(401).render('session/login', {error: 'Contrasena Equivocada'})
+            }
         }else{
-            return res.status(401).render('session/login', {error: 'Error en email y/o password'})
+            return res.status(401).render('session/resgister', {error: 'Usuario No existe'})
             //res.status(401).json({message: 'Usuario NO logueado'})
             //res.render('session/login', {valor: res.status(401).json({message: 'Usuario NO logueado'})})
         }
