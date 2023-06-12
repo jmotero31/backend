@@ -1,11 +1,53 @@
 import { Router } from "express";
-import { getUserAll } from "../controllers/user.controllers.js";
+import { getUserAll, create } from "../controllers/user.controllers.js";
+//import passport from "passport";
 
 const userRoute = Router()
 
 userRoute.get('/', getUserAll)
 
+
+//------------------------------------------------------------------------------------------------------------------------------
+//Operero con PASSPORT
+//------------------------------------------------------------------------------------------------------------------------------
+//userRoute.post('/register', passport.authenticate('register'), create)
+
 export default userRoute
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*
 await userModel.create([

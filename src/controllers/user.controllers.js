@@ -9,6 +9,14 @@ export const buscarUser = async (email) =>{
         console.log(error)   
     }
 }  
+export const buscarUserId = async (id) =>{
+    try {
+          const user = await userModel.findById(id)
+          return user
+    } catch (error) {
+       console.log(error) 
+    }
+}    
 
 export const createUser = async (userNew) =>{
     try {
@@ -28,3 +36,14 @@ export const getUserAll = async (req, res)=>{
         res.send(`El dato se encuentra registrado: ${error}`)
     }
 }
+
+
+
+//----------------------------------------------------------------------------------------------------------------------------------
+//Opero con PASSPORT
+//----------------------------------------------------------------------------------------------------------------------------------
+/*
+export const create = () =>{
+    res.send({status: 'succes', message: "Usuario Creado"})
+}
+*/

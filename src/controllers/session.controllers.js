@@ -1,7 +1,9 @@
 import { buscarUser, createUser } from "../controllers/user.controllers.js";
 import { createHash, validatePassword} from "../utils/bcrypt.js";
 
+//----------------------------------------------------------------------------------------------------------------------------------
 //Controladores para el Registro con direccionamiento
+//----------------------------------------------------------------------------------------------------------------------------------
 export const getRegister = (req, res, next)=>{
     res.render('session/register')
 }
@@ -18,7 +20,10 @@ export const postRegister = async(req, res, next)=>{
     }
 }
 
+//----------------------------------------------------------------------------------------------------------------------------------
 //Controladores para el Logueo con direccionamiento
+//----------------------------------------------------------------------------------------------------------------------------------
+
 export const getLogin = (req, res, next) =>{
     res.render('session/login')
 }
@@ -61,7 +66,9 @@ export const destroySession = (req, res, next) =>{
     }
 }
 
+//----------------------------------------------------------------------------------------------------------------------------------
 //Esta middleware es por params
+//----------------------------------------------------------------------------------------------------------------------------------
 export const logue = async (req, res) => {
     try {
         const usuario = await buscarUser(req.params.email)
@@ -73,6 +80,42 @@ export const logue = async (req, res) => {
         console.log(error)
     }
 }
+
+
+//------------------------------------------------------------------------------------------------------------------------------
+//Operero con PASSPORT
+//------------------------------------------------------------------------------------------------------------------------------
+/*
+export const getLogiN = (req, res, next)=>{
+    try {
+        if(!req.user){
+            return res.status(401).send({ status: 'error', error: 'Usuario invalido'})
+        }
+        //Genero la session si enviaron datos
+        req.session.user ={
+            email: req.user.email,
+            first_name: req.user.first_name, 
+            rol: req.user.rol
+        }
+        res.status(200).send({status: 'success', payload: req.user})
+    } catch (error) {
+        
+    }
+}
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*
 export const getSession = (req, res, next) =>{

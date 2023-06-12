@@ -16,8 +16,9 @@ import mongoose from 'mongoose'
 
 import 'dotenv/config' // impplemento las variables de entorno
 import session from 'express-session'
-//import cookieParser from 'cookie-parser'
+import cookieParser from 'cookie-parser'
 import MongoStore from 'connect-mongo'
+import passport from 'passport'
 //import passport from 'passport'
 
 //Configuracion express
@@ -41,12 +42,13 @@ const server = APP.listen(process.env.PORT, ()=>{
 APP.engine('handlebars', engine()) // voy a usar handlebars
 APP.set('view engine', 'handlebars') //setea una valor, asignar a una constatnte un valor / en mis vistas voy a implementar handlebars
 APP.set('views', path.resolve(__dirname, './views')) // paht resolve concatena ruta //src mas /views  ---- dirname devuellve la carpeta actual concatena con el valor ./view
-// Middleware Para trabajar con Json desde mi servidor y acceder a los query mas complejas de la url
+// Middleware Para trabajar con Json desde mi servidor y acceder a los query mas complejas de la url y el servidor pueda entender. Cuando nos llegue informacion por body o params entienda los que se le pase como datos
 APP.use(express.json())
 APP.use(express.urlencoded({extended: true}))
-const upload = (multer({storage: storage})) // instancia objeto con la conf de multer, se guarde en la ruta que especifique
 
-//APP.use(cookieParser(process.env.SIGNED_COOKIE)) // firmo las cookies
+const upload = (multer({storage: storage})) // instancia objeto con la conf de multer, se guarde en la ruta que especifique
+// Configuracion de Cookkies 
+APP.use(cookieParser(process.env.SIGNED_COOKIE)) // firmo las cookies
 
 APP.use(session({
     store: MongoStore.create({
@@ -65,6 +67,15 @@ APP.use(session({
 mongoose.connect(process.env.URL_MONGODB_ATLAS)
     .then(()=> console.log("DB is connected"))
     .catch((error) => console.log("Error en MongoDB Atlas : " , error))
+
+
+
+//------------------------------------------------------------------------------------------------------------------------------
+//Operero con PASSPORT
+//------------------------------------------------------------------------------------------------------------------------------
+//APP.use(passport.initialize())
+//APP.use(passport.session())
+
 
 //ServerIO establezco la configuracion
 const io = new Server(server, { cors: {origin: '*'}})  // necesita saber en que servidor me estoy conectando
