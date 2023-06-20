@@ -19,6 +19,7 @@ import session from 'express-session'
 import cookieParser from 'cookie-parser'
 import MongoStore from 'connect-mongo'
 import passport from 'passport'
+import initializePassport from './config/passport.js'
 //import passport from 'passport'
 
 //Configuracion express
@@ -57,11 +58,12 @@ APP.use(session({
             useNewUrlParser: true, 
             useUnifiedTopology: true 
         },
-        ttl: 210 // cuanto tiempo que dura la session
+        ttl: 210 // cuanto tiempo que dura la session 210
     }),
     secret: process.env.SESSION_SECRET,
     resave: true,
-    saveUninitialized: true
+    saveUninitialized: true,
+    cookie: {maxAge:36000}
 }))
 
 mongoose.connect(process.env.URL_MONGODB_ATLAS)
@@ -69,12 +71,12 @@ mongoose.connect(process.env.URL_MONGODB_ATLAS)
     .catch((error) => console.log("Error en MongoDB Atlas : " , error))
 
 
-
 //------------------------------------------------------------------------------------------------------------------------------
 //Operero con PASSPORT
 //------------------------------------------------------------------------------------------------------------------------------
-//APP.use(passport.initialize())
-//APP.use(passport.session())
+initializePassport()
+APP.use(passport.initialize())
+APP.use(passport.session())
 
 
 //ServerIO establezco la configuracion

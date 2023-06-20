@@ -1,5 +1,5 @@
-import local from 'passport-local' //Importo la estrategia a utilizar
 import passport from 'passport' //Importo el core de passport
+import local from 'passport-local' //Importo la estrategia a utilizar
 import { buscarUser, buscarUserId, createUser } from "../controllers/user.controllers.js";
 import { createHash, validatePassword } from '../utils/bcrypt.js'
 
@@ -12,7 +12,7 @@ const initializePassport = () => {
         { passReqToCallback: true, usernameField: 'email' }, async (req, username, password, done) => {
             const { first_name, last_name, email, gender } = req.body
             try {
-                const user = await buscarUser(email) //Busco un usuario con el mail ingresado
+                const user = await buscarUser(username) //Busco un usuario con el mail ingresado
                 if (user) {
                     return done(null, false) //Usuario ya registrado, false no se creo ningun usuario
                 }
@@ -33,14 +33,14 @@ const initializePassport = () => {
         }))
 
     //Configuracion de passport para sessiones
-    //Inicializar la session del user
+    // Durante el registro de un nuevo usuario solamente me quedo con el id para obtener sus datos luego
     passport.serializeUser((user, done) => {
         done(null, user._id)
     })
 
-    //Eliminar la session del user
+    // Obtengo los datos del usuario que realizo el login
     passport.deserializeUser(async (id, done) => {
-        const user = await buscarUserId(id)                    // falta crear funcion para buscar por id controller user
+        const user = await buscarUserId(id)                    
         done(null, user)
     })
 
@@ -48,12 +48,15 @@ const initializePassport = () => {
         try {
             const user = await buscarUser(username)     ///username es el email
             if (!user) { //Usuario no encontrado
+                console.log('usuario no encontrado')
                 return done(null, false)
             }
-            if (validatePassword(password, user.password)) {
-                return done(null, user)
+            if (!validatePassword(password, user.password)) {
+                console.log('Contraseña no valida')
+                return done(null, false)        //Contraseña no valida
             }
-            return done(null, false)        //Contraseña no valida
+            console.log(user)
+            return done(null, user)
         } catch (error) {
             return done(error)
         }

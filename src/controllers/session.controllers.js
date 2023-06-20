@@ -85,24 +85,24 @@ export const logue = async (req, res) => {
 //------------------------------------------------------------------------------------------------------------------------------
 //Operero con PASSPORT
 //------------------------------------------------------------------------------------------------------------------------------
-/*
-export const getLogiN = (req, res, next)=>{
+
+export const postLogiN = (req, res, next)=>{
     try {
         if(!req.user){
             return res.status(401).send({ status: 'error', error: 'Usuario invalido'})
         }
         //Genero la session si enviaron datos
-        req.session.user ={
-            email: req.user.email,
-            first_name: req.user.first_name, 
-            rol: req.user.rol
-        }
-        res.status(200).send({status: 'success', payload: req.user})
+        console.log(req.session)
+        req.session.login = true
+        req.session.user = {nombre: 'Hola, ' + req.user.first_name, rol: req.user.rol=="administrador"? true:false}
+        console.log(req.session)
+        //res.status(200).send({status: 'success', payload: req.user})
+        res.redirect('/product')
     } catch (error) {
-        
+        console.log(error)
     }
 }
-*/
+
 
 
 
