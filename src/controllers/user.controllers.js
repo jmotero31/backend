@@ -42,8 +42,13 @@ export const getUserAll = async (req, res)=>{
 //----------------------------------------------------------------------------------------------------------------------------------
 //Opero con PASSPORT
 //----------------------------------------------------------------------------------------------------------------------------------
-/*
-export const create = () =>{
-    res.send({status: 'succes', message: "Usuario Creado"})
+
+export const createUserPassport = async (userNew) =>{
+    try {
+        const user = await userModel.create(userNew)
+        return user
+        //res.send({status: 'succes', message: "Usuario Creado"})
+    } catch (error) {
+        console.log(error)
+    }
 }
-*/

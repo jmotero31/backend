@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getRegister, postRegister, getLogin, postLogin, destroySession, logue, postLogiN } from "../controllers/session.controllers.js";
+import { getRegister, postRegister, getLogin, destroySession, logue, postLogiN, failRegister, failLogin } from "../controllers/session.controllers.js";
 import passport from "passport";
 
 
@@ -19,17 +19,26 @@ sessionRouter.get('/logout', destroySession)
 sessionRouter.get('/testLogin/:email',logue);
 
 //----------------------------------------------------------------------------------------------------------------------------------
-//Opero con PASSPORT
+//Opero con PASSPORT Local
 //----------------------------------------------------------------------------------------------------------------------------------
 //Estrategia Register
 sessionRouter.post('/register', passport.authenticate('register', {failureRedirect: '/session/failRegister'}), postRegister)
-sessionRouter.get('/failRegister', (req, res)=>{
-    res.send({error: 'Failded!'})
-})
+sessionRouter.get('/failRegister', failRegister)
 //Estategia Login
 sessionRouter.post('/login', passport.authenticate('login',{ failureRedirect: '/session/failLogin'}), postLogiN)  // tuve que hacer un cambio sobre el original de postLogin
-sessionRouter.get('/failLogin', (req, res)=>{
-    res.send({error: 'Fail Login!'})
-})
+sessionRouter.get('/failLogin', failLogin)
+
+//----------------------------------------------------------------------------------------------------------------------------------
+//Opero con PASSPORT Github
+//----------------------------------------------------------------------------------------------------------------------------------
+
+sessionRouter.get('/github', passport.authenticate('github', {scope: ['user:email']})) // esta ruta registro
+sessionRouter.get('/githubcallback', passport.authenticate('github', {failureRedirect: '/session/login'}), postLogiN)
+
+//----------------------------------------------------------------------------------------------------------------------------------
+//Opero con PASSPORT Google
+//----------------------------------------------------------------------------------------------------------------------------------
+sessionRouter.get('/google',passport.authenticate('google', { scope: ['profile'] }));
+sessionRouter.get('/googlecallback',passport.authenticate('google', { failureRedirect: '/session/login' }), postLogiN);
 
 export default sessionRouter

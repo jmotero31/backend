@@ -81,7 +81,6 @@ export const logue = async (req, res) => {
     }
 }
 
-
 //------------------------------------------------------------------------------------------------------------------------------
 //Operero con PASSPORT
 //------------------------------------------------------------------------------------------------------------------------------
@@ -101,6 +100,14 @@ export const postLogiN = (req, res, next)=>{
     } catch (error) {
         console.log(error)
     }
+}
+
+export const failRegister = (req, res)=>{
+    res.send({error: 'Fail Register!'})
+}
+
+export const failLogin = (req, res)=>{
+    res.send({error: 'Fail Login!'})
 }
 
 
