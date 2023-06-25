@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getRegister, postRegister, getLogin, destroySession, logue, postLogiN, failRegister, failLogin } from "../controllers/session.controllers.js";
+import { getRegister, postRegister, getLogin, destroySession, logue, postLogiN, postRegisteR, failRegister, failLogin } from "../controllers/session.controllers.js";
 import passport from "passport";
 
 
@@ -22,7 +22,7 @@ sessionRouter.get('/testLogin/:email',logue);
 //Opero con PASSPORT Local
 //----------------------------------------------------------------------------------------------------------------------------------
 //Estrategia Register
-sessionRouter.post('/register', passport.authenticate('register', {failureRedirect: '/session/failRegister'}), postRegister)
+sessionRouter.post('/register', passport.authenticate('register', {failureRedirect: '/session/failRegister'}), postRegisteR)
 sessionRouter.get('/failRegister', failRegister)
 //Estategia Login
 sessionRouter.post('/login', passport.authenticate('login',{ failureRedirect: '/session/failLogin'}), postLogiN)  // tuve que hacer un cambio sobre el original de postLogin

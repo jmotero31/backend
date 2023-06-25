@@ -101,6 +101,18 @@ export const postLogiN = (req, res, next)=>{
         console.log(error)
     }
 }
+export const postRegisteR = async(req, res, next)=>{
+    try {
+        console.log(req.user)
+        req.session.login = true
+        req.session.user = {nombre: 'Hola, ' + req.user.first_name, rol: req.user.rol=="administrador"? true:false}
+        console.log(req.session)
+        //res.status(200).send({status: 'success', payload: req.user})
+        res.redirect('/product')
+    } catch (error) {
+        console.log(error)   
+    }
+}
 
 export const failRegister = (req, res)=>{
     res.send({error: 'Fail Register!'})

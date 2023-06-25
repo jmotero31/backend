@@ -20,8 +20,9 @@ export const buscarUserId = async (id) =>{
 
 export const createUser = async (userNew) =>{
     try {
-        await userModel.create(userNew)
-        return `Gracias ${userNew.first_name}, Usuario  Creado`
+        return await userModel.create(userNew)
+        
+        //return `Gracias ${userNew.first_name}, Usuario  Creado`
     } catch (error) {
         console.log(error)
     }

@@ -5,20 +5,23 @@ import { Strategy as GithubStrategy } from 'passport-github2';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import { buscarUser, buscarUserId, createUser, createUserPassport } from "../controllers/user.controllers.js";
 import { createHash, validatePassword } from '../utils/bcrypt.js'
+import {generateToken, authToken } from '../utils/jsontoken.js'
 
 const LocalStrategy = local.Strategy //Defino mi estrategia
 //const GitHubStrategy = GitHub.Strategy // o en su defecto no hago esto y puedo hacer desde paspport.use('github', new GitHubStrategy), pero importando GitHubStrategy
 const initializePassport = () => {
     //Defino la aplicacion de mi estrategia = LOCAL
-    //---------------------------------------------------------------------------------------------------------
+    //---------------------------------------------------------------- -----------------------------------------
     //Registro de usuarios
     passport.use('register', new LocalStrategy(
         { passReqToCallback: true, usernameField: 'email' }, async (req, username, password, done) => {
             const { first_name, last_name, email, gender } = req.body
+            
             try {
                 const user = await buscarUser(username) //Busco un usuario con el mail ingresado
                 if (user) {
                     return done(null, false) //Usuario ya registrado, false no se creo ningun usuario
+                    //return res.status(401).json({status: 'error', error: 'User already exists'})
                 }
                 //Usuario no existe
                 const passwordHash = createHash(password)
@@ -29,8 +32,11 @@ const initializePassport = () => {
                     gender: gender,
                     password: passwordHash
                 })
-                console.log(userCreated)
+                console.log('creo', userCreated)
                 return done(null, userCreated)
+                //const access_token = generateToken(userCreated) //luego del resgitro estaria generando el token
+                //return done(null, access_token)
+                //res.json({status: 'success', access_token})
             } catch (error) {
                 return done(error)
             }
@@ -42,13 +48,16 @@ const initializePassport = () => {
             if (!user) { //Usuario no encontrado
                 console.log('usuario no encontrado')
                 return done(null, false)
+                //return res.status(401).jsos({status: ' error', error: ' Invalid credentials'})
             }
             if (!validatePassword(password, user.password)) {
                 console.log('Contraseña no valida')
                 return done(null, false)        //Contraseña no valida
             }
-            console.log(user)
             return done(null, user)
+            //const access_token = generateToken(user) // luedo del logue genero el token
+            //return done(null, access_token)
+            //res.json({status: 'success', access_token})
         } catch (error) {
             return done(error)
         }
