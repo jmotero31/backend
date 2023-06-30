@@ -15,7 +15,7 @@ sessionRouter.get('/login', getLogin)
 sessionRouter.get('/logout', destroyCookie) 
 
 //Route por params para probar del navegar 
-sessionRouter.get('/testLogin/:email',logue);
+//sessionRouter.get('/testLogin/:email',logue);
 
 //----------------------------------------------------------------------------------------------------------------------------------
 //Opero con PASSPORT Local
@@ -26,11 +26,12 @@ sessionRouter.get('/failRegister', failRegister)
 //Estategia Login
 sessionRouter.post('/login', passport.authenticate('login',{ failureRedirect: '/session/failLogin'}), postLogiN)  // tuve que hacer un cambio sobre el original de postLogin
 sessionRouter.get('/failLogin', failLogin)
+/*
 sessionRouter.get('/private', authToken, (req, res)=>{
     console.log(req)
     res.json({message: 'ingrese con la autenticacion del token'})
 })
-
+*/
 
 //----------------------------------------------------------------------------------------------------------------------------------
 //Opero con PASSPORT Github

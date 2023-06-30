@@ -62,7 +62,7 @@ const initializePassport = () => {
             if (!validatePassword(password, user.password)) {
                 console.log('Contraseña no valida')
                 return done(null, false)        //Contraseña no valida
-            }         
+            }        
             return done(null, user)
         } catch (error) {
             return done(error)
@@ -79,11 +79,14 @@ const initializePassport = () => {
         try {
             const user = await buscarUser(profile._json.email)
             if (user) return done(null, user)
+            const carrito = await postCreateCart()
+            const cart = carrito._id.toString()
             const newUser = await createUserPassport({
                 first_name: profile._json.name.split(' ')[0],
                 last_name: profile._json.name.split(' ')[1] || '',
-                password: 'N/A',
-                email: profile._json.email?profile._json.email:profile._json.login
+                email: profile._json.email?profile._json.email:profile._json.login,
+                cart: cart,
+                password: 'N/A'
             })
             return done(null, newUser)
         } catch (error) {
@@ -101,11 +104,14 @@ const initializePassport = () => {
         try {
             const user = await buscarUser(profile._json.name)
             if (user) return cb(null, user)
+            const carrito = await postCreateCart()
+            const cart = carrito._id.toString()
             const newUser = await createUserPassport({
                 first_name: profile._json.given_name,
                 last_name: profile._json.family_name,
-                password: 'N/A',
-                email: profile._json.name
+                email: profile._json.name,
+                cart: cart,
+                password: 'N/A'
             })
             return cb(null, newUser)
         } catch (error) {

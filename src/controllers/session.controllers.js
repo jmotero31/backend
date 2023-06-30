@@ -71,7 +71,8 @@ export const destroyCookie = (req, res, next) =>{
     try {
         if(req.cookies['access_token']){
             res.clearCookie('access_token')
-            return res.render('home')         
+            delete req.user
+            return res.redirect('/')         
         }else{
             return res.redirect('/session/login')
         } 
