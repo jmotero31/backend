@@ -10,15 +10,15 @@ export const getProductAll = async (req, res)=>{
         if (category !== undefined) {filtro.category = category}
         if (status !== undefined) {filtro.status = status}
         if (sort !== undefined) {paginacion.sort = {price: parseInt(sort)}}
-        
+        console.log('numero de id de carrito', req.user.cart)
         if(JSON.stringify(req.query) == '{}'){        
             const producto = await productModel.find({},{__v: 0})
             const adapProducto = producto.map((p)=>p.toJSON())
-            res.render('product',{ pro: adapProducto, valorNav: req.session.login, name: req.session.user.nombre, rol: req.session.user.rol})           
+            res.render('product',{ pro: adapProducto, valorNav: true, name:`Hola, ${req.user.first_name}` , rol: req.user.rol == 'false' ? false:true, carritoId: req.user.cart})           
         }else{            
             const renderizado = await productModel.paginate(filtro, paginacion) //ESTE ES EL OBJETO QUE DEVUELVE
             const adapRenderizado = renderizado.docs.map((p)=>p.toJSON())
-            res.render('product', { pro: adapRenderizado, valorNav: req.session.login, name: req.session.user.nombre, rol: req.session.user.rol})                
+            res.render('product', { pro: adapRenderizado, valorNav: true, name:`Hola, ${req.user.first_name}`, rol: req.user.rol == 'false' ? false:true, carritoId: req.user.cart})                
         }       
     } catch (error) {
         res.send(error)
@@ -32,7 +32,7 @@ export const getPoductId = async (req, res)=>{
         //console.log(productoId)
         const adapProductoId = productoId.map((p)=>p.toJSON())     
         if(productoId){
-            res.render('product', {producto: adapProductoId, valorNav: req.session.login, name: req.session.user.nombre, rol: req.session.user.rol})
+            res.render('product', {producto: adapProductoId, valorNav: true, name:`Hola, ${req.user.first_name}`, rol: req.user.rol == 'false' ? false:true, carritoId: req.user.cart})
         }else{
             res.send(`No existe producto con ese Identificador = ${pid}`)
         }      

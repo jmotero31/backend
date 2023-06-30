@@ -1,6 +1,3 @@
-
-
-
 {{#if rol}}
   <button id="btnMostrarFormulario" style="margin: 1rem" class="btn btn-primary">Agregar</button>
 {{/if}}
@@ -37,7 +34,7 @@
 </div>
    
    
-   <div style="display: flex; flex-wrap: wrap; margin-top: 2rem;">
+   <div style="display: flex; flex-wrap: wrap; margin-top: 2rem;" id="products-container" data-carrito-id="{{ carritoId }}">
 {{#each pro}}
   <div class="card" style="width: 300px; margin: 10px; padding: 20px; background-color: #fff; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); border-radius: 5px;">
     <img src="..." class="card-img-top" alt="..."></img>
@@ -46,8 +43,8 @@
       <h5 class="card-title" style="overflow: hidden">{{ this.title }}</h5>
     </div>
     <ul class="list-group list-group-flush">
-      <li class="list-group-item">  {{ this._id }}</li>
-      <li class="list-group-item">{{ this.stock }}</li>
+      <li class="list-group-item">  {{ this._id }} </li>
+      <li class="list-group-item">{{ this.stock }}  </li>
       <li class="list-group-item">$ {{ this.price }}</li>
     </ul>
     <div class="card-body">
@@ -56,7 +53,7 @@
         <input type="number" class="form-control quantity-input" style="margin: 0 10px; text-align: center;" placeholder="Cantidad" value="1" min="1" required>
         <button class="quantity-button" style="border: none; background-color: #f1f1f1; padding: 5px 10px; font-size: 16px; cursor: pointer;" onclick="increaseQuantity(this)">+</button>
       </div>
-      <button data-producto-id="{{ this._id }}" style="margin: 1rem" class="btn btn-primary btnAddCart">Agregar al carrito</button>
+      <button data-producto-id="{{ this._id }}" data-carrito-id="{{ carritoId }}" style="margin: 1rem" class="btn btn-primary btnAddCart" onclick="addToCart(this)">Agregar al carrito</button>
     </div>
   </div> 
 {{/each}}
@@ -73,14 +70,13 @@
   }
 })
 
-  document.addEventListener('click', (event) => {
-  if (event.target.classList.contains('btnAddCart')) {
-    const carritoId = '64749e36cf5a2f56927e9d30'; // Reemplaza con el ID real del carrito
-    const productoId = event.target.dataset.productoId;
-    const quantityInput = event.target.parentNode.querySelector('.quantity-input');
-    const quantity = quantityInput.value;
-
-    const url = 'http://localhost:4000/cart/' + carritoId + '/product/' + productoId;
+function addToCart(button) {
+  const cartId = button.closest('#products-container').dataset.carritoId; // Reemplaza con el ID real del carrito
+  console.log(cartId)
+  const productoId = button.dataset.productoId;
+  const quantityInput = button.parentNode.querySelector('.quantity-input');
+  const quantity = quantityInput.value;
+  const url = 'http://localhost:4000/cart/' + cartId + '/product/' + productoId;
     console.log(url);
     const data = { quantity: quantity };
 
@@ -106,8 +102,7 @@
       .catch(error => {
         console.error(error);
       });
-  }
-})
+      }
 
 function decreaseQuantity(button) {
   var quantityInput = button.parentNode.querySelector('.quantity-input');

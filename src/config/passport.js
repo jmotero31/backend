@@ -3,12 +3,20 @@ import local from 'passport-local' //Importo la estrategia a utilizar
 //import { Strategy as LocalStrategy } from 'passport-local'; otra alternativa como la de abajo para trabajar con las estarategias
 import { Strategy as GithubStrategy } from 'passport-github2';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
+//import jwt, { ExtractJwt } from 'passport-jwt'
 import { buscarUser, buscarUserId, createUser, createUserPassport } from "../controllers/user.controllers.js";
+import { postCreateCart } from '../controllers/cart.controllers.js'
 import { createHash, validatePassword } from '../utils/bcrypt.js'
-import {generateToken, authToken } from '../utils/jsontoken.js'
+
 
 const LocalStrategy = local.Strategy //Defino mi estrategia
 //const GitHubStrategy = GitHub.Strategy // o en su defecto no hago esto y puedo hacer desde paspport.use('github', new GitHubStrategy), pero importando GitHubStrategy
+
+//const JWTStrategy = jwt.Strategy
+const cookieExtractor = req =>{
+    const token = (req && req.cookies) ? req.cookies['access_token'] : null
+    return token
+}
 const initializePassport = () => {
     //Defino la aplicacion de mi estrategia = LOCAL
     //---------------------------------------------------------------- -----------------------------------------
@@ -25,18 +33,19 @@ const initializePassport = () => {
                 }
                 //Usuario no existe
                 const passwordHash = createHash(password)
+                const carrito = await postCreateCart()
+                const cart = carrito._id.toString()
+                console.log(cart)
                 const userCreated =  await createUser({
                     first_name: first_name,
                     last_name: last_name,
                     email: email,
                     gender: gender,
+                    cart: cart,
                     password: passwordHash
                 })
-                console.log('creo', userCreated)
+                //console.log('creo', userCreated)
                 return done(null, userCreated)
-                //const access_token = generateToken(userCreated) //luego del resgitro estaria generando el token
-                //return done(null, access_token)
-                //res.json({status: 'success', access_token})
             } catch (error) {
                 return done(error)
             }
@@ -53,11 +62,8 @@ const initializePassport = () => {
             if (!validatePassword(password, user.password)) {
                 console.log('Contraseña no valida')
                 return done(null, false)        //Contraseña no valida
-            }
+            }         
             return done(null, user)
-            //const access_token = generateToken(user) // luedo del logue genero el token
-            //return done(null, access_token)
-            //res.json({status: 'success', access_token})
         } catch (error) {
             return done(error)
         }
@@ -107,7 +113,21 @@ const initializePassport = () => {
         }
     }
     ));
-
+    //-----------------------------------------------------------------------------------------------------------------------------
+    // Defino mi estrategia = JWT
+    //------------------------------------------------------------------------------------------------------------------------------
+    /*
+    passport.use('jwt', new JWTStrategy({
+        jwtFromRequest: ExtractJwt.fromExtractors([cookieExtractor]),
+        secretOrKey: process.env.PRIVATE_KEY
+    }, async(jwt_payload, done)=>{
+        try {
+            return done(null, jwt_payload)
+        } catch (error) {
+            return done(error)
+        }
+    }))
+    */
     //-----------------------------------------------------------------------------------------------------------------------------
     //Configuracion de passport para sessiones
     // Durante el registro de un nuevo usuario solamente me quedo con el id para obtener sus datos luego

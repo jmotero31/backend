@@ -1,5 +1,6 @@
 import { buscarUser, createUser } from "../controllers/user.controllers.js";
 import { createHash, validatePassword} from "../utils/bcrypt.js";
+import {generateToken, authToken } from '../utils/jsontoken.js'
 
 //----------------------------------------------------------------------------------------------------------------------------------
 //Controladores para el Registro con direccionamiento
@@ -66,6 +67,20 @@ export const destroySession = (req, res, next) =>{
     }
 }
 
+export const destroyCookie = (req, res, next) =>{
+    try {
+        if(req.cookies['access_token']){
+            res.clearCookie('access_token')
+            return res.render('home')         
+        }else{
+            return res.redirect('/session/login')
+        } 
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+
 //----------------------------------------------------------------------------------------------------------------------------------
 //Esta middleware es por params
 //----------------------------------------------------------------------------------------------------------------------------------
@@ -82,7 +97,7 @@ export const logue = async (req, res) => {
 }
 
 //------------------------------------------------------------------------------------------------------------------------------
-//Operero con PASSPORT
+//Operero con PASSPORT ahora le suma JWT
 //------------------------------------------------------------------------------------------------------------------------------
 
 export const postLogiN = (req, res, next)=>{
@@ -90,25 +105,31 @@ export const postLogiN = (req, res, next)=>{
         if(!req.user){
             return res.status(401).send({ status: 'error', error: 'Usuario invalido'})
         }
-        //Genero la session si enviaron datos
-        console.log(req.session)
+        /*
+        //Genero la session si enviaron datos          
         req.session.login = true
         req.session.user = {nombre: 'Hola, ' + req.user.first_name, rol: req.user.rol=="administrador"? true:false}
-        console.log(req.session)
         //res.status(200).send({status: 'success', payload: req.user})
-        res.redirect('/product')
+        */
+        req.user.rol = req.user.rol=="administrador"? true:false
+        console.log(req.user)
+        const access_token = generateToken(req.user) //luego del resgitro estaria generando el token
+        console.log('Token Login: ', access_token)
+        res.cookie('access_token', access_token).redirect('/product')
+
+        //res.redirect('/product').json({status: 'success', access_token})
     } catch (error) {
         console.log(error)
     }
 }
 export const postRegisteR = async(req, res, next)=>{
     try {
-        console.log(req.user)
-        req.session.login = true
-        req.session.user = {nombre: 'Hola, ' + req.user.first_name, rol: req.user.rol=="administrador"? true:false}
-        console.log(req.session)
+        res.status(200).render('session/login', {messege: 'Usuario creado'})
         //res.status(200).send({status: 'success', payload: req.user})
-        res.redirect('/product')
+        
+        //const access_token = generateToken(req.userCreated) // luego del logue genero el token
+        //console.log('Token Register: ', access_token)
+        //res.cookie('access_token', access_token).redirect('/product')
     } catch (error) {
         console.log(error)   
     }

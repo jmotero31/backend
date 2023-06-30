@@ -3,11 +3,15 @@ import { productModel } from "../models/Products.js"
 
 export const getCartAll = async (req, res)=>{
     try {
-        const carrito = await cartModel.findOne({}, {__v: 0}).populate('products.id_prod') // objeto
-        const id = carrito._id.toString()
+        
+        const id = req.user.cart
+        console.log(id)
+        const carrito = await cartModel.findOne({_id: id}, {__v: 0}).populate('products.id_prod') // objeto
+        console.log(carrito)
         const valor = carrito.products.map((p)=>p.toJSON())
+        console.log(valor)
         if(valor.length){valor[0].idCarrito = id}
-        res.render('cart', {car: valor, idcarrito: id, valorNav: req.session.login, name: req.session.user.nombre, rol: req.session.user.rol})       
+        res.render('cart', {car: valor, idcarrito: id, valorNav: true, name:`Hola, ${req.user.first_name}` , rol: req.user.rol == 'false' ? false:true})       
     } catch (error) {
         res.send(error)
     }
@@ -15,8 +19,10 @@ export const getCartAll = async (req, res)=>{
 
 export const postCreateCart = async(req,res) =>{
     try {
-        await cartModel.create({})
-        res.send('Carrito creado')
+        const carrito = await cartModel.create({})
+        //console.log(carrito._id.toString())
+        return carrito
+        //res.send('Carrito creado')
     } catch (error) {
         res.send(error) 
     }
@@ -36,9 +42,11 @@ export const getCartId = async (req, res)=>{
 export const postAddProductInCart = async (req, res)=>{
     try {
         let cid = req.params.cid  
+        console.log('hola entre al cart', cid)
         let pid = req.params.pid
         const {quantity} = req.body
         const carritoCid = await cartModel.findOne({_id: cid}) // objeto carrito
+        console.log('encontre carrito', carritoCid)
         const productoPid = await productModel.findOne({_id: pid}) // objeto producto
         if(productoPid && carritoCid){
             const valor = carritoCid.products.find(car => car.id_prod == pid)

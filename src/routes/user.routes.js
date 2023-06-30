@@ -1,10 +1,11 @@
 import { Router } from "express";
 import { getUserAll  } from "../controllers/user.controllers.js"; //  {, create}
+import { authToken } from "../utils/jsontoken.js";
 //import passport from "passport";
 
 const userRoute = Router()
 
-userRoute.get('/', getUserAll)
+userRoute.get('/', authToken, getUserAll)
 
 
 //------------------------------------------------------------------------------------------------------------------------------

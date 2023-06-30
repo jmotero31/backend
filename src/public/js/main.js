@@ -1,4 +1,5 @@
 //console.log("Probando que el Js funcione, despues vemos como desarrollarlo con los eventos")
+/*
 const socket = io()  // se puede escuchar la conexion con el servidor
 
 const formProduct = document.getElementById("formProducto")
@@ -71,6 +72,6 @@ const modificar = (id) =>{
 }           
   
 
-
+*/
             
             

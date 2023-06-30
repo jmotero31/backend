@@ -24,7 +24,7 @@ import initializePassport from './config/passport.js'
 
 //Configuracion express
 const APP = express()
-
+//console.log(process)
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) =>{
