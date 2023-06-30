@@ -1,6 +1,6 @@
 import { buscarUser, createUser } from "../controllers/user.controllers.js";
 import { createHash, validatePassword} from "../utils/bcrypt.js";
-import {generateToken, authToken } from '../utils/jsontoken.js'
+import {generateToken } from '../utils/jsontoken.js'
 
 //----------------------------------------------------------------------------------------------------------------------------------
 //Controladores para el Registro con direccionamiento
@@ -14,7 +14,6 @@ export const postRegister = async(req, res, next)=>{
     userNew.password = createHash(pass)
     try {
         const user = await createUser(userNew)
-        console.log(user)
         res.render('session/login')
     } catch (error) {
         console.log(error)   
@@ -81,7 +80,6 @@ export const destroyCookie = (req, res, next) =>{
     }
 }
 
-
 //----------------------------------------------------------------------------------------------------------------------------------
 //Esta middleware es por params
 //----------------------------------------------------------------------------------------------------------------------------------
@@ -113,9 +111,9 @@ export const postLogiN = (req, res, next)=>{
         //res.status(200).send({status: 'success', payload: req.user})
         */
         req.user.rol = req.user.rol=="administrador"? true:false
-        console.log(req.user)
+        //console.log(req.user)
         const access_token = generateToken(req.user) //luego del resgitro estaria generando el token
-        console.log('Token Login: ', access_token)
+        //console.log('Token Login: ', access_token)
         res.cookie('access_token', access_token).redirect('/product')
 
         //res.redirect('/product').json({status: 'success', access_token})
@@ -143,19 +141,6 @@ export const failRegister = (req, res)=>{
 export const failLogin = (req, res)=>{
     res.send({error: 'Fail Login!'})
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 /*

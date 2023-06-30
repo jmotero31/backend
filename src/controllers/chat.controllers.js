@@ -2,7 +2,7 @@ import { messageModel } from "../models/Messages.js"
 
 export const getChat = async (req, res)=>{
     try {
-        res.render('chat', { valorNav: req.session.login, name: req.session.user.nombre, rol: req.session.user.rol})       
+        res.render('chat', { valorNav: true, name: req.user.nombre, rol: req.user.rol})       
     } catch (error) {
         res.send(error)
     }
@@ -13,7 +13,7 @@ export const postChat = async(req, res)=>{
         const { email, sms } = req.body;     
         setTimeout(async()  =>{
             await messageModel.insertMany({user: email, message: sms})
-            res.redirect('/')
+            res.redirect('/product')
           }, 1500);              
     } catch (error) {
         res.send(error)

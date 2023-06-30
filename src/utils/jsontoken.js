@@ -18,9 +18,7 @@ export const authToken = (req, res, next) =>{
     if(!token) return res.status(401).json({error: 'Not auth'})
     jwt.verify(token, process.env.PRIVATE_KEY, (error, Credential)=>{
         if(error) return res.status(403).json({error: ' Not authorized'})
-        //console.log('hola soy credential', Credential)
         req.user = Credential.user
-        //console.log(req.user)
         next()
     })
 }

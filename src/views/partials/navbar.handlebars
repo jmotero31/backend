@@ -22,12 +22,14 @@
         </li>
       </ul>
     </div>
-        <div class="cart-container" style="display: flex; align-items: center;">
-          <span style="left: 2rem;">{{ name }}</span>
-          <a class="nav-link" href="/cart">
-            <img src="https://cdn.pixabay.com/photo/2016/10/10/14/46/icon-1728552_640.jpg" alt="Carrito" style="height: 45px; border-radius: 50%;">
-          </a>
+    <div class="cart-container ml-auto d-flex align-items-center">
+      <span style="margin-right: 1rem;">{{ name }}</span>
+      <a class="nav-link" href="/cart">
+        <div class="d-flex align-items-center">
+          <img src="https://cdn.pixabay.com/photo/2016/10/10/14/46/icon-1728552_640.jpg" alt="Carrito" style="height: 45px; border-radius: 50%;">
+          <span class="badge badge-primary ml-2" color="black">{{ cantidad }}</span> <!-- Número de productos en el carrito -->
         </div>
+      </a>
+    </div>
   </div>
 </nav>
-

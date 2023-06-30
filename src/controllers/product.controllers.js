@@ -5,12 +5,10 @@ export const getProductAll = async (req, res)=>{
         // ESTA ES LA CONSULTA ----> http://localhost:4000/product?limit=4&category=Tecnologia&sort=1
         const {limit=10, page=1, category, status, sort} = req.query      
         const filtro = {}
-        const paginacion = {limit: limit, page: page}
-        
+        const paginacion = {limit: limit, page: page}       
         if (category !== undefined) {filtro.category = category}
         if (status !== undefined) {filtro.status = status}
         if (sort !== undefined) {paginacion.sort = {price: parseInt(sort)}}
-        console.log('numero de id de carrito', req.user.cart)
         if(JSON.stringify(req.query) == '{}'){        
             const producto = await productModel.find({},{__v: 0})
             const adapProducto = producto.map((p)=>p.toJSON())
@@ -29,7 +27,6 @@ export const getPoductId = async (req, res)=>{
     try {
         let pid = req.params.pid      
         const productoId = await productModel.findOne({_id: pid}, {_id: 0, __v: 0})
-        //console.log(productoId)
         const adapProductoId = productoId.map((p)=>p.toJSON())     
         if(productoId){
             res.render('product', {producto: adapProductoId, valorNav: true, name:`Hola, ${req.user.first_name}`, rol: req.user.rol == 'false' ? false:true, carritoId: req.user.cart})
@@ -46,8 +43,6 @@ export const postProduct = async (req, res)=>{
         const { title, description, price, status, stock, category, thumbnail, code } = req.body
         const objNuevo = { title: title, description: description, price: price, status: status, stock: stock, category: category, thumbnail: thumbnail, code: code}
         const objProductoNew = req.body
-        console.log(objProductoNew)
-        console.log(objNuevo)
         setTimeout(async()  =>{
             await productModel.insertMany(objNuevo)
             res.redirect('product')             
