@@ -1,8 +1,9 @@
 import jwt from "jsonwebtoken"
+import config from "../config/config.js"
 
 
 export const generateToken =  user =>{
-    const token = jwt.sign({user}, process.env.PRIVATE_KEY, {expiresIn: '24h'})
+    const token = jwt.sign({user}, config.jwt_private_key, {expiresIn: '24h'})
     return token
 }
 
@@ -16,7 +17,7 @@ export const authToken = (req, res, next) =>{
     if(!token) token = req.cookies['access_token']
      //const token = req.cookies['access_token']
     if(!token) return res.status(401).json({error: 'Not auth'})
-    jwt.verify(token, process.env.PRIVATE_KEY, (error, Credential)=>{
+    jwt.verify(token, config.jwt_private_key, (error, Credential)=>{
         if(error) return res.status(403).json({error: ' Not authorized'})
         req.user = Credential.user
         next()

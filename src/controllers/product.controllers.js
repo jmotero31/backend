@@ -1,4 +1,5 @@
-import { productModel } from "../models/Products.js";
+//import { productModel } from "../models/Products.js";
+import { findProduct, findPaginateProduct, findOneProduct, insertManyProduct, updateOneProduct, deleteOneProduct } from '../services/product.services.js'
 
 export const getProductAll = async (req, res)=>{
     try {
@@ -9,12 +10,21 @@ export const getProductAll = async (req, res)=>{
         if (category !== undefined) {filtro.category = category}
         if (status !== undefined) {filtro.status = status}
         if (sort !== undefined) {paginacion.sort = {price: parseInt(sort)}}
-        if(JSON.stringify(req.query) == '{}'){        
-            const producto = await productModel.find({},{__v: 0})
+        if(JSON.stringify(req.query) == '{}'){   
+
+            //const producto = await productModel.find({},{__v: 0})
+            const producto = await findProduct({},{__v: 0})
+
+
             const adapProducto = producto.map((p)=>p.toJSON())
+
             res.render('product',{ pro: adapProducto, valorNav: true, name:`Hola, ${req.user.first_name}` , rol: req.user.rol == 'false' ? false:true, carritoId: req.user.cart})           
-        }else{            
-            const renderizado = await productModel.paginate(filtro, paginacion) //ESTE ES EL OBJETO QUE DEVUELVE
+        }else{  
+
+            //const renderizado = await productModel.paginate(filtro, paginacion)
+            const renderizado = await findPaginateProduct(filtro, paginacion)
+            
+            //ESTE ES EL OBJETO QUE DEVUELVE
             const adapRenderizado = renderizado.docs.map((p)=>p.toJSON())
             res.render('product', { pro: adapRenderizado, valorNav: true, name:`Hola, ${req.user.first_name}`, rol: req.user.rol == 'false' ? false:true, carritoId: req.user.cart})                
         }       
@@ -25,8 +35,12 @@ export const getProductAll = async (req, res)=>{
 
 export const getPoductId = async (req, res)=>{
     try {
-        let pid = req.params.pid      
-        const productoId = await productModel.findOne({_id: pid}, {_id: 0, __v: 0})
+        let pid = req.params.pid   
+
+        //const productoId = await productModel.findOne({_id: pid}, {_id: 0, __v: 0})
+        const productoId = await findOneProduct({_id: pid}, {_id: 0, __v: 0})
+
+
         const adapProductoId = productoId.map((p)=>p.toJSON())     
         if(productoId){
             res.render('product', {producto: adapProductoId, valorNav: true, name:`Hola, ${req.user.first_name}`, rol: req.user.rol == 'false' ? false:true, carritoId: req.user.cart})
@@ -44,7 +58,10 @@ export const postProduct = async (req, res)=>{
         const objNuevo = { title: title, description: description, price: price, status: status, stock: stock, category: category, thumbnail: thumbnail, code: code}
         const objProductoNew = req.body
         setTimeout(async()  =>{
-            await productModel.insertMany(objNuevo)
+
+            //await productModel.insertMany(objNuevo)
+            const newProduct = await insertManyProduct(objNuevo)
+
             res.redirect('product')             
         }, 1000);       
     } catch (error) {
@@ -56,8 +73,12 @@ export const putProductUpdateId = async (req, res) => {
     try {
         let puid = req.params.puid
         const objetoUpdat = req.body
-        await productModel.updateOne({_id: puid}, objetoUpdat)
-        res.send(objetoUpdat)     
+
+        //await productModel.updateOne({_id: puid}, objetoUpdat)
+        const updateProduct = await updateOneProduct(puid, objetoUpdat) 
+
+
+        res.send(updateProduct)     
     } catch (error) {
         res.send(error)
     }
@@ -66,8 +87,12 @@ export const putProductUpdateId = async (req, res) => {
 export const deleteProductId = async(req, res)=>{
     try {
         let pdid = req.params.did
-        await productModel.deleteOne({_id: pdid})
-        res.send(dele)   
+
+        //await productModel.deleteOne({_id: pdid})
+        const deleteProduct = await deleteOneProduct(pdid)
+
+
+        res.send(deleteProduct)   
     } catch (error) {
         res.send(error)
     }

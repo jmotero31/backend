@@ -12,14 +12,16 @@ import multer from 'multer'
 import { engine } from 'express-handlebars' //configuracion basica de handlebars
 import * as path from 'path' //importo todo de path y lo llamo path para el manejo de las rutas
 import { Server } from 'socket.io' // genero mi servidor para enviar informacion
-import mongoose from 'mongoose'
+//import mongoose from 'mongoose'
 
-import 'dotenv/config' // impplemento las variables de entorno
+//import 'dotenv/config' // impplemento las variables de entorno
 import session from 'express-session'
 import cookieParser from 'cookie-parser'
 import MongoStore from 'connect-mongo'
 import passport from 'passport'
 import initializePassport from './config/passport.js'
+import config from './config/config.js' // vos vas a manejar las variables de entorno para poder modificarlas dependiendo en que condiciones estemos debug, developer, admin
+import './config/dbConfig.js' // ejecuto la conexion a la base de datos
 //import passport from 'passport'
 
 //Configuracion express
@@ -35,8 +37,8 @@ const storage = multer.diskStorage({
     }
 }) // destino de imagenes con multer
 
-const server = APP.listen(process.env.PORT, ()=>{
-    console.log(`Server on Port ${process.env.PORT}`)
+const server = APP.listen(config.port || 4000, ()=>{
+    console.log(`Server on Port ${config.port || 4000}`)
 }) 
 
 
@@ -49,26 +51,23 @@ APP.use(express.urlencoded({extended: true}))
 
 const upload = (multer({storage: storage})) // instancia objeto con la conf de multer, se guarde en la ruta que especifique
 // Configuracion de Cookkies 
-APP.use(cookieParser(process.env.SIGNED_COOKIE)) // firmo las cookies
+APP.use(cookieParser(config.cookie_secret)) // firmo las cookies
 
 APP.use(session({
     store: MongoStore.create({
-        mongoUrl: process.env.URL_MONGODB_ATLAS, //mongodb://localhost:PORT
+        mongoUrl: config.mongo_url_atlas, //mongodb://localhost:PORT
         mongoOptions: { 
             useNewUrlParser: true, 
             useUnifiedTopology: true 
         },
         ttl: 210 // cuanto tiempo que dura la session 210
     }),
-    secret: process.env.SESSION_SECRET,
+    secret: config.session_secret,
     resave: true,
     saveUninitialized: true,
     cookie: {maxAge:36000}
 }))
 
-mongoose.connect(process.env.URL_MONGODB_ATLAS)
-    .then(()=> console.log("DB is connected"))
-    .catch((error) => console.log("Error en MongoDB Atlas : " , error))
 
 
 //------------------------------------------------------------------------------------------------------------------------------

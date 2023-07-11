@@ -1,11 +1,17 @@
-import { cartModel } from "../models/Cart.js"
-import { productModel } from "../models/Products.js"
+//import { cartModel } from "../models/Cart.js"
+//import { productModel } from "../models/Products.js"
+import { findOneIdCartPopulate, createCart, updateCart } from '../services/cart.services.js'
+import { findOneProduct, updateOneProduct } from "../services/product.services.js"
 
 export const getCartAll = async (req, res)=>{
     try {      
         const id = req.user.cart
-        const carrito = await cartModel.findOne({_id: id}, {__v: 0}).populate('products.id_prod') // objeto
+
+        //const carrito = await cartModel.findOne({_id: id}, {__v: 0}).populate('products.id_prod') // objeto
+        const carrito = await findOneIdCartPopulate(id)
+
         const valor = carrito.products.map((p)=>p.toJSON())
+        
         req.cant = valor.length
         console.log(req.cant)
         if(valor.length){valor[0].idCarrito = id}
@@ -18,7 +24,7 @@ export const getCartAll = async (req, res)=>{
 
 export const postCreateCart = async(req,res) =>{
     try {
-        const carrito = await cartModel.create({})
+        const carrito = await createCart({})
         //console.log(carrito._id.toString())
         return carrito
         //res.send('Carrito creado')
@@ -30,7 +36,10 @@ export const postCreateCart = async(req,res) =>{
 export const getCartId = async (req, res)=>{
     try {
         let cid = req.params.cid
-        const carritoCid = await cartModel.findOne({_id: cid}, {_id: 0, __v: 0}).populate('products.id_prod') // objeto
+        
+        //const carritoCid = await cartModel.findOne({_id: cid}, {_id: 0, __v: 0}).populate('products.id_prod') // objeto
+        const carritoCid = await findOneIdCartPopulate(cid)
+        
         const valor = carritoCid.products.map((p)=>p.toJSON()) 
         res.render('cart', {car: valor, valorNav: true, name: requser.nombre, rol: req.user.rol})  
     } catch (error) {
@@ -43,16 +52,26 @@ export const postAddProductInCart = async (req, res)=>{
         let cid = req.params.cid  
         let pid = req.params.pid
         const {quantity} = req.body
-        const carritoCid = await cartModel.findOne({_id: cid}) // objeto carrito
-        const productoPid = await productModel.findOne({_id: pid}) // objeto producto
+
+        //const carritoCid = await cartModel.findOne({_id: cid}) // objeto carrito
+        const carritoCid = await findOneIdCartPopulate(cid)
+        
+        //const productoPid = await productModel.findOne({_id: pid}) // objeto producto
+        const productoPid = await findOneProduct({_id: pid}, {})
+        
         if(productoPid && carritoCid){
             const valor = carritoCid.products.find(car => car.id_prod == pid)
             if(valor){
                 if(parseInt(quantity) <= productoPid.stock){
                     const indexProductoId = carritoCid.products.findIndex(car => car.id_prod == pid)
                     carritoCid.products[indexProductoId].cant = carritoCid.products[indexProductoId].cant + parseInt(quantity)
-                    await cartModel.updateOne({_id: cid}, carritoCid)
-                    await productModel.updateOne({_id: pid}, {stock: productoPid.stock - parseInt(quantity) })
+                    
+                    //await cartModel.updateOne({_id: cid}, carritoCid)
+                    await updateCart(cid, carritoCid)
+                    
+                    //await productModel.updateOne({_id: pid}, {stock: productoPid.stock - parseInt(quantity) })
+                    const updateProduct = await updateOneProduct({_id: pid}, {stock: productoPid.stock - parseInt(quantity) })
+
                     res.send(carritoCid)
                 }else{
                     //la cantidad es superior al stock
@@ -63,8 +82,13 @@ export const postAddProductInCart = async (req, res)=>{
                 //Se agrego un producto que no estaba en el carrito
                 if(parseInt(quantity) <= productoPid.stock){
                     carritoCid.products.push({id_prod: pid, cant: parseInt(quantity)})
-                    await cartModel.updateOne({_id: cid}, carritoCid)
-                    await productModel.updateOne({_id: pid}, {stock: productoPid.stock - parseInt(quantity) })
+                    
+                    //await cartModel.updateOne({_id: cid}, carritoCid)
+                    await updateCart(cid, carritoCid)
+
+                    //await productModel.updateOne({_id: pid}, {stock: productoPid.stock - parseInt(quantity) })
+                    const updateProduct = await updateOneProduct({_id: pid}, {stock: productoPid.stock - parseInt(quantity) })
+
                     res.send(carritoCid)
                 }else{
                     //No podes ingresar un producto al carrito si la cantidad es superior a el stock declarado
@@ -86,10 +110,16 @@ export const putSumProductInCart = async (req, res) => {
         let cid = req.params.cid   
         let pid = req.params.pid
         let {quantity} = req.body
-        const carritoCid = await cartModel.findOne({_id: cid})
+
+        //const carritoCid = await cartModel.findOne({_id: cid})
+        const carritoCid = await findOneIdCartPopulate(cid)
+
         const indexProductoId = carritoCid.products.findIndex(car => car.id_prod == pid)
         carritoCid.products[indexProductoId].cant = parseInt(quantity)
-        await cartModel.updateOne({_id: cid}, carritoCid)
+
+        //await cartModel.updateOne({_id: cid}, carritoCid)
+        await updateCart(cid, carritoCid)
+
         res.send(carritoCid)     
     } catch (error) {
         res.send(error)
@@ -99,9 +129,16 @@ export const putSumProductInCart = async (req, res) => {
 export const deleteProductTheCartId = async(req, res)=>{
     try {
         let cid = req.params.cid
-        const carritoCid = await cartModel.findOne({_id: cid})
+
+        //const carritoCid = await cartModel.findOne({_id: cid})
+        const carritoCid = await findOneIdCartPopulate(cid)
+
         carritoCid.products = []
-        await cartModel.updateOne({_id: cid}, carritoCid)
+
+        //await cartModel.updateOne({_id: cid}, carritoCid)
+        await updateCart(cid, carritoCid)
+
+
         res.send(carritoCid)   
     } catch (error) {
         res.send(error)
@@ -111,11 +148,20 @@ export const deleteProductTheCartId = async(req, res)=>{
 export const deleteProductIdInCartId = async(req, res)=>{
     try { 
         let cid = req.params.cid   
-        let pid = req.params.pid    
-        const carritoCid = await cartModel.findOne({_id: cid})
+        let pid = req.params.pid 
+
+        //const carritoCid = await cartModel.findOne({_id: cid})
+        const carritoCid = await findOneIdCartPopulate(cid)
+
+
         const indexProductoId = carritoCid.products.findIndex(car => car.id_prod == pid)
         carritoCid.products.splice(indexProductoId,1) 
-        await cartModel.updateOne({_id: cid}, carritoCid)     
+
+        //await cartModel.updateOne({_id: cid}, carritoCid)  
+        await updateCart(cid, carritoCid)   
+
+
+
         res.send(carritoCid)
     } catch (error) {
         res.send(error)

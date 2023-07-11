@@ -1,4 +1,3 @@
-/*
 import { Schema, model} from "mongoose";
 import paginate from 'mongoose-paginate-v2'
 
@@ -23,4 +22,3 @@ cartSchema.pre('find', function(){this.populate('products.id_prod')})
 cartSchema.plugin(paginate)
 
 export const cartModel = model("carts", cartSchema);
-*/

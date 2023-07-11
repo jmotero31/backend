@@ -1,5 +1,5 @@
-import { buscarUser, createUser } from "../controllers/user.controllers.js";
-import { createHash, validatePassword} from "../utils/bcrypt.js";
+ import { buscarUser, createUser } from "../controllers/user.controllers.js";
+import { validatePassword} from "../utils/bcrypt.js";
 import {generateToken } from '../utils/jsontoken.js'
 
 //----------------------------------------------------------------------------------------------------------------------------------
@@ -8,18 +8,19 @@ import {generateToken } from '../utils/jsontoken.js'
 export const getRegister = (req, res, next)=>{
     res.render('session/register')
 }
+/*
 export const postRegister = async(req, res, next)=>{
-    const userNew = req.body
-    let pass = userNew.password
-    userNew.password = createHash(pass)
+    const userNew = req.body            //lo estoy pasando al user.service
+    let pass = userNew.password         //lo estoy pasando al user.service
+    userNew.password = createHash(pass) //lo estoy pasando al user.service
     try {
-        const user = await createUser(userNew)
+        const user = await createUser(userNew) //lo estoy pasando al user.service
         res.render('session/login')
     } catch (error) {
         console.log(error)   
     }
 }
-
+*/
 //----------------------------------------------------------------------------------------------------------------------------------
 //Controladores para el Logueo con direccionamiento
 //----------------------------------------------------------------------------------------------------------------------------------
@@ -27,6 +28,7 @@ export const postRegister = async(req, res, next)=>{
 export const getLogin = (req, res, next) =>{
     res.render('session/login')
 }
+/*
 export const postLogin = async(req, res, next) =>{
     const {email, password} = req.body
     try {
@@ -50,7 +52,8 @@ export const postLogin = async(req, res, next) =>{
         res.status(500).json({ message: error.message })
     }
 }
-
+*/
+/*
 export const destroySession = (req, res, next) =>{
     try {
         if(req.session.login){
@@ -62,10 +65,10 @@ export const destroySession = (req, res, next) =>{
             return res.redirect('/session/login')
         } 
     } catch (error) {
-        console.log(error)
+        res.status(500).json({ message: error.message })
     }
 }
-
+*/
 export const destroyCookie = (req, res, next) =>{
     try {
         if(req.cookies['access_token']){
@@ -76,13 +79,14 @@ export const destroyCookie = (req, res, next) =>{
             return res.redirect('/session/login')
         } 
     } catch (error) {
-        console.log(error)
+        res.status(500).json({ message: error.message })
     }
 }
 
 //----------------------------------------------------------------------------------------------------------------------------------
 //Esta middleware es por params
 //----------------------------------------------------------------------------------------------------------------------------------
+/*
 export const logue = async (req, res) => {
     try {
         const usuario = await buscarUser(req.params.email)
@@ -91,10 +95,10 @@ export const logue = async (req, res) => {
             res.send('login activo')
         }
     } catch (error) {
-        console.log(error)
+        res.status(500).json({ message: error.message })
     }
 }
-
+*/
 //------------------------------------------------------------------------------------------------------------------------------
 //Operero con PASSPORT ahora le suma JWT
 //------------------------------------------------------------------------------------------------------------------------------
@@ -118,7 +122,7 @@ export const postLogiN = (req, res, next)=>{
 
         //res.redirect('/product').json({status: 'success', access_token})
     } catch (error) {
-        console.log(error)
+        res.status(500).json({ message: error.message })
     }
 }
 export const postRegisteR = async(req, res, next)=>{
@@ -130,7 +134,7 @@ export const postRegisteR = async(req, res, next)=>{
         //console.log('Token Register: ', access_token)
         //res.cookie('access_token', access_token).redirect('/product')
     } catch (error) {
-        console.log(error)   
+        res.status(500).json({ message: error.message })  
     }
 }
 
