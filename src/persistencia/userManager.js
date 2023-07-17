@@ -34,7 +34,7 @@ export default class userManager{
             return error
         }
     }
-    async createUser(obj){
+    async create(obj){
         try {
             const newUser = await userModel.create(obj)   
             return newUser     

@@ -1,3 +1,4 @@
+//import passport from "passport"
 import userManager from "../persistencia/userManager.js"
 import { createHash } from "../utils/bcrypt.js"
 

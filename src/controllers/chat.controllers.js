@@ -1,4 +1,5 @@
-import { messageModel } from "../models/Messages.js"
+//import { messageModel } from "../models/Messages.js"
+import { insertManyChat } from "../services/chat.services.js"
 
 export const getChat = async (req, res)=>{
     try {
@@ -12,7 +13,8 @@ export const postChat = async(req, res)=>{
     try {
         const { email, sms } = req.body;     
         setTimeout(async()  =>{
-            await messageModel.insertMany({user: email, message: sms})
+            //await messageModel.insertMany({user: email, message: sms})
+            await insertManyChat({user: email, message: sms})
             res.redirect('/product')
           }, 1500);              
     } catch (error) {

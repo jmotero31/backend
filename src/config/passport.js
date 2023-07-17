@@ -26,7 +26,7 @@ const initializePassport = () => {
     //Registro de usuarios
     passport.use('register', new LocalStrategy(
         { passReqToCallback: true, usernameField: 'email' }, async (req, username, password, done) => {
-            const { first_name, last_name, email, gender } = req.body           
+            const { first_name, last_name, email, gender } = req.body          
             try {
                 const user = await findEmailUser(username) //Busco un usuario con el mail ingresado y verifico si ya existe en la base
                 if (user) {
@@ -34,10 +34,8 @@ const initializePassport = () => {
                 }
                 //Usuario no existe
                 //const passwordHash = createHash(password)
-
                 const carrito = await createCart() // FALTA TRAER EL SERVICIO DE CART
                 const cart = carrito._id.toString()  // FALTA TRAER EL SERVICIO DE CART
-
                 const userCreated =  await createUser({
                     first_name: first_name,
                     last_name: last_name,
