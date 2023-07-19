@@ -10,9 +10,9 @@ export const createCart = async()=>{
         return error
     }
 }
-export const findOneIdCartPopulate = async(id)=>{
+export const findOneIdCartPopulate = async(id, filtro)=>{
     try {
-        const findOneIdPopulate = await cartsManager.findOneIdPopulate(id)
+        const findOneIdPopulate = await cartsManager.findOneIdPopulate(id, filtro)
         return findOneIdPopulate  
     } catch (error) {
         return error
@@ -20,6 +20,8 @@ export const findOneIdCartPopulate = async(id)=>{
 }
 export const updateCart = async(id, obj)=>{
     try {
+        console.log('entre', id)
+        console.log('obj', obj)
         const updateCart = cartsManager.updateOne(id, obj)
         return updateCart
     } catch (error) {

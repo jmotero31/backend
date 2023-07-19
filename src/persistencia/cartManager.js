@@ -1,9 +1,9 @@
 import { cartModel } from '../persistencia/models/cart.model.js'
 
 export default class cartManager{
-    async findOneIdPopulate(id){
+    async findOneIdPopulate(id, filtro){
         try {
-            const cart = await cartModel.findOne({_id: id}, {__v: 0}).populate('products.id_prod')          
+            const cart = await cartModel.findOne({_id: id}, filtro).populate('products.id_prod')          
             return cart
         } catch (error) {
             return error
@@ -20,6 +20,8 @@ export default class cartManager{
     }
     async updateOne(id, obj){
         try {
+            console.log('entre', id)
+            console.log('obj', typeof (obj))
             const updateCart = cartModel.updateOne({_id: id}, obj)
             return updateCart
         } catch (error) {
