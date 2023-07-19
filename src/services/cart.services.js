@@ -20,8 +20,8 @@ export const findOneIdCartPopulate = async(id, filtro)=>{
 }
 export const updateCart = async(id, obj)=>{
     try {
-        console.log('entre', id)
-        console.log('obj', obj)
+        //console.log('entre', id)
+        //console.log('obj', obj)
         const updateCart = cartsManager.updateOne(id, obj)
         return updateCart
     } catch (error) {

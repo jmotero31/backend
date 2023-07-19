@@ -20,8 +20,8 @@ export default class cartManager{
     }
     async updateOne(id, obj){
         try {
-            console.log('entre', id)
-            console.log('obj', typeof (obj))
+            //console.log('entre', id)
+            //console.log('obj', typeof (obj))
             const updateCart = cartModel.updateOne({_id: id}, obj)
             return updateCart
         } catch (error) {

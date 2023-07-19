@@ -8,10 +8,10 @@ import { createTicket } from '../services/ticket.services.js'
 export const getCartAll = async (req, res)=>{
     try {      
         const id = req.user.cart
-        console.log(id)
+        
         //const carrito = await cartModel.findOne({_id: id}, {__v: 0}).populate('products.id_prod') // objeto
         const carrito = await findOneIdCartPopulate(id)
-        console.log('get', carrito)
+        
 
         const valor = carrito.products.map((p)=>p.toJSON())
         
@@ -19,7 +19,7 @@ export const getCartAll = async (req, res)=>{
         //console.log(req.cant)
         if(valor.length){valor[0].idCarrito = id}
 
-        res.render('cart', {car: valor, idcarrito: id, valorNav: true, name:`Hola, ${req.user.first_name}` , rol: req.user.rol == 'false' ? false:true, cantidad: req.cant})       
+        res.render('cart', {car: valor, idcarrito: id, valorNav: true, name:`Hola, ${req.user.first_name}` , rol: req.user.rol=="administrador"? true:false, cantidad: req.cant})       
     } catch (error) {
         res.send(error)
     }
@@ -44,7 +44,7 @@ export const getCartId = async (req, res)=>{
         const carritoCid = await findOneIdCartPopulate(cid)
         
         const valor = carritoCid.products.map((p)=>p.toJSON()) 
-        res.render('cart', {car: valor, valorNav: true, name: requser.nombre, rol: req.user.rol})  
+        res.render('cart', {car: valor, valorNav: true, name: `Hola, ${req.user.first_name}`, rol: req.user.rol=="administrador"? true:false})  
     } catch (error) {
         res.send(error)
     }
@@ -161,7 +161,8 @@ export const purchaseCart = async(req, res) =>{
     try {
         const cid = req.params.cid
         const carritoCid = await findOneIdCartPopulate(cid, {__v: 0})
-        const productos = await findProduct({}, {__v: 0})
+        const productos = await findProduct({}, {__v: 0})      
+        if(!carritoCid.products.length){return res.status(500).send({status: 'error', message:'No existe productos en el carro'})}
         let total = 0
         const prodTicket = []
         const prodCarts = []
@@ -185,13 +186,22 @@ export const purchaseCart = async(req, res) =>{
             })
         })
         carritoCid.products = prodCarts
-        const cartSinTicket = await updateCart(cid, carritoCid)
+        const cartSinTicket = await updateCart(cid, carritoCid) // productos que vuelven al carrito porque no se procesaron
         const newTicket = await createTicket({
             amount: total,
             purchaser: req.user.email,
             products: prodTicket
         })        
         res.status(200).send(newTicket)
+       
+        /*
+        res.status(201).json({
+            ticketMessage: 'Ticket creado exitosamente',
+            ticket: newTicket,
+            cartSinTicketMessage: 'Productos faltantes',
+            cartSinTicketProducts: cartSinTicket
+          });
+          */
     } catch (error) {
         res.send(error)
     }

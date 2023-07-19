@@ -14,9 +14,11 @@
           <a class="nav-link" href="/user">Usuarios</a>
         </li>
         {{/if}}
+        {{#unless rol}}
         <li class="nav-item">
           <a class="nav-link" href="/chat">Consulta</a>
         </li>
+        {{/unless}}
         <li class="nav-item">
           <a class="nav-link" href="/session/logout">LogOut</a>
         </li>

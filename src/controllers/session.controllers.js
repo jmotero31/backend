@@ -114,7 +114,7 @@ export const postLogiN = (req, res, next)=>{
         req.session.user = {nombre: 'Hola, ' + req.user.first_name, rol: req.user.rol=="administrador"? true:false}
         //res.status(200).send({status: 'success', payload: req.user})
         */
-        req.user.rol = req.user.rol=="administrador"? true:false
+        //req.user.rol = req.user.rol=="administrador"? true:false
         //console.log(req.user)
         const access_token = generateToken(req.user) //luego del resgitro estaria generando el token
         //console.log('Token Login: ', access_token)

@@ -6,7 +6,8 @@ export const getProductAll = async (req, res)=>{
         // ESTA ES LA CONSULTA ----> http://localhost:4000/product?limit=4&category=Tecnologia&sort=1
         const {limit=10, page=1, category, status, sort} = req.query      
         const filtro = {}
-        const paginacion = {limit: limit, page: page}       
+        const paginacion = {limit: limit, page: page}      
+        console.log(req.user.rol) 
         if (category !== undefined) {filtro.category = category}
         if (status !== undefined) {filtro.status = status}
         if (sort !== undefined) {paginacion.sort = {price: parseInt(sort)}}
@@ -18,7 +19,7 @@ export const getProductAll = async (req, res)=>{
 
             const adapProducto = producto.map((p)=>p.toJSON())
 
-            res.render('product',{ pro: adapProducto, valorNav: true, name:`Hola, ${req.user.first_name}` , rol: req.user.rol == 'false' ? false:true, carritoId: req.user.cart})           
+            res.render('product',{ pro: adapProducto, valorNav: true, name:`Hola, ${req.user.first_name}` , rol: req.user.rol=="administrador"? true:false, carritoId: req.user.cart})           
         }else{  
 
             //const renderizado = await productModel.paginate(filtro, paginacion)
@@ -26,7 +27,7 @@ export const getProductAll = async (req, res)=>{
             
             //ESTE ES EL OBJETO QUE DEVUELVE
             const adapRenderizado = renderizado.docs.map((p)=>p.toJSON())
-            res.render('product', { pro: adapRenderizado, valorNav: true, name:`Hola, ${req.user.first_name}`, rol: req.user.rol == 'false' ? false:true, carritoId: req.user.cart})                
+            res.render('product', { pro: adapRenderizado, valorNav: true, name:`Hola, ${req.user.first_name}`, rol: req.user.rol=="administrador"? true:false, carritoId: req.user.cart})                
         }       
     } catch (error) {
         res.send(error)
@@ -43,7 +44,7 @@ export const getPoductId = async (req, res)=>{
 
         const adapProductoId = productoId.map((p)=>p.toJSON())     
         if(productoId){
-            res.render('product', {producto: adapProductoId, valorNav: true, name:`Hola, ${req.user.first_name}`, rol: req.user.rol == 'false' ? false:true, carritoId: req.user.cart})
+            res.render('product', {producto: adapProductoId, valorNav: true, name:`Hola, ${req.user.first_name}`, rol: req.user.rol=="administrador"? true:false, carritoId: req.user.cart})
         }else{
             res.send(`No existe producto con ese Identificador = ${pid}`)
         }      

@@ -1,6 +1,6 @@
 import { Router} from "express";
 import { getProductAll, getPoductId, postProduct, putProductUpdateId, deleteProductId} from "../controllers/product.controllers.js";
-import { authToken } from '../utils/jsontoken.js'
+import { authToken, authAdmin } from '../utils/jsontoken.js'
 
 const productRouter = Router()
 
@@ -14,10 +14,10 @@ const auth = (req, res, next) =>{
 */
 
 productRouter.get('/', authToken, getProductAll)
-productRouter.get('/:pid', authToken,getPoductId)
-productRouter.post('/', postProduct)
-productRouter.put('/:puid', authToken, putProductUpdateId)
-productRouter.delete('/:did', authToken ,deleteProductId)
+productRouter.get('/:pid', authToken, getPoductId)
+productRouter.post('/', authAdmin, postProduct)
+productRouter.put('/:puid', authToken, authAdmin, putProductUpdateId)
+productRouter.delete('/:did', authToken, authAdmin, deleteProductId)
 
 export default productRouter
 /*

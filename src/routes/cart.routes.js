@@ -1,16 +1,16 @@
 import { Router } from "express";
 import { getCartAll, postCreateCart, getCartId, postAddProductInCart, putSumProductInCart, deleteProductTheCartId, deleteProductIdInCartId, purchaseCart } from "../controllers/cart.controllers.js";
-import { authToken } from '../utils/jsontoken.js'
+import { authToken, authUser } from '../utils/jsontoken.js'
 
 const cartRoute = Router()
 
-cartRoute.get('/', authToken, getCartAll)
-cartRoute.post('/', authToken, postCreateCart)
-cartRoute.get('/:cid', authToken, getCartId)
-cartRoute.post('/:cid/product/:pid', authToken, postAddProductInCart)
-cartRoute.put('/:cid/product/:pid', authToken, putSumProductInCart)
-cartRoute.delete('/:cid', authToken, deleteProductTheCartId)
-cartRoute.delete('/:cid/product/:pid', authToken, deleteProductIdInCartId)
-cartRoute.get('/:cid/purchase', authToken, purchaseCart)
+cartRoute.get('/', authToken, authUser, getCartAll)
+cartRoute.post('/', authToken, authUser, postCreateCart)
+cartRoute.get('/:cid', authToken, authUser, getCartId)
+cartRoute.post('/:cid/product/:pid', authToken, authUser, postAddProductInCart)
+cartRoute.put('/:cid/product/:pid', authToken, authUser, putSumProductInCart)
+cartRoute.delete('/:cid', authToken, authUser, deleteProductTheCartId)
+cartRoute.delete('/:cid/product/:pid', authToken, authUser, deleteProductIdInCartId)
+cartRoute.post('/:cid/purchase', authToken, authUser, purchaseCart)
 
 export default cartRoute

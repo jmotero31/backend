@@ -5,21 +5,18 @@ export const getUserAll = async (req, res)=>{
     try {     
         const users = await findAllOrderByLastName()
         if(users.length){
-            const userMapeado = users.map((p)=>p.toJSON())
-            res.render('user',{usu: userMapeado, valorNav: true, name: req.user.nombre, rol: req.user.rol})      
+            //const userMapeado = users.map((p)=>p.toJSON())
+            res.render('user',{usu: users, valorNav: true, name: req.user.nombre, rol: req.user.rol=="administrador"? true:false})      
             //res.status(200).json({message: 'Users found', users})
         }else{
-            res.status(200).json({message: 'No users'})
+            res.status(200).send({message: 'No users'})
         }      
     } catch (error) {
         res.status(500).json({error})
     }
 }
 
-
-
 // PASARLO AL SERVICIO PARA QUE UTILICE LAS FUNCIONES DE USER
-
 
 //funciones para otras controladores 
 export const buscarUser = async (email) =>{

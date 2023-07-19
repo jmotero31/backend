@@ -1,12 +1,10 @@
 import jwt from "jsonwebtoken"
 import config from "../config/config.js"
 
-
 export const generateToken =  user =>{
     const token = jwt.sign({user}, config.jwt_private_key, {expiresIn: '24h'})
     return token
 }
-
 export const authToken = (req, res, next) =>{
     /*
     Si el front envia por header por esta prodiedad el Token
@@ -22,4 +20,14 @@ export const authToken = (req, res, next) =>{
         req.user = Credential.user
         next()
     })
+}
+export const authUser = (req, res, next) =>{
+    //if(!req.user) return res.status(401).json({message: 'Usuario no logueado'})
+    if(req.user.rol !== 'usuario') return res.status(403).json({message: 'No autorizado'})
+    next()
+}
+export const authAdmin = (req, res, next) =>{
+    //if(!req.user) return res.status(401).json({message: 'Usuario no logueado'})
+    if(req.user.rol !== 'administrador') return res.status(403).json({message: 'No autorizado'})
+    next()
 }
