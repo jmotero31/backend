@@ -2,7 +2,6 @@ import { findOneIdCartPopulate, createCart, updateCart } from '../services/cart.
 import { findOneProduct, updateOneProduct, findProduct } from "../services/product.services.js"
 import { createTicket } from '../services/ticket.services.js'
 
-
 export const getCartAll = async (req, res)=>{
     try {      
         const id = req.user.cart

@@ -1,5 +1,3 @@
- import { buscarUser, createUser } from "../controllers/user.controllers.js";
-import { validatePassword} from "../utils/bcrypt.js";
 import {generateToken } from '../utils/jsontoken.js'
 
 //----------------------------------------------------------------------------------------------------------------------------------

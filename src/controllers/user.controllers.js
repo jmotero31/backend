@@ -1,5 +1,5 @@
 //import { userModel } from "../models/Users.js"
-import { findAllOrderByLastName, findByIdUser, findEmailUser } from "../services/user.services.js"
+import { findAllOrderByLastName } from "../services/user.services.js"
 
 export const getUserAll = async (req, res)=>{
     try {     
