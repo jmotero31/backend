@@ -15,18 +15,14 @@ export default class cartManager{
             return newCart
         } catch (error) {
             return error
-        }
-        
+        }       
     }
     async updateOne(id, obj){
         try {
-            //console.log('entre', id)
-            //console.log('obj', typeof (obj))
             const updateCart = cartModel.updateOne({_id: id}, obj)
             return updateCart
         } catch (error) {
             return error
-        }
-        
+        }       
     }
 }

@@ -8,7 +8,7 @@ cartRoute.get('/', authToken, authUser, getCartAll)
 cartRoute.post('/', authToken, authUser, postCreateCart)
 cartRoute.get('/:cid', authToken, authUser, getCartId)
 cartRoute.post('/:cid/product/:pid', authToken, authUser, postAddProductInCart)
-cartRoute.put('/:cid/product/:pid', authToken, authUser, putSumProductInCart)
+cartRoute.put('/:cid/product/:pid', authToken, authUser, putSumProductInCart) // sabiendo que existe puedo aumentar o decrementar desde el carrito mismo
 cartRoute.delete('/:cid', authToken, authUser, deleteProductTheCartId)
 cartRoute.delete('/:cid/product/:pid', authToken, authUser, deleteProductIdInCartId)
 cartRoute.post('/:cid/purchase', authToken, authUser, purchaseCart)

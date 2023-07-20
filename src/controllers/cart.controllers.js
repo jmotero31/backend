@@ -1,5 +1,3 @@
-//import { cartModel } from "../models/Cart.js"
-//import { productModel } from "../models/Products.js"
 import { findOneIdCartPopulate, createCart, updateCart } from '../services/cart.services.js'
 import { findOneProduct, updateOneProduct, findProduct } from "../services/product.services.js"
 import { createTicket } from '../services/ticket.services.js'
@@ -8,105 +6,79 @@ import { createTicket } from '../services/ticket.services.js'
 export const getCartAll = async (req, res)=>{
     try {      
         const id = req.user.cart
-        
-        //const carrito = await cartModel.findOne({_id: id}, {__v: 0}).populate('products.id_prod') // objeto
-        const carrito = await findOneIdCartPopulate(id)
-        
-
-        const valor = carrito.products.map((p)=>p.toJSON())
-        
-        req.cant = valor.length
-        //console.log(req.cant)
+        const carrito = await findOneIdCartPopulate(id, {__v: 0})
+        const valor = carrito.products.map((p)=>p.toJSON()) // mapeo xq cuando renderizo en el handlebars      
         if(valor.length){valor[0].idCarrito = id}
-
+        req.cant = valor.length
+        //res.status(200).json({message:'Cart', carrito})
         res.render('cart', {car: valor, idcarrito: id, valorNav: true, name:`Hola, ${req.user.first_name}` , rol: req.user.rol=="administrador"? true:false, cantidad: req.cant})       
     } catch (error) {
-        res.send(error)
+        res.status(500).json({message: 'Error',error})
     }
 }
-
 export const postCreateCart = async(req,res) =>{
     try {
         const carrito = await createCart({})
-        //console.log(carrito._id.toString())
-        return carrito
-        //res.send('Carrito creado')
+        //res.send({status:"success", payload: carrito})
+        res.status(200).json({message:'Create Cart', carrito})       
     } catch (error) {
-        res.send(error) 
+        res.status(500).json({message: 'Error',error})
     }
 }
-
 export const getCartId = async (req, res)=>{
     try {
         let cid = req.params.cid
-        
-        //const carritoCid = await cartModel.findOne({_id: cid}, {_id: 0, __v: 0}).populate('products.id_prod') // objeto
-        const carritoCid = await findOneIdCartPopulate(cid)
-        
-        const valor = carritoCid.products.map((p)=>p.toJSON()) 
+        const carritoCid = await findOneIdCartPopulate(cid, {_id: 0, __v: 0})       
+        const valor = carritoCid.products.map((p)=>p.toJSON())  // mapeo xq cuando renderizo en el handlebars 
         res.render('cart', {car: valor, valorNav: true, name: `Hola, ${req.user.first_name}`, rol: req.user.rol=="administrador"? true:false})  
+        //res.status(200).json({message:'Cart', carritoCid})         
     } catch (error) {
-        res.send(error)
+        res.status(500).json({message: 'Error',error})
     }
 }
-
 export const postAddProductInCart = async (req, res)=>{
     try {
         let cid = req.params.cid  
         let pid = req.params.pid
         const {quantity} = req.body
-
-        //const carritoCid = await cartModel.findOne({_id: cid}) // objeto carrito
-        const carritoCid = await findOneIdCartPopulate(cid)
-        
-        //const productoPid = await productModel.findOne({_id: pid}) // objeto producto
-        const productoPid = await findOneProduct({_id: pid}, {})
-        
+        const carritoCid = await findOneIdCartPopulate(cid, {})       
+        const productoPid = await findOneProduct({_id: pid}, {})        
         if(productoPid && carritoCid){
             const valor = carritoCid.products.find(car => car.id_prod == pid)
             if(valor){
                 if(parseInt(quantity) <= productoPid.stock){
+                    // si el producto ya se encuentra en el carrito | actualizo la cantidad
                     const indexProductoId = carritoCid.products.findIndex(car => car.id_prod == pid)
                     carritoCid.products[indexProductoId].cant = carritoCid.products[indexProductoId].cant + parseInt(quantity)
-                    
-                    //await cartModel.updateOne({_id: cid}, carritoCid)
-                    await updateCart(cid, carritoCid)
-                    
-                    //await productModel.updateOne({_id: pid}, {stock: productoPid.stock - parseInt(quantity) })
-
-                    // actualzicion
-                    const updateProduct = await updateOneProduct({_id: pid}, {stock: productoPid.stock - parseInt(quantity) })
-
-                    res.send(carritoCid)
+                    const cartUpdate = await updateCart(cid, carritoCid)                    
+                    //res.send(carritoCid)
+                    res.status(200).json({message:'Product in the Cart Update', cartUpdate}) 
                 }else{
-                    //la cantidad es superior al stock
-                    console.log(`la cantidad es superior al stock`)
-                    res.send(`la cantidad es superior al stock`)
+                    console.log(`La cantidad es superior al stock`)
+                    //res.send(`La cantidad es superior al stock`)
+                    res.status(201).json({message:'La cantidad es superior al stock'}) 
                 }
             }else{
                 //Se agrego un producto que no estaba en el carrito
                 if(parseInt(quantity) <= productoPid.stock){
                     carritoCid.products.push({id_prod: pid, cant: parseInt(quantity)})
-                    
-                    //await cartModel.updateOne({_id: cid}, carritoCid)
-                    await updateCart(cid, carritoCid)
-
-                    //await productModel.updateOne({_id: pid}, {stock: productoPid.stock - parseInt(quantity) })
-                    const updateProduct = await updateOneProduct({_id: pid}, {stock: productoPid.stock - parseInt(quantity) })
-
-                    res.send(carritoCid)
+                    const cartUpdate = await updateCart(cid, carritoCid)
+                    //res.send(carritoCid)
+                    res.status(200).json({message:'Product in the Cart Update', cartUpdate})
                 }else{
                     //No podes ingresar un producto al carrito si la cantidad es superior a el stock declarado
                     console.log(`No hay stock suficiente para ingresar producto al carrito.`)
-                    res.send(`No hay stock suficiente para ingresar producto al carrito.`)
+                    //res.send(`No hay stock suficiente para ingresar producto al carrito.`)
+                    res.status(201).json({message:'No hay stock suficiente para ingresar producto al carrito.'}) 
                 }
             }
         }else{
-            console.log(`no existe carro o producto`)// no existe carro o prooducto
-            res.send(`no existe carro o producto`)
+            console.log(`No existe carro o producto`)// no existe carro o prooducto
+            //res.send(`no existe carro o producto`)
+            res.status(201).json({message:'No existe CARRO o PRODUCTO.'})
         }    
     } catch (error) {
-        res.send(error)
+        res.status(500).json({message: 'Error',error})
     }
 }
 
@@ -115,18 +87,16 @@ export const putSumProductInCart = async (req, res) => {
         let cid = req.params.cid   
         let pid = req.params.pid
         let {quantity} = req.body
-        //const carritoCid = await cartModel.findOne({_id: cid})
-        const carritoCid = await findOneIdCartPopulate(cid)
+        const carritoCid = await findOneIdCartPopulate(cid, {})
         const indexProductoId = carritoCid.products.findIndex(car => car.id_prod == pid)
         carritoCid.products[indexProductoId].cant = parseInt(quantity)
-        //await cartModel.updateOne({_id: cid}, carritoCid)
-        await updateCart(cid, carritoCid)
-        res.send(carritoCid)     
+        const cartUpdate = await updateCart(cid, carritoCid)
+        res.status(200).json({message:'Product in the Cart Update', cartUpdate})
+        //res.send(cartUpdate)     
     } catch (error) {
-        res.send(error)
+        res.status(500).json({message: 'Error',error})
     }
 }
-
 export const deleteProductTheCartId = async(req, res)=>{
     try {
         let cid = req.params.cid
@@ -137,32 +107,30 @@ export const deleteProductTheCartId = async(req, res)=>{
         await updateCart(cid, carritoCid)
         res.send(carritoCid)   
     } catch (error) {
-        res.send(error)
+        res.status(500).json({message: 'Error',error})
     }
 }
-
 export const deleteProductIdInCartId = async(req, res)=>{
     try { 
         let cid = req.params.cid   
         let pid = req.params.pid 
         //const carritoCid = await cartModel.findOne({_id: cid})
-        const carritoCid = await findOneIdCartPopulate(cid)
+        const carritoCid = await findOneIdCartPopulate(cid, {})
         const indexProductoId = carritoCid.products.findIndex(car => car.id_prod == pid)
-        carritoCid.products.splice(indexProductoId,1) 
-        //await cartModel.updateOne({_id: cid}, carritoCid)  
-        await updateCart(cid, carritoCid)   
-        res.send(carritoCid)
+        carritoCid.products.splice(indexProductoId,1)  
+        const cartUpdate = await updateCart(cid, carritoCid)   
+        //res.send(carritoCid)
+        res.status(200).json({message:'Product in the Cart Update', cartUpdate})
     } catch (error) {
-        res.send(error)
+        res.status(500).json({message: 'Error',error})
     }
 }
-
 export const purchaseCart = async(req, res) =>{
     try {
         const cid = req.params.cid
         const carritoCid = await findOneIdCartPopulate(cid, {__v: 0})
         const productos = await findProduct({}, {__v: 0})      
-        if(!carritoCid.products.length){return res.status(500).send({status: 'error', message:'No existe productos en el carro'})}
+        if(!carritoCid.products.length){return res.status(201).send({status: 'error', message:'No existe productos en el carro'})}
         let total = 0
         const prodTicket = []
         const prodCarts = []
@@ -192,8 +160,7 @@ export const purchaseCart = async(req, res) =>{
             purchaser: req.user.email,
             products: prodTicket
         })        
-        res.status(200).send(newTicket)
-       
+        res.status(200).json({message: 'Generate Ticket', newTicket})    
         /*
         res.status(201).json({
             ticketMessage: 'Ticket creado exitosamente',
@@ -203,6 +170,6 @@ export const purchaseCart = async(req, res) =>{
           });
           */
     } catch (error) {
-        res.send(error)
+        res.status(500).json({message: 'Error',error})
     }
 }
