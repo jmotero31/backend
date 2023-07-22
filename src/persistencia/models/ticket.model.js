@@ -35,7 +35,7 @@ const ticketSchema = new Schema({
         ], 
         default: []
     }
-});
+})
 ticketSchema.pre('find', function(){this.populate('products.id_prod')})
 
-export const ticketModel = model("tickets", ticketSchema);
+export const ticketModel = model("tickets", ticketSchema)

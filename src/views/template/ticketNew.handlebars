@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ticket de Compra</title>
+    <style>
+        /* Estilos adicionales pueden agregarse aquí */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f1f1f1;
+            margin: 0;
+            padding: 0;
+        }
+        .ticket {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            max-width: 400px;
+            margin: 30px auto;
+            background-color: #fff;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .ticket h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #4caf50;
+        }
+        .ticket p {
+            margin: 10px 0;
+            color: #333;
+        }
+        .ticket strong {
+            color: #666;
+        }
+        .ticket ul {
+            margin: 10px 0;
+            padding: 0;
+            list-style-type: none;
+        }
+        .ticket li {
+            padding: 5px 0;
+            border-bottom: 1px solid #ccc;
+        }
+        .ticket li:last-child {
+            border-bottom: none;
+        }
+        .ticket li span {
+            float: right;
+            color: #4caf50;
+        }
+        .ticket p.total {
+            text-align: right;
+            font-size: 18px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="ticket">
+        <h1>Ticket de Compra</h1>
+        <p><strong>Fecha de compra:</strong> {{fechaCompra}}</p>
+        <p><strong>Nombre del cliente:</strong> {{nombreCliente}}</p>
+        <p><strong>Productos:</strong></p>
+        <ul>
+            {{#each productos}}
+            <li>Cant  {{this.cant}}<span>{{this.id_prod.title}}</span></li>
+            {{/each}}
+        </ul>
+        <p class="total"><strong>Total:</strong> ${{total}}</p>
+        <p><strong>Número de orden:</strong> {{numeroOrden}}</p>
+    </div>
+</body>
+</html>

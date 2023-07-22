@@ -15,5 +15,7 @@ export default{
     github_client_secret: process.env.CLIENT_SECRET,
     github_callback_url: process.env.CALLBACK_URL,
     jwt_private_key: process.env.PRIVATE_KEY,
-    bcrypt_salt: process.env.SALT
+    bcrypt_salt: process.env.SALT,
+    nodemailer_gmail_user: process.env.NODEMAILER_USER,
+    nodemailer_gmail_password: process.env.NODEMAILER_PASSWORD
 }

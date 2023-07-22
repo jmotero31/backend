@@ -12,6 +12,6 @@ export const getUserAll = async (req, res)=>{
             res.status(200).json({message: 'No users'})
         }      
     } catch (error) {
-        res.status(500).json({error})
+        res.status(500).json({message: 'error', error})
     }
 }

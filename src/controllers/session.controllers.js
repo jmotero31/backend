@@ -1,5 +1,4 @@
 import {generateToken } from '../utils/jsontoken.js'
-
 //----------------------------------------------------------------------------------------------------------------------------------
 //Controladores para el Registro con direccionamiento
 //----------------------------------------------------------------------------------------------------------------------------------
@@ -101,7 +100,7 @@ export const logue = async (req, res) => {
 //Operero con PASSPORT ahora le suma JWT
 //------------------------------------------------------------------------------------------------------------------------------
 
-export const postLogiN = (req, res, next)=>{
+export const postLogiN = async(req, res, next)=>{
     try {
         if(!req.user){
             return res.status(401).send({ status: 'error', error: 'Usuario invalido'})

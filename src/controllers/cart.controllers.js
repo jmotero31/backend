@@ -1,6 +1,7 @@
 import { findOneIdCartPopulate, createCart, updateCart } from '../services/cart.services.js'
 import { findOneProduct, updateOneProduct, findProduct } from "../services/product.services.js"
 import { createTicket } from '../services/ticket.services.js'
+import { mailTicket } from '../utils/nodeMailer.js'
 
 export const getCartAll = async (req, res)=>{
     try {      
@@ -158,7 +159,9 @@ export const purchaseCart = async(req, res) =>{
             amount: total,
             purchaser: req.user.email,
             products: prodTicket
-        })        
+        })      
+        const prod = prodTicket.map((p)=>p.toJSON())
+        await mailTicket(req.user.email, newTicket[0].purchase_datetime, req.user.first_name, prod, newTicket[0].amount, newTicket[0]._id)
         res.status(200).json({message: 'Generate Ticket', newTicket})    
         /*
         res.status(201).json({

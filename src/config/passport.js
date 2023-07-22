@@ -10,7 +10,7 @@ import { validatePassword } from '../utils/bcrypt.js'
 import config from './config.js';
 import { findEmailUser, findByIdUser, createUser } from '../services/user.services.js'
 import { createCart } from '../services/cart.services.js'
-
+import { mailUser} from '../utils/nodeMailer.js'
 
 const LocalStrategy = local.Strategy //Defino mi estrategia
 //const GitHubStrategy = GitHub.Strategy // o en su defecto no hago esto y puedo hacer desde paspport.use('github', new GitHubStrategy), pero importando GitHubStrategy
@@ -44,6 +44,7 @@ const initializePassport = () => {
                     cart: cart,
                     password: password
                 })
+                await mailUser(userCreated.email, userCreated.last_name, userCreated.first_name)
                 return done(null, userCreated)
             } catch (error) {
                 return done(error)
@@ -88,6 +89,7 @@ const initializePassport = () => {
                 cart: cart,
                 password: 'N/A'
             })
+            await mailUser(newUser.email, newUser.last_name, newUser.first_name)
             return done(null, newUser)
         } catch (error) {
             return done('Error to login with GitHub')
@@ -115,6 +117,7 @@ const initializePassport = () => {
                 cart: cart,
                 password: 'N/A'
             })
+            await mailUser(newUser.email, newUser.last_name, newUser.first_name)
             return cb(null, newUser)
         } catch (error) {
             return cb('Error to login with Google')

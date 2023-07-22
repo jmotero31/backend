@@ -6,8 +6,7 @@ export const getProductAll = async (req, res)=>{
         // ESTA ES LA CONSULTA ----> http://localhost:4000/product?limit=4&category=Tecnologia&sort=1
         const {limit=10, page=1, category, status, sort} = req.query      
         const filtro = {}
-        const paginacion = {limit: limit, page: page}      
-        console.log(req.user.rol) 
+        const paginacion = {limit: limit, page: page}       
         if (category !== undefined) {filtro.category = category}
         if (status !== undefined) {filtro.status = status}
         if (sort !== undefined) {paginacion.sort = {price: parseInt(sort)}}
