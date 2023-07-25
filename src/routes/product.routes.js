@@ -1,6 +1,7 @@
 import { Router} from "express";
 import { getProductAll, getPoductId, postProduct, putProductUpdateId, deleteProductId} from "../controllers/product.controllers.js";
 import { authToken, authAdmin } from '../utils/jsontoken.js'
+import { getFakerYouProduct } from '../controllers/product.controllers.js'
 
 const productRouter = Router()
 //Middleware de autenticacion para continuar con el proceso de la ruta CON SESSION
@@ -16,5 +17,6 @@ productRouter.get('/:pid', authToken, getPoductId)
 productRouter.post('/', authAdmin, postProduct)
 productRouter.put('/:puid', authToken, authAdmin, putProductUpdateId)
 productRouter.delete('/:did', authToken, authAdmin, deleteProductId)
+productRouter.get('/mockingproducts', getFakerYouProduct)
 
 export default productRouter

@@ -15,3 +15,14 @@ export const getUserAll = async (req, res)=>{
         res.status(500).json({message: 'error', error})
     }
 }
+export const getFakerYou = async(req, res) =>{
+    try {
+        const user = []
+        for(let i=0; i<20; i++){
+            user.push(generateUser())
+        }
+        res.status(200).json({status: 'success', payload: user})
+    } catch (error) {
+        console.log(error)
+    }
+}

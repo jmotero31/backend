@@ -1,5 +1,7 @@
-//import { productModel } from "../models/Products.js";
 import { findProduct, findPaginateProduct, findOneProduct, insertManyProduct, updateOneProduct, deleteOneProduct } from '../services/product.services.js'
+import EErrors from '../utils/error/errors.enum.js'
+import CustomError from '../utils/error/erros.middleware.js'
+import generateProductErrorInfo from '../utils/error/generateProductErrorInfo.js'
 
 export const getProductAll = async (req, res)=>{
     try {
@@ -20,10 +22,8 @@ export const getProductAll = async (req, res)=>{
 
             res.render('product',{ pro: adapProducto, valorNav: true, name:`Hola, ${req.user.first_name}` , rol: req.user.rol=="administrador"? true:false, carritoId: req.user.cart})           
         }else{  
-
             //const renderizado = await productModel.paginate(filtro, paginacion)
-            const renderizado = await findPaginateProduct(filtro, paginacion)
-            
+            const renderizado = await findPaginateProduct(filtro, paginacion)            
             //ESTE ES EL OBJETO QUE DEVUELVE
             const adapRenderizado = renderizado.docs.map((p)=>p.toJSON())
             res.render('product', { pro: adapRenderizado, valorNav: true, name:`Hola, ${req.user.first_name}`, rol: req.user.rol=="administrador"? true:false, carritoId: req.user.cart})                
@@ -55,6 +55,14 @@ export const getPoductId = async (req, res)=>{
 export const postProduct = async (req, res)=>{
     try {
         const { title, description, price, status, stock, category, thumbnail, code } = req.body
+    if(!title||!description||!price||!status||!stock||!category||!thumbnail||!code){
+        CustomError.CustomError({
+            name:"Product creation",
+            causa: generateProductErrorInfo({ title, description, price, status, stock, category, thumbnail, code }),
+            message:'Error trying to create Product',
+            code: EErrors.INVALID_TYPES_ERROR
+        })
+    }
         const objNuevo = { title: title, description: description, price: price, status: status, stock: stock, category: category, thumbnail: thumbnail, code: code}
         const objProductoNew = req.body
         setTimeout(async()  =>{
@@ -95,5 +103,17 @@ export const deleteProductId = async(req, res)=>{
         res.send(deleteProduct)   
     } catch (error) {
         res.send(error)
+    }
+}
+
+export const getFakerYouProduct = async(req, res) =>{
+    try {
+        const products = []
+        for(let i=0; i<20; i++){
+            products.push(generateProduct())
+        }
+        res.status(200).json({status: 'success', payload: products})
+    } catch (error) {
+        console.log(error)
     }
 }

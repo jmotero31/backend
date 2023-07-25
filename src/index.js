@@ -23,6 +23,7 @@ import initializePassport from './config/passport.js'
 import config from './config/config.js' // vos vas a manejar las variables de entorno para poder modificarlas dependiendo en que condiciones estemos debug, developer, admin
 import './config/dbConfig.js' // ejecuto la conexion a la base de datos
 //import passport from 'passport'
+import errorHandle from './utils/error/erros.middleware.js'
 
 //Configuracion express
 const APP = express()
@@ -89,6 +90,7 @@ APP.use((req, res, next)=>{
 // Rutas
 APP.use('/', raizRouter)
 APP.use('/product', productRouter)
+APP.use(errorHandle)
 APP.use('/user', userRoute)
 APP.use('/cart', cartRoute)
 APP.use('/chat', chatRoute)

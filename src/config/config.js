@@ -17,5 +17,9 @@ export default{
     jwt_private_key: process.env.PRIVATE_KEY,
     bcrypt_salt: process.env.SALT,
     nodemailer_gmail_user: process.env.NODEMAILER_USER,
-    nodemailer_gmail_password: process.env.NODEMAILER_PASSWORD
+    nodemailer_gmail_password: process.env.NODEMAILER_PASSWORD,
+    twilio_token: process.env.TWILIO_AUTH_TOKEN,
+    twilio_SID: process.env.TWILIO_ACCOUNT_SID,
+    twilio_number: process.env.TWILIO_PHONE_NUMBER
+    
 }
