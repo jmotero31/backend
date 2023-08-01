@@ -14,7 +14,9 @@ const auth = (req, res, next) =>{
 */
 productRouter.get('/', authToken, getProductAll)
 productRouter.get('/:pid', authToken, getPoductId)
-productRouter.post('/', authAdmin, postProduct)
+// Para que funcione desde Postman sin ser admin
+productRouter.post('/', postProduct)
+//productRouter.post('/', authAdmin, postProduct) temporal
 productRouter.put('/:puid', authToken, authAdmin, putProductUpdateId)
 productRouter.delete('/:did', authToken, authAdmin, deleteProductId)
 productRouter.get('/mockingproducts', getFakerYouProduct)

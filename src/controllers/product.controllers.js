@@ -1,7 +1,8 @@
 import { findProduct, findPaginateProduct, findOneProduct, insertManyProduct, updateOneProduct, deleteOneProduct } from '../services/product.services.js'
-import EErrors from '../utils/error/errors.enum.js'
-import CustomError from '../utils/error/erros.middleware.js'
-import generateProductErrorInfo from '../utils/error/generateProductErrorInfo.js'
+//Importaciones de Manejador de errores
+import CustomError from '../services/errors/customError.js'
+import EErrors from '../services/errors/enums.js'
+import { generateProductErrorInfo } from '../services/errors/info.js'
 
 export const getProductAll = async (req, res)=>{
     try {
@@ -55,22 +56,22 @@ export const getPoductId = async (req, res)=>{
 export const postProduct = async (req, res)=>{
     try {
         const { title, description, price, status, stock, category, thumbnail, code } = req.body
-    if(!title||!description||!price||!status||!stock||!category||!thumbnail||!code){
-        CustomError.CustomError({
-            name:"Product creation",
-            causa: generateProductErrorInfo({ title, description, price, status, stock, category, thumbnail, code }),
-            message:'Error trying to create Product',
-            code: EErrors.INVALID_TYPES_ERROR
-        })
-    }
+        if(!title||!description||!price||!status||!stock||!category||!thumbnail||!code){
+            CustomError.createCustomError({
+                name:"Product creation error",
+                cause: generateProductErrorInfo({ title, description, price, status, stock, category, thumbnail, code }),
+                message:'Error trying to create Product',
+                code: EErrors.INVALID_TYPES_ERROR
+            })
+        }
         const objNuevo = { title: title, description: description, price: price, status: status, stock: stock, category: category, thumbnail: thumbnail, code: code}
         const objProductoNew = req.body
         setTimeout(async()  =>{
 
             //await productModel.insertMany(objNuevo)
             const newProduct = await insertManyProduct(objNuevo)
-
-            res.redirect('product')             
+            res.status(200).send({status: 'success', payload: newProduct})
+            //res.redirect('product')             
         }, 1000);       
     } catch (error) {
         res.send(error)

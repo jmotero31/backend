@@ -23,7 +23,7 @@ import initializePassport from './config/passport.js'
 import config from './config/config.js' // vos vas a manejar las variables de entorno para poder modificarlas dependiendo en que condiciones estemos debug, developer, admin
 import './config/dbConfig.js' // ejecuto la conexion a la base de datos
 //import passport from 'passport'
-import errorHandle from './utils/error/erros.middleware.js'
+import errorHandler from './middlewares/error.js'
 
 //Configuracion express
 const APP = express()
@@ -90,11 +90,11 @@ APP.use((req, res, next)=>{
 // Rutas
 APP.use('/', raizRouter)
 APP.use('/product', productRouter)
-APP.use(errorHandle)
 APP.use('/user', userRoute)
 APP.use('/cart', cartRoute)
 APP.use('/chat', chatRoute)
 APP.use('/session', sessionRouter)
+APP.use(errorHandler)
 APP.use('/',express.static(__dirname + '/public')) //express.static()defino como una carpeta publica para que el usuario pueda ver estos elementos. con 'static' termino de define que cualquier elemento que suba en la carpeta lo pueda acceder el usuario
 //generar un ruta aparte para que no este todo en localhost. static representa lo que es la carpeta publica
 // digo que en la direccions stactic vaya a la carpeta publica 

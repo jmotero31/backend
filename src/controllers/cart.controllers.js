@@ -2,6 +2,11 @@ import { findOneIdCartPopulate, createCart, updateCart } from '../services/cart.
 import { findOneProduct, updateOneProduct, findProduct } from "../services/product.services.js"
 import { createTicket } from '../services/ticket.services.js'
 import { mailTicket } from '../utils/nodeMailer.js'
+//Importaciones de Manejador de errores
+import CustomError from '../services/errors/customError.js'
+import EErrors from '../services/errors/enums.js'
+import { generateCartErrorInfo } from '../services/errors/info.js'
+
 
 export const getCartAll = async (req, res)=>{
     try {      
@@ -42,8 +47,12 @@ export const postAddProductInCart = async (req, res)=>{
         let pid = req.params.pid
         const {quantity} = req.body
         const carritoCid = await findOneIdCartPopulate(cid, {})       
-        const productoPid = await findOneProduct({_id: pid}, {})        
+        const productoPid = await findOneProduct({_id: pid}, {})  
+    
+        
+        
         if(productoPid && carritoCid){
+
             const valor = carritoCid.products.find(car => car.id_prod == pid)
             if(valor){
                 if(parseInt(quantity) <= productoPid.stock){
@@ -74,8 +83,13 @@ export const postAddProductInCart = async (req, res)=>{
             }
         }else{
             console.log(`No existe carro o producto`)// no existe carro o prooducto
-            //res.send(`no existe carro o producto`)
-            res.status(201).json({message:'No existe CARRO o PRODUCTO.'})
+            CustomError.createCustomError({
+                name:"Cart add Product error",
+                cause: generateCartErrorInfo(productoPid, carritoCid),
+                message:'Error add Product in Cart',
+                code: EErrors.INVALID_TYPES_ERROR
+            })
+            //res.status(201).json({message:'No existe CARRO o PRODUCTO.'})
         }    
     } catch (error) {
         res.status(500).json({message: 'Error',error})
