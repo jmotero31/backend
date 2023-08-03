@@ -20,6 +20,6 @@ export default{
     nodemailer_gmail_password: process.env.NODEMAILER_PASSWORD,
     twilio_token: process.env.TWILIO_AUTH_TOKEN,
     twilio_SID: process.env.TWILIO_ACCOUNT_SID,
-    twilio_number: process.env.TWILIO_PHONE_NUMBER
-    
+    twilio_number: process.env.TWILIO_PHONE_NUMBER,
+    around: process.env.AROUND  
 }
