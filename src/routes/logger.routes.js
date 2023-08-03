@@ -3,6 +3,6 @@ import { loggerTest } from "../controllers/logger.controllers.js";
 
 const loggerRouter = Router()
 
-loggerRouter.get('/loggerTest', loggerTest)
+loggerRouter.get('/', loggerTest)
 
 export default loggerRouter

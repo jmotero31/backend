@@ -1,5 +1,6 @@
 export const getRaiz =  async (req, res)=>{
     try {
+        req.logger.warning("Alerta")
         res.render('home', {
             titulo: "Curso de Banckend",
             cuerpo: 'Estamos en la Raiz de la APP',

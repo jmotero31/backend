@@ -19,8 +19,9 @@ const levelOptions = {
         debug: 'white'
     }
 }
-const createLogger = env => {
-    if (env === 'development') {
+const logger = env => {
+    if ( env === 'development') {
+        console.log('hie')
         return winston.createLogger({
             levels: levelOptions.levels,
             transports: [
@@ -46,4 +47,10 @@ const createLogger = env => {
         })
     }
 }
-export default createLogger(config.around)
+
+export const addLogger =(req,res,next)=>{
+    req.logger = logger(config.around)
+    console.log(logger)
+    req.logger.http(`${req.method} en ${req.url} - ${new Date().toLocaleTimeString()}`)
+    next();
+}

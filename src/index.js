@@ -26,6 +26,7 @@ import config from './config/config.js' // vos vas a manejar las variables de en
 import './config/dbConfig.js' // ejecuto la conexion a la base de datos
 //import passport from 'passport'
 import errorHandler from './middlewares/error.js'
+import { addLogger } from './utils/logger.js'
 
 
 //Configuracion express
@@ -92,6 +93,7 @@ APP.use((req, res, next)=>{
 
 // Rutas
 APP.use(errorHandler)
+APP.use(addLogger)
 APP.use('/', raizRouter)
 APP.use('/product', productRouter)
 APP.use('/user', userRoute)
