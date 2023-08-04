@@ -47,8 +47,14 @@ const logger = env => {
     }
 }
 //export default logger(config.around)
-
+/*
 export const addLogger =(req,res,next)=>{
+    req.logger = logger(config.around)
+    //req.logger.http(`${req.method} en ${req.url} - ${new Date().toLocaleTimeString()}`)
+    next();
+}
+*/
+export default (req,res,next)=>{
     req.logger = logger(config.around)
     //req.logger.http(`${req.method} en ${req.url} - ${new Date().toLocaleTimeString()}`)
     next();
