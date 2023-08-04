@@ -27,6 +27,7 @@ import './config/dbConfig.js' // ejecuto la conexion a la base de datos
 //import passport from 'passport'
 import errorHandler from './middlewares/error.js'
 import { addLogger } from './utils/logger.js'
+//import logger from './utils/logger.js' // prueba para que funciones logger
 
 
 //Configuracion express
@@ -45,8 +46,7 @@ const storage = multer.diskStorage({
 const server = APP.listen(config.port || 4000, ()=>{
     console.log(`Server on Port ${config.port || 4000}`)
 }) 
-
-
+// logger.debug('hola') // prueba para que funciones logger
 APP.engine('handlebars', engine()) // voy a usar handlebars
 APP.set('view engine', 'handlebars') //setea una valor, asignar a una constatnte un valor / en mis vistas voy a implementar handlebars
 APP.set('views', path.resolve(__dirname, './views')) // paht resolve concatena ruta //src mas /views  ---- dirname devuellve la carpeta actual concatena con el valor ./view

@@ -2,3 +2,11 @@ info: GET en /loggerTest - 14:11:20
 warning: GET en /loggerTest - 14:11:20
 error: GET en /loggerTest - 14:11:20
 fatal: GET en /loggerTest - 14:11:20
+info: GET en /loggerTest - 14:13:18
+warning: GET en /loggerTest - 14:13:18
+error: GET en /loggerTest - 14:13:18
+fatal: GET en /loggerTest - 14:13:18
+info: GET en /loggerTest - 14:13:43
+warning: GET en /loggerTest - 14:13:43
+error: GET en /loggerTest - 14:13:43
+fatal: GET en /loggerTest - 14:13:43

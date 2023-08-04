@@ -7,6 +7,8 @@ import { generateProductErrorInfo } from '../services/errors/info.js'
 export const getProductAll = async (req, res)=>{
     try {
         // ESTA ES LA CONSULTA ----> http://localhost:4000/product?limit=4&category=Tecnologia&sort=1
+        req.logger.debug(`Producto${req.method} en ${req.url}loggerTest - ${new Date().toLocaleTimeString()}`)  
+    
         const {limit=10, page=1, category, status, sort} = req.query      
         const filtro = {}
         const paginacion = {limit: limit, page: page}       
