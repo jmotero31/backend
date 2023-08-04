@@ -5,6 +5,5 @@ export const loggerTest = async (req, res)=>{
     req.logger.warning(`${req.method} en ${req.url}loggerTest - ${new Date().toLocaleTimeString()}`)
     req.logger.error(`${req.method} en ${req.url}loggerTest - ${new Date().toLocaleTimeString()}`)
     req.logger.fatal(`${req.method} en ${req.url}loggerTest - ${new Date().toLocaleTimeString()}`)
-    res.send({message: 'success'})
-    
+    res.send({message: 'success'})  
 }

@@ -38,7 +38,7 @@ const logger = env => {
             levels: levelOptions.levels,
             transports: [
                 new winston.transports.File({
-                    filename: '../log/errors.log',
+                    filename: './log/errors.log',
                     level: 'info',
                     format: winston.format.simple()
                 })
