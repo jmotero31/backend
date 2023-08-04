@@ -94,7 +94,7 @@ APP.use((req, res, next)=>{
 
 // Rutas
 APP.use(errorHandler)
-//APP.use(addLogger)
+//APP.use(addLogger) // otra forma de utilizar el middlebar, igualmente deje todo detallado en el logger ademas de los comandos 
 APP.use(logger)
 APP.use('/', raizRouter)
 APP.use('/product', productRouter)
