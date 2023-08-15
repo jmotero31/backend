@@ -1,7 +1,7 @@
 import { findOneIdCartPopulate, createCart, updateCart } from '../services/cart.services.js'
 import { findOneProduct, updateOneProduct, findProduct } from "../services/product.services.js"
 import { createTicket } from '../services/ticket.services.js'
-import { mailTicket } from '../utils/nodeMailer.js'
+import { mailTicket } from '../utils/nodemailer.js'
 //Importaciones de Manejador de errores
 import CustomError from '../services/errors/customError.js'
 import EErrors from '../services/errors/enums.js'

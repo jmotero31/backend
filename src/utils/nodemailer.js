@@ -54,3 +54,24 @@ export const mailUser = async(email, last_name, first_name) => {
         console.log(error)
     }
 }
+export const verifypassword = async(email, last_name, first_name, link) => {
+    try {
+        const template = join(__dirname, '/views/template/verifyPass.handlebars')
+        const data = await readFile(template, 'utf8')
+        const compiledTemplate = Handlebars.compile(data)
+        const html = compiledTemplate({
+            nombre: first_name,
+            apellido: last_name,
+            usuario: email,
+            link: link
+        })
+        await transporter.sendMail({
+            to: email,
+            subject: `Restablece la contrasena  ${first_name}`,
+            //text: 'Prueba del primer correo desde el backend',
+            html: html
+        })        
+    } catch (error) {
+        console.log(error)
+    }
+}

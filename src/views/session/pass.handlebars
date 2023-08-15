@@ -1,0 +1,27 @@
+<div class="row h-100">
+  <div class="col-md-4 my-5" >
+    <form action="/session/verify/{{ token }}" method="POST" class="card card-body rounded-0" id="login">
+      <h2 class="title" style="color:rgba(73, 177, 177, 0.665)">Recupero de password</h2>
+      <label for="email" class="form-label">{{ email }}</label>
+      
+      <br>
+      <label for="password" class="form-label">Ingrese su nueva clave: </label>
+      <input type="password" id="password" name="password" class="form-control" required></input>
+      <br>
+      <button type="submit" class="btn btn-primary">Ingresar</button>
+      <br>
+    </form>
+    {{#if error}}
+      <div id="alerta-enviado" style="color: red">{{error}}</div>
+    {{/if}}
+  </div>
+</div>
+
+<script>
+  $(document).ready(() => {
+    $('#login').submit((event) => {
+      event.preventDefault();
+      $('#password').val('');          
+    });
+  });
+</script>

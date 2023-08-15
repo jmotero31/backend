@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Verificacion de Password</title>
+    <style>
+        /* Estilos personalizados */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f1f1f1;
+            margin: 0;
+            padding: 0;
+        }
+        .registration {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            max-width: 400px;
+            margin: 30px auto;
+            background-color: #fff;
+        }
+        .registration h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #4caf50;
+        }
+        .registration p {
+            margin: 10px 0;
+            color: #333;
+        }
+        .registration strong {
+            color: #666;
+        }
+        .registration .footer {
+            margin-top: 30px;
+            text-align: center;
+            color: #888;
+            font-size: 12px;
+        }
+        .registration .footer a {
+            color: #4caf50;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="registration">
+        <h1>¡Bienvenido a nuestro sitio!</h1>
+        <p><strong>Nombre:</strong> {{nombre}}</p>
+        <p><strong>Apellido:</strong> {{apellido}}</p>
+        <p><strong>Usuario:</strong> {{usuario}}</p>
+        <p><strong>Link: </strong>{{ link }}</p>
+        <!-- Puedes agregar más información sobre el usuario aquí si es necesario -->
+        <p class="footer">Este correo es informativo y no requiere respuesta. Si tienes alguna pregunta, por favor visita nuestro <a href="https:/localhost:4000">centro de soporte</a>.</p>
+    </div>
+</body>
+</html>

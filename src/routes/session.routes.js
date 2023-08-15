@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getRegister, getLogin, postLogiN, postRegisteR, failRegister, failLogin, destroyCookie } from "../controllers/session.controllers.js";
+import { getRegister, getLogin, postLogiN, postRegisteR, failRegister, failLogin, destroyCookie, verifyPassword, newPassword, updatepass } from "../controllers/session.controllers.js";
 import passport from "passport";
 
 const sessionRouter = Router()
@@ -12,6 +12,10 @@ sessionRouter.get('/register', getRegister)
 sessionRouter.get('/login', getLogin)
 //sessionRouter.post('/login', postLogin)  ahora pase el control a passport
 sessionRouter.get('/logout', destroyCookie) 
+
+sessionRouter.post('/verify', verifyPassword)
+sessionRouter.get('/verify/:token', newPassword)
+sessionRouter.post('/verify/:token', updatepass)
 
 //Route por params para probar del navegar 
 //sessionRouter.get('/testLogin/:email',logue);

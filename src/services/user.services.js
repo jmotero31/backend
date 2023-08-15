@@ -47,3 +47,13 @@ export const createUser = async(obj)=>{
         return error
     }
 }
+export const updateUser = async(id, obj)=>{
+    try {
+        let passwordHash = obj.password
+        obj.password = createHash(passwordHash)
+        const updateUser = await usersManager.updateOne(id, obj)
+        return updateUser
+    } catch (error) {
+        return error
+    }
+}

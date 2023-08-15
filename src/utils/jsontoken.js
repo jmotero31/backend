@@ -1,8 +1,8 @@
 import jwt from "jsonwebtoken"
 import config from "../config/config.js"
 
-export const generateToken =  user =>{
-    const token = jwt.sign({user}, config.jwt_private_key, {expiresIn: '24h'})
+export const generateToken =  (user, hora) =>{
+    const token = jwt.sign({user}, config.jwt_private_key, {expiresIn: hora}) // '5h'
     return token
 }
 export const authToken = (req, res, next) =>{

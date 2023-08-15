@@ -10,7 +10,7 @@ import { validatePassword } from '../utils/bcrypt.js'
 import config from './config.js';
 import { findEmailUser, findByIdUser, createUser } from '../services/user.services.js'
 import { createCart } from '../services/cart.services.js'
-import { mailUser} from '../utils/nodeMailer.js'
+import { mailUser } from '../utils/nodemailer.js'
 
 const LocalStrategy = local.Strategy //Defino mi estrategia
 //const GitHubStrategy = GitHub.Strategy // o en su defecto no hago esto y puedo hacer desde paspport.use('github', new GitHubStrategy), pero importando GitHubStrategy
@@ -26,7 +26,8 @@ const initializePassport = () => {
     //Registro de usuarios
     passport.use('register', new LocalStrategy(
         { passReqToCallback: true, usernameField: 'email' }, async (req, username, password, done) => {
-            const { first_name, last_name, email, gender } = req.body          
+            const { first_name, last_name, email, gender } = req.body     
+            if (!first_name || !last_name || !email || !gender || !password) return done(null, { status: "error", error: "Incomplete values" })     
             try {
                 const user = await findEmailUser(username) //Busco un usuario con el mail ingresado y verifico si ya existe en la base
                 if (user) {
@@ -55,12 +56,14 @@ const initializePassport = () => {
         try {
             const user = await findEmailUser(username)     ///username es el email
             if (!user) { //Usuario no encontrado
-                console.log('usuario no encontrado')
+                req.logger.warning(`${req.method} en ${req.url} usuario no encontrado - ${new Date().toLocaleTimeString()}`)
+                //console.log('usuario no encontrado')
                 return done(null, false)
                 //return res.status(401).jsos({status: ' error', error: ' Invalid credentials'})
             }
             if (!validatePassword(password, user.password)) {
-                console.log('Contraseña no valida')
+                req.logger.warning(`${req.method} en ${req.url} Contraseña no valida - ${new Date().toLocaleTimeString()}`)
+                //console.log('Contraseña no valida')
                 return done(null, false)        //Contraseña no valida
             }        
             return done(null, user)
