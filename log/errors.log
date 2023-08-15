@@ -11,3 +11,4 @@ warning: GET en /loggerTest - 14:13:43
 error: GET en /loggerTest - 14:13:43
 fatal: GET en /loggerTest - 14:13:43
 warning: GET en / - 00:10:31
+warning: GET en / - 23:57:37

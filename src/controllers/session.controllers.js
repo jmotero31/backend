@@ -213,7 +213,8 @@ export const updatepass = async (req, res) =>{
          delete req.user.__v
          //req.user.password = createHash(password)
          console.log(req.user)
-         await updateOne(id, req.user)
+         const up = await updateUser(id, req.user)
+         res.send(up)
          
         //console.log('hola', password)
     } catch (error) {
