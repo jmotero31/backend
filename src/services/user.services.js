@@ -57,3 +57,12 @@ export const updateUser = async(id, obj)=>{
         return error
     }
 }
+export const updateUse = async(id, obj, owner)=>{
+    try {
+        obj.rol = owner
+        const updateUser = await usersManager.updateOne(id, obj)
+        return updateUser
+    } catch (error) {
+        return error
+    }
+}

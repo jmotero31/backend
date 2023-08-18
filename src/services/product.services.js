@@ -34,9 +34,9 @@ export const updateOneProduct = async(id, obj)=>{
         return error 
     }
 }
-export const deleteOneProduct = async(id)=>{
+export const deleteOneProduct = async(query)=>{
     try {
-        const delelteProduct = await productsManager.deleteOne(id)
+        const delelteProduct = await productsManager.deleteOne(query)
         return delelteProduct
     } catch (error) {
         return error

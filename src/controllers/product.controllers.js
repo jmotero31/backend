@@ -7,8 +7,7 @@ import { generateProductErrorInfo } from '../services/errors/info.js'
 export const getProductAll = async (req, res)=>{
     try {
         // ESTA ES LA CONSULTA ----> http://localhost:4000/product?limit=4&category=Tecnologia&sort=1
-        req.logger.debug(`Producto${req.method} en ${req.url}loggerTest - ${new Date().toLocaleTimeString()}`)  
-    
+        req.logger.debug(`Producto${req.method} en ${req.url}loggerTest - ${new Date().toLocaleTimeString()}`)    
         const {limit=10, page=1, category, status, sort} = req.query      
         const filtro = {}
         const paginacion = {limit: limit, page: page}       
@@ -16,13 +15,9 @@ export const getProductAll = async (req, res)=>{
         if (status !== undefined) {filtro.status = status}
         if (sort !== undefined) {paginacion.sort = {price: parseInt(sort)}}
         if(JSON.stringify(req.query) == '{}'){   
-
             //const producto = await productModel.find({},{__v: 0})
             const producto = await findProduct({},{__v: 0})
-
-
             const adapProducto = producto.map((p)=>p.toJSON())
-
             res.render('product',{ pro: adapProducto, valorNav: true, name:`Hola, ${req.user.first_name}` , rol: req.user.rol=="administrador"? true:false, carritoId: req.user.cart})           
         }else{  
             //const renderizado = await productModel.paginate(filtro, paginacion)
@@ -35,15 +30,11 @@ export const getProductAll = async (req, res)=>{
         res.send(error)
     }
 }
-
 export const getPoductId = async (req, res)=>{
     try {
         let pid = req.params.pid   
-
         //const productoId = await productModel.findOne({_id: pid}, {_id: 0, __v: 0})
         const productoId = await findOneProduct({_id: pid}, {_id: 0, __v: 0})
-
-
         const adapProductoId = productoId.map((p)=>p.toJSON())     
         if(productoId){
             res.render('product', {producto: adapProductoId, valorNav: true, name:`Hola, ${req.user.first_name}`, rol: req.user.rol=="administrador"? true:false, carritoId: req.user.cart})
@@ -54,7 +45,6 @@ export const getPoductId = async (req, res)=>{
         res.send(error)
     }
 }
-
 export const postProduct = async (req, res)=>{
     try {
         const { title, description, price, status, stock, category, thumbnail, code } = req.body
@@ -66,10 +56,9 @@ export const postProduct = async (req, res)=>{
                 code: EErrors.INVALID_TYPES_ERROR
             })
         }
-        const objNuevo = { title: title, description: description, price: price, status: status, stock: stock, category: category, thumbnail: thumbnail, code: code}
+        const objNuevo = { title: title, description: description, price: price, status: status, stock: stock, category: category, thumbnail: thumbnail, code: code, owner: req.user._id}
         const objProductoNew = req.body
         setTimeout(async()  =>{
-
             //await productModel.insertMany(objNuevo)
             const newProduct = await insertManyProduct(objNuevo)
             res.status(200).send({status: 'success', payload: newProduct})
@@ -79,36 +68,29 @@ export const postProduct = async (req, res)=>{
         res.send(error)
     }
 }
-
 export const putProductUpdateId = async (req, res) => {
     try {
         let puid = req.params.puid
         const objetoUpdat = req.body
-
         //await productModel.updateOne({_id: puid}, objetoUpdat)
         const updateProduct = await updateOneProduct(puid, objetoUpdat) 
-
-
         res.send(updateProduct)     
     } catch (error) {
         res.send(error)
     }
 }
-
 export const deleteProductId = async(req, res)=>{
     try {
         let pdid = req.params.did
-
+        const deleteProduct = {}
+        if(req.user.rol === 'premiun') return deleteProduct = await deleteOneProduct({_id: pdid, owner: req.user._id})
         //await productModel.deleteOne({_id: pdid})
-        const deleteProduct = await deleteOneProduct(pdid)
-
-
+        deleteProduct = await deleteOneProduct({_id: pdid})
         res.send(deleteProduct)   
     } catch (error) {
         res.send(error)
     }
 }
-
 export const getFakerYouProduct = async(req, res) =>{
     try {
         const products = []
@@ -117,6 +99,6 @@ export const getFakerYouProduct = async(req, res) =>{
         }
         res.status(200).json({status: 'success', payload: products})
     } catch (error) {
-        console.log(error)
+        res.send(error)
     }
 }

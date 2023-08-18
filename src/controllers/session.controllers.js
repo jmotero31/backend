@@ -3,7 +3,7 @@ import {verifypassword} from '../utils/nodemailer.js'
 import {findEmailUser, updateUser} from '../services/user.services.js'
 import config from '../config/config.js'
 import jwt from "jsonwebtoken"
-import {createHash} from '../utils/bcrypt.js'
+
 //----------------------------------------------------------------------------------------------------------------------------------
 //Controladores para el Registro con direccionamiento
 //----------------------------------------------------------------------------------------------------------------------------------
@@ -175,7 +175,8 @@ export const verifyPassword = async (req,res)=>{
                 const linkpassword = `http://localhost:4000/session/verify/${access_token}`
                 console.log(linkpassword)
                 await verifypassword(user.email, user.last_name, user.first_name, linkpassword)
-                res.status(200).json({message: 'oka'})
+                res.redirect('/session/login')
+                //res.status(200).json({message: 'Rebice su bandeja de entrada: el enlace para restablecer fue enviado =)'})
             }else{
                 res.status(401).json({message: 'No existe usuario'})
             }
@@ -190,7 +191,7 @@ export const newPassword = async (req,res)=>{
     try {
         const token = req.params.token
         jwt.verify(token, config.jwt_private_key, (error, Credential)=>{
-           if(error) return res.status(403).json({error: ' Not authorized'})
+           if(error) return res.render('session/login')//res.status(403).json({error: 'Tiempo expirado'})
            req.user = Credential.user
         })
         res.render(`session/pass`, {email: req.user.email, token: token}) 
@@ -201,8 +202,7 @@ export const newPassword = async (req,res)=>{
 export const updatepass = async (req, res) =>{
     try {
         const token = req.params.token
-        const password = req.body.password
-        
+        const password = req.body.password      
         jwt.verify(token, config.jwt_private_key, (error, Credential)=>{
             if(error) return res.status(403).json({error: ' Not authorized'})
             req.user = Credential.user
@@ -211,13 +211,12 @@ export const updatepass = async (req, res) =>{
          req.user.password = password
          delete req.user._id
          delete req.user.__v
-         //req.user.password = createHash(password)
-         console.log(req.user)
          const up = await updateUser(id, req.user)
-         res.send(up)
-         
-        //console.log('hola', password)
+         res.redirect('/session/home')     
     } catch (error) {
         return error
     }
+}
+export const newpass = (req, res, next) =>{
+    res.render('session/newpass')
 }

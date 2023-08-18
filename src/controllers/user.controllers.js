@@ -1,5 +1,5 @@
 //import { userModel } from "../models/Users.js"
-import { findAllOrderByLastName } from "../services/user.services.js"
+import { findAllOrderByLastName, updateUse, findByIdUser } from "../services/user.services.js"
 
 export const getUserAll = async (req, res)=>{
     try {     
@@ -23,6 +23,28 @@ export const getFakerYou = async(req, res) =>{
         }
         res.status(200).json({status: 'success', payload: user})
     } catch (error) {
-        console.log(error)
+        res.status(500).json({message: 'error', error})
+    }
+}
+export const updatePremierUser = async(req, res) =>{
+    try {      
+        const id = req.params.uid
+        const obj = await findByIdUser(id)
+        if(obj){
+            if(obj.rol == 'usuario'){
+                const owner = 'premium'             
+                const updateUserPremium = await updateUse(id, obj, owner)
+                return res.status(200).json({status: 'success', payload: updateUserPremium})
+            } 
+            if(obj.rol == 'premium'){
+                const owner = 'usuario'             
+                const updateUserPremium = await updateUse(id, obj, owner)
+                return res.status(200).json({status: 'success', payload: updateUserPremium})
+            }
+        }else{
+            return res.status(401).json({message: 'No existe usuario'})
+        }
+    } catch (error) {
+        res.status(400).json({message: 'error', error})
     }
 }

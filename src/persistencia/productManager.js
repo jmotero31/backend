@@ -34,9 +34,9 @@ export default class productManager{
             return error
         }
     }
-    async deleteOne(id){
+    async deleteOne(query){
         try {
-            const deleteProduct = await productModel.deleteOne({_id: id})
+            const deleteProduct = await productModel.deleteOne(query)
             return deleteProduct
         } catch (error) {
             return error

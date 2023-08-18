@@ -46,13 +46,10 @@ export const postAddProductInCart = async (req, res)=>{
         let cid = req.params.cid  
         let pid = req.params.pid
         const {quantity} = req.body
+        if(req.user.rol === 'premium' && await findOneProduct({_id: pid, owner: req.user._id}, {})) return res.status(500).json({message: 'No podes agregar tu propio producto'})
         const carritoCid = await findOneIdCartPopulate(cid, {})       
-        const productoPid = await findOneProduct({_id: pid}, {})  
-    
-        
-        
+        const productoPid = await findOneProduct({_id: pid}, {})          
         if(productoPid && carritoCid){
-
             const valor = carritoCid.products.find(car => car.id_prod == pid)
             if(valor){
                 if(parseInt(quantity) <= productoPid.stock){

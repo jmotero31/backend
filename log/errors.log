@@ -12,3 +12,13 @@ error: GET en /loggerTest - 14:13:43
 fatal: GET en /loggerTest - 14:13:43
 warning: GET en / - 00:10:31
 warning: GET en / - 23:57:37
+warning: GET en / - 11:10:06
+warning: GET en / - 11:10:11
+warning: GET en / - 11:11:07
+warning: GET en / - 14:35:15
+warning: GET en / - 16:59:28
+warning: GET en / - 16:59:34
+warning: GET en / - 22:46:23
+warning: GET en / - 22:50:01
+warning: GET en / - 22:51:05
+warning: GET en / - 20:40:37

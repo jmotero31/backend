@@ -1,6 +1,6 @@
 import { Router} from "express";
 import { getProductAll, getPoductId, postProduct, putProductUpdateId, deleteProductId} from "../controllers/product.controllers.js";
-import { authToken, authAdmin } from '../utils/jsontoken.js'
+import { authToken, authAdmin, authPremiunAdmin } from '../utils/jsontoken.js'
 import { getFakerYouProduct } from '../controllers/product.controllers.js'
 
 const productRouter = Router()
@@ -15,10 +15,10 @@ const auth = (req, res, next) =>{
 productRouter.get('/', authToken, getProductAll)
 productRouter.get('/:pid', authToken, getPoductId)
 // Para que funcione desde Postman sin ser admin
-productRouter.post('/', postProduct)
+productRouter.post('/', authPremiunAdmin, postProduct)
 //productRouter.post('/', authAdmin, postProduct) temporal
-productRouter.put('/:puid', authToken, authAdmin, putProductUpdateId)
-productRouter.delete('/:did', authToken, authAdmin, deleteProductId)
+productRouter.put('/:puid', authToken, authPremiunAdmin, putProductUpdateId)
+productRouter.delete('/:did', authToken, authPremiunAdmin, deleteProductId)
 productRouter.get('/mockingproducts', getFakerYouProduct)
 
 export default productRouter
