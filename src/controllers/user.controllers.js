@@ -9,7 +9,7 @@ export const getUserAll = async (req, res)=>{
             res.render('user',{usu: users, valorNav: true, name: req.user.nombre, rol: req.user.rol=="administrador"? true:false})      
             //res.status(200).json({message: 'Users found', users})
         }else{
-            res.status(200).json({message: 'No users'})
+            res.status(400).json({message: 'No users'})
         }      
     } catch (error) {
         res.status(500).json({message: 'error', error})
@@ -45,6 +45,6 @@ export const updatePremierUser = async(req, res) =>{
             return res.status(401).json({message: 'No existe usuario'})
         }
     } catch (error) {
-        res.status(400).json({message: 'error', error})
+        res.status(500).json({message: 'error', error})
     }
 }

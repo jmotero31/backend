@@ -1,0 +1,112 @@
+paths:
+  /product:
+    get:
+      summary: Obtiene todos los productos de la BD. Tambien puede recibir query con valores de limite, categoria, estado, filtro, paginacion. Siempre si el usuario se encuentra logeado con la vigencia del token generado
+      tags:
+        - Product
+      responses:
+        "200": 
+          description: Si la consulta a los productos es satisfactoria
+          content:
+            application/json:
+              schemas:
+                $ref: '#components/schemas/productsResponses'
+        "500": 
+          description: Si hubo un error en el momento de la consulta
+  /product/{productId}:
+    get:
+      summary: Obtiene un producto en especifico por su ID
+      tags: 
+        - Product
+      responses:
+        "200":
+          description: Si la consulta al producto fue satisfactoria
+        "500":
+          description: Si hubo un error en el momento de la consulta
+    post: 
+      summary: Crea un producto en la BD. Permiso para usuario con validacion Administrador y Premium
+      tags:
+        - Product
+      responses: 
+        "200":
+          description: Si la creacion del producto fue satisfactoria
+        "500":
+          description: Si hubo un error en el momento de la creacion
+    put:
+      summary: Actulizacion de datos en producto. Permiso para usuario con validacion Administrador y Premium
+      tags:
+        - Product
+      responses:
+        "200":
+          description:  Si la actualizacion del producto fue satisfactoria
+        "500":
+          description: Si hubo un error en el momento de la actualizacion
+    delete:
+      summary: Eliminar producto de la BD. Permiso para usuario con validacion Administrador y Premium
+      tags:
+        - Product
+      responses:
+        "200":
+          description: Si el proceso de eliminacion fue satisfactoria
+        "500":
+          description: Si hubo un error en el momento de eliminar el producto
+components:
+  schemas:
+    product:
+      type: Object
+      properties:
+        _id:
+          type: ObjectId
+          description: ID autoincremental mongo
+        title:
+          type: string
+          description: Titulo del producto en la BD
+        descriptions:
+          type: string
+          description: Descripcion y resena sobre el producto
+        price:
+          type: number
+          description: Valor del producto
+        status:
+          type: string
+          description: Estado del producto segun su stock
+        stock:
+          type: number
+          description: Valor de la cantidad de producto que se encuentra disponible
+        category:
+          type: string
+          description: Categorias que agrupan productos similares
+        thumbmail:
+          type: array
+          description: Almacenar rutas de imagenes de productos
+        code: 
+          type: string
+          description: Codigo de producto
+        owner:
+          type: schemas.Types.ObjectId
+          ref: 'users'
+          default: 'administrador'
+          description: Referencia a Id de la colletion users
+      example:
+        _id: ObjectId(123fdfsf)
+        title: Remera verano
+        descriptions: 100% algodon, diferentes talles xs, s , m, l , xl y xxl
+        price: 1800
+        stock: 35
+        category: Indumentaria
+        thumbmail: [https://remera.com]
+        code: Indu1234
+        owner: ObjectId(AD123AS)
+
+  productsResponses:
+    type: ObjectId
+    properties:
+      status:
+        type: string
+        enum: [success, error]    
+        description: formas de respuestas
+    payload:
+      type: array   
+      description: array de producto/s
+      item:
+        $ref: '#components/schemas/product'

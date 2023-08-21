@@ -1,0 +1,81 @@
+paths:
+  /user:
+    get:
+      summary: Obtiene todos los usuarios de la BD si el cliente es administrador y si esta logueado 
+      tags:
+        - User
+      responses: 
+        "200":
+          description: Si la consulta a los usuario es satisfactoria
+          content:
+            application/json:
+              schemas:
+                $ref: '#components/schemas/usersResponses'
+        "400":
+          description: Si no se pude acceder al los datos de usuarios en la BD
+
+        "500":
+          description: Si hubo un error en el momento de la consulta
+  /user/premiun/{userId}:
+    get:
+      summary: Se actualiza a traves del Id del usuario el nivel de privilegio a traves del rol.
+      tags:
+        - User
+      responses: 
+        "200":
+          description: Si el cambio de provilegio al usuario fue satisfactorio
+        "401":
+          description: Si el usuario no existe en la BD
+        "500":
+          description: Si hubo un error en el momento de la consulta
+components:
+  schemas:
+    user:
+      type: Object
+      properties:
+        _id:
+          type: ObjectId
+          description: ID autoincremental mongo
+        first_name:
+          type: string
+          description: Nombre de usuario
+        last_name:
+          type: string
+          description: Apellido de usuario
+        email:
+          type: string
+          description: Correo electronico de usuario
+        gender:
+          type: string
+          description: Genero de usuario. I = Indefinido
+          default: 'I'
+        password:
+          type: string
+          description:  Clave hasheda de usuario
+        cart:
+          type: schemas.Types.ObjectId
+          ref: 'carts'
+          description: Referencia a Id de la colletion cart
+        rol:
+          type: string
+          description:  Nivel de provilegio de usuario.
+      example:
+        _id: ObjectId(123fdfsf)
+        first_name: Jose Luis
+        last_name: Perez
+        email: jperez@gmail.com
+        gender: M
+        password: abcd1234
+        rol: usuario       
+  usersResponses:
+    type: ObjectId
+    properties:
+      status:
+        type: string
+        enum: [success, error]    
+        description: formas de respuestas
+    payload:
+      type: array   
+      description: array de usuarios
+      item:
+        $ref: '#components/schemas/user'

@@ -31,6 +31,8 @@ import errorHandler from './middlewares/error.js'
 //import logger from './utils/logger.js' // prueba para que funciones logger
 import logger from './utils/logger.js'
 
+import swaggerUiExpress from 'swagger-ui-express'
+import { spec } from './config/doc.js'
 //Configuracion express
 const APP = express()
 //console.log(process)
@@ -75,7 +77,6 @@ APP.use(session({
 }))
 
 
-
 //------------------------------------------------------------------------------------------------------------------------------
 //Operero con PASSPORT
 //------------------------------------------------------------------------------------------------------------------------------
@@ -103,6 +104,7 @@ APP.use('/cart', cartRoute)
 APP.use('/chat', chatRoute)
 APP.use('/session', sessionRouter)
 APP.use('/loggerTest', loggerRouter)
+APP.use('/doc', swaggerUiExpress.serve, swaggerUiExpress.setup(spec))
 APP.use('/',express.static(__dirname + '/public')) //express.static()defino como una carpeta publica para que el usuario pueda ver estos elementos. con 'static' termino de define que cualquier elemento que suba en la carpeta lo pueda acceder el usuario
 //generar un ruta aparte para que no este todo en localhost. static representa lo que es la carpeta publica
 // digo que en la direccions stactic vaya a la carpeta publica 

@@ -1,0 +1,7 @@
+tags:
+  - name: User
+    description: Users recursos
+  - name: Product
+    description: Product recursos
+  - name: Cart
+    description: Cart recursos
