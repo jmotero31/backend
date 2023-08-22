@@ -21,6 +21,10 @@ paths:
       responses:
         "200":
           description: Si la consulta al producto fue satisfactoria
+          content:
+            application/json:
+              schemas:
+                $ref: '#components/schemas/productsResponses'
         "500":
           description: Si hubo un error en el momento de la consulta
     post: 
@@ -30,6 +34,10 @@ paths:
       responses: 
         "200":
           description: Si la creacion del producto fue satisfactoria
+          content:
+            application/json:
+              schemas:
+                $ref: '#components/schemas/productsResponses'
         "500":
           description: Si hubo un error en el momento de la creacion
     put:
@@ -39,6 +47,10 @@ paths:
       responses:
         "200":
           description:  Si la actualizacion del producto fue satisfactoria
+          content:
+            application/json:
+              schemas:
+                $ref: '#components/schemas/productsResponses'
         "500":
           description: Si hubo un error en el momento de la actualizacion
     delete:
@@ -48,6 +60,10 @@ paths:
       responses:
         "200":
           description: Si el proceso de eliminacion fue satisfactoria
+          content:
+            application/json:
+              schemas:
+                $ref: '#components/schemas/productsResponses'
         "500":
           description: Si hubo un error en el momento de eliminar el producto
 components:
@@ -97,7 +113,6 @@ components:
         thumbmail: [https://remera.com]
         code: Indu1234
         owner: ObjectId(AD123AS)
-
   productsResponses:
     type: ObjectId
     properties:

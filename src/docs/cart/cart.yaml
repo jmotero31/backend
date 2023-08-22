@@ -1,0 +1,147 @@
+paths:
+  /cart:
+    get:
+      summary: Obtine todos los productos que se encuentran en el carro de compra del Usuario autenticado
+      tags: 
+       - Cart 
+      responses:
+        "200":
+          description: Si la consulta al carro de compra es satisfactoria
+          content: 
+            application/json:
+              schema:
+                $ref: '#components/schemas/cartsResponses'
+        "500":  
+          description: Si hubo un error en el momento de la consulta
+    post: 
+      summary: Crea un unico carro de compra y se asigna a un usuario registrado         
+      tags:
+        - Cart
+      responses:
+        "200":
+          description: Si la creacion al carro de compra es satisfactoria
+          content: 
+            application/json:
+              schema:
+                $ref: '#components/schemas/cartsResponses'
+        "500":  
+          description: Si hubo un error en el momento de la creacion    
+  /cart/{cartId}:
+    get:
+      summary: Obtine todos los productos que se encuentran en el carro de compra del Usuario autenticado
+      tags: 
+       - Cart 
+      responses:
+        "200":
+          description: Si la consulta al carro de compra es satisfactoria
+          content: 
+            application/json:
+              schema:
+                $ref: '#components/schemas/cartsResponses'
+        "500":  
+          description: Si hubo un error en el momento de la consulta
+    delete:
+      summary: Elimina el carro de compra del Usuario autenticado
+      tags: 
+       - Cart 
+      responses:
+        "200":
+          description: Si fue eliminado el carro de compra satisfactoriamente
+          content: 
+            application/json:
+              schema:
+                $ref: '#components/schemas/cartsResponses'
+        "500":  
+          description: Si hubo un error en el momento de la eliminacion
+  /cart/{cartId}/product/{productId}:
+    post:
+      summary: Agregar un porducto en el carrito. Valida que si es un usuario premium no puede agregar sus productos al carro de compra
+      tags: 
+       - Cart 
+      responses:
+        "200":
+          description: Si la compra fue satisfactoria
+          content: 
+            application/json:
+              schema:
+                $ref: '#components/schemas/cartsResponses'
+        "201":
+          description: Si hubo una solicitud de producto mayor al stock 
+        "500":  
+          description: Si hubo un error en el momento de la consulta
+    put: 
+      summary: Actualiza la cantidad de productos que se encunetran en el carro de compra del Usuario autenticado
+      tags: 
+       - Cart 
+      responses:
+        "200":
+          description: Si la actualizacion de la cantidad de producto al carro de compra fue satisfactoria
+          content: 
+            application/json:
+              schema:
+                $ref: '#components/schemas/cartsResponses'
+        "500":  
+          description: Si hubo un error en el momento de la actualizacion
+    delete:
+      summary: Elimina un producto que se encuentra en el carro de compra del Usuario autenticado
+      tags: 
+       - Cart 
+      responses:
+        "200":
+          description: Si la eliminacion del producto fue satisfactoria
+          content: 
+            application/json:
+              schema:
+                $ref: '#components/schemas/cartsResponses'
+        "500":  
+          description: Si hubo un error en el momento de la consulta
+  /cart/{cartId}/purchase:
+    post:
+      summary: Confirmacion de la compra, generacion y envio del ticket de compra del carrito del usuario. Valida que si es un usuario premium no puede agregar sus productos al carro de compra
+      tags: 
+       - Cart 
+      responses:
+        "200":
+          description: Si la confirmacion de la compra del carrito fue satisfactoria
+          content: 
+            application/json:
+              schema:
+                $ref: '#components/schemas/cartsResponses'
+        "500":  
+          description: Si hubo un error en el momento de la confirmacion de la compra del carrito
+components:
+  schemas:
+    cart:
+      type: Object
+      properties:
+        _id:
+          type: ObjectId
+          description: ID autoincremental mongo
+        products:
+          type: array
+          properties: 
+            id_prod: 
+              type: schemas.Types.ObjectId
+              ref: 'products'
+              description: Id con referencia a la colletions products
+            cant:
+              type: number
+              description: cantidad de producto referenciado
+          default: []
+      example:
+        _id: ObjectId(123fdfsf)
+        product: 
+          id_prod: (ABCD1234)
+          cant: 25
+  cartsResponses:
+    type: ObjectId
+    properties:
+      status:
+        type: string
+        enum: [success, error]    
+        description: formas de respuestas
+    payload:
+      type: array   
+      description: array de carro de compras
+      item:
+        $ref: '#components/schemas/cart'

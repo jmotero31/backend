@@ -80,7 +80,7 @@ export const putProductUpdateId = async (req, res) => {
         // res.status(200).send({status: 'success', payload: updateProduct})      
         res.send(updateProduct)     
     } catch (error) {
-        // res.status(500).send({status: 'error', error})
+        // res.status(500).send({status: 'error',})
         res.send(error)
     }
 }
@@ -106,6 +106,7 @@ export const getFakerYouProduct = async(req, res) =>{
         }
         res.status(200).json({status: 'success', payload: products})
     } catch (error) {
+        //res.status(500).send({status: 'error', error})
         res.send(error)
     }
 }
