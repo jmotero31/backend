@@ -26,7 +26,7 @@ const initializePassport = () => {
     //Registro de usuarios
     passport.use('register', new LocalStrategy(
         { passReqToCallback: true, usernameField: 'email' }, async (req, username, password, done) => {
-            const { first_name, last_name, email, gender } = req.body     
+            const { first_name, last_name, email, gender } = req.body  
             if (!first_name || !last_name || !email || !gender || !password) return done(null, { status: "error", error: "Incomplete values" })     
             try {
                 const user = await findEmailUser(username) //Busco un usuario con el mail ingresado y verifico si ya existe en la base
@@ -54,18 +54,19 @@ const initializePassport = () => {
     //Login de usuarios
     passport.use('login', new LocalStrategy({ usernameField: 'email' }, async (username, password, done) => {
         try {
-            const user = await findEmailUser(username)     ///username es el email
+            const user = await findEmailUser(username)  
+             ///username es el email
             if (!user) { //Usuario no encontrado
-                req.logger.warning(`${req.method} en ${req.url} usuario no encontrado - ${new Date().toLocaleTimeString()}`)
+                //req.logger.warning(`${req.method} en ${req.url} usuario no encontrado - ${new Date().toLocaleTimeString()}`)
                 //console.log('usuario no encontrado')
                 return done(null, false)
                 //return res.status(401).jsos({status: ' error', error: ' Invalid credentials'})
             }
             if (!validatePassword(password, user.password)) {
-                req.logger.warning(`${req.method} en ${req.url} Contraseña no valida - ${new Date().toLocaleTimeString()}`)
+                //req.logger.warning(`${req.method} en ${req.url} Contraseña no valida - ${new Date().toLocaleTimeString()}`)
                 //console.log('Contraseña no valida')
                 return done(null, false)        //Contraseña no valida
-            }        
+            }     
             return done(null, user)
         } catch (error) {
             return done(error)
