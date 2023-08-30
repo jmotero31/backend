@@ -31,10 +31,20 @@ export const authAdmin = (req, res, next) =>{
     if(req.user.rol !== 'administrador') return res.status(403).json({message: 'No autorizado'})
     next()
 }
+/*
 export const authPremiunAdmin = (req, res, next) =>{
     //if(!req.user) return res.status(401).json({message: 'Usuario no logueado'})
     if(req.user.rol !== 'administrador' && req.user.rol !== 'premium') return res.status(403).json({message: 'No autorizado'})
     next()
+}
+*/
+export const authPremiunAdmin = (req, res, next) => {
+
+    if (req.user.rol === 'administrador' || req.user.rol === 'premium' ) {   
+        next()    
+    }else {   
+        res.status(403).json({ message: 'No autorizado' })   
+    }    
 }
 export const authPremiunUser = (req, res, next) =>{
     //if(!req.user) return res.status(401).json({message: 'Usuario no logueado'})

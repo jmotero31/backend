@@ -5,8 +5,7 @@ export const generateProductErrorInfo = (product)=>{
     Categoria:  ${product.category}
     Descripcion:  ${product.description}
     Codigo:  ${product.code}
-    Stock:  ${product.stock},
-    Estado:  ${product.status}
+    Stock:  ${product.stock}
     Imagenes:  ${product.thumbnail}
     `
 }

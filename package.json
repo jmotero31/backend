@@ -15,6 +15,7 @@
     "chai": "^4.3.8",
     "mocha": "^10.2.0",
     "nodemon": "^2.0.22",
+    "sinon": "^15.2.0",
     "supertest": "^6.3.3"
   },
   "dependencies": {

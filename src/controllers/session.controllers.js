@@ -120,7 +120,7 @@ export const postLogiN = async(req, res, next)=>{
         //console.log(req.user)
         const access_token = generateToken(req.user, '5h') //luego del resgitro estaria generando el token
         //console.log('Token Login: ', access_token)
-        res.cookie('access_token', access_token).redirect('/product')
+        res.cookie('access_token', access_token).redirect('/product') //.status(200).json({message: access_token})
 
         //res.redirect('/product').json({status: 'success', access_token})
     } catch (error) {

@@ -50,17 +50,21 @@ export const getPoductId = async (req, res)=>{
 }
 export const postProduct = async (req, res)=>{
     try {
-        const { title, description, price, status, stock, category, thumbnail, code } = req.body
-        if(!title||!description||!price||!status||!stock||!category||!thumbnail||!code){
+        const { title, description, price, stock, category, code } = req.body
+
+        if(!title||!description||!price||!stock||!category||!code){
             CustomError.createCustomError({
                 name:"Product creation error",
-                cause: generateProductErrorInfo({ title, description, price, status, stock, category, thumbnail, code }),
+                cause: generateProductErrorInfo({ title, description, price, stock, category, code }),
                 message:'Error trying to create Product',
                 code: EErrors.INVALID_TYPES_ERROR
             })
         }
-        const objNuevo = { title: title, description: description, price: price, status: status, stock: stock, category: category, thumbnail: thumbnail, code: code, owner: req.user._id}
-        const objProductoNew = req.body
+        console.log('que hay', req.body)
+        console.log('Usuario id', req.user)
+        const objNuevo = { title: title, description: description, price: price, stock: stock, thumbmail: thumbmail, category: category, code: code, owner: req.user._id}
+        console.log(objNuevo)
+        //const objProductoNew = req.body
         setTimeout(async()  =>{
             //await productModel.insertMany(objNuevo)
             const newProduct = await insertManyProduct(objNuevo)
