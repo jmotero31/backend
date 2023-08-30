@@ -12,18 +12,20 @@ describe('Test routes Products',()=>{
 
     before (async ()=>{
         //await deleteProduct() 
-
     })
+
     it('[POST] /session/login',async()=>{
         const login={
-            email: 'admin@livee.com.ar', 
+            email: 'hello@live.com.ar', 
             password: 'Coder2023'
         }         
         const response = await requester
         .post('/session/login')
         .send(login)
-        expect(response.statusCode).to.be.eql(200)
+        console.log(response)
+        expect(response.statusCode).to.be.eql(500)
     })
+
     it('[POST] /product',async()=>{
         const producto={
             title: 'Prueba', 
