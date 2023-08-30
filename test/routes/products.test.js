@@ -11,13 +11,18 @@ const requester = supertest(`http://localhost:${config.port}`)
 describe('Test routes Products',()=>{
 
     before (async ()=>{
-        //await deleteProduct()
-        const user = {
-            rol: 'administrador',
-        }
-        const a = (req,res)=>{
-            req.user = user
-        }       
+        //await deleteProduct() 
+
+    })
+    it('[POST] /session/login',async()=>{
+        const login={
+            email: 'admin@livee.com.ar', 
+            password: 'Coder2023'
+        }         
+        const response = await requester
+        .post('/session/login')
+        .send(login)
+        expect(response.statusCode).to.be.eql(200)
     })
     it('[POST] /product',async()=>{
         const producto={
@@ -35,8 +40,7 @@ describe('Test routes Products',()=>{
         const response = await requester
         .post('/product')
         .send(producto)
-        .set(a)
-
+        
         //console.log(response)
         console.log(response.body)
         expect(response)
