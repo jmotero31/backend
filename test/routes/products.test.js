@@ -34,16 +34,16 @@ describe('Test routes Products',()=>{
             status: true, 
             stock: 20, 
             category: 'Prueba', 
-            thumbnail: ['https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJOuVNDLModL1n3OGrKz2AiQD6YyXhidj6oA&usqp=CAU'], 
+            //thumbnail: ['https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJOuVNDLModL1n3OGrKz2AiQD6YyXhidj6oA&usqp=CAU'], 
             code: 'code1234',
-            owner: '4521'
+            //owner: '4521'
         }  
 /*
         const fakeReq = {
             user: {
                 rol: 'administrador'
             }
-        }clear
+        }
 
         const authMiddlewareStub = sinon.stub().callsFake((req, res, next) => {
             req.user = fakeReq.user 
@@ -57,7 +57,7 @@ describe('Test routes Products',()=>{
         //.use(authMiddlewareStub)
         
         
-        //console.log(response)
+        console.log(response)
         //console.log(response)
         //expect(response)
         expect(response.statusCode).to.be.eql(200)

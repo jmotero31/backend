@@ -64,6 +64,7 @@ export const postProduct = async (req, res)=>{
         setTimeout(async()  =>{
             //await productModel.insertMany(objNuevo)
             const newProduct = await insertManyProduct(objNuevo)
+            console.log(newProduct)
             res.status(200).send({status: 'success', payload: newProduct})
             //res.redirect('product') 
 
