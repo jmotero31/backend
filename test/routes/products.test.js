@@ -45,10 +45,9 @@ describe('Test routes Products',()=>{
             }
         }clear
 
-        // Simula el middleware enviándole el objeto req con el rol
         const authMiddlewareStub = sinon.stub().callsFake((req, res, next) => {
-            req.user = fakeReq.user // Simula el rol de administrador
-            next // Permite que la solicitud continúe sin restricciones
+            req.user = fakeReq.user 
+            next 
         })
         
 */
