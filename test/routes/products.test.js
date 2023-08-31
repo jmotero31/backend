@@ -53,38 +53,29 @@ describe('Test routes Products',()=>{
         .send(producto)
 
         expect(response.statusCode).to.be.eql(200)
-        expect(response.request._data)
+        //expect(response.request._data)
         //await deleteProduct()
     })
-/*
-    it('[POST] /cart',async()=>{
+
+    it('[POST] /cart/:cid/product/:pid',async()=>{
         const cart={
-            title: 'test', 
-            description: 'test', 
-            price: 2, 
-            status: true, 
-            stock: 20, 
-            category: 'Prueba', 
-            //thumbnail: ['https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJOuVNDLModL1n3OGrKz2AiQD6YyXhidj6oA&usqp=CAU'], 
-            code: 'code1234',
-            //owner: '4521'
+            cid: '64ad1ec60bae19e22135e726', 
+            pid: '646958b917e5b482f5f4455d'
         }  
-    
         const login = {
             email: 'hello@live.com.ar', 
             password: 'Coder2023',
-            rol: 'administrador'
+            rol: 'usuario'
         }      
         const testToken = generateToken(login, '5h')
         const response = await requester
 
-        .post('/product')
+        .post(`/cart/${cart.cid}/product/${cart.pid}`)
         .set('Authorization', `${testToken}`)
-        .send(producto)
+        .send({quantity: 2})
 
         expect(response.statusCode).to.be.eql(200)
-        expect(response.request._data)
+        //expect(response.request._data)
         //await deleteProduct()
     })
-    */
 })
