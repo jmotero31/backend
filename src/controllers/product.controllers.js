@@ -62,7 +62,7 @@ export const postProduct = async (req, res)=>{
         }
         console.log('que hay', req.body)
         console.log('Usuario id', req.user)
-        const objNuevo = { title: title, description: description, price: price, stock: stock, thumbmail: thumbmail, category: category, code: code, owner: req.user._id}
+        const objNuevo = { title: title, description: description, price: price, stock: stock, category: category, code: code, owner: req.user._id}
         console.log(objNuevo)
         //const objProductoNew = req.body
         setTimeout(async()  =>{
