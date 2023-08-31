@@ -51,8 +51,10 @@ describe('Test routes Products',()=>{
         })
         
 */
+        const testToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjY0ZWYyOWUyNTY2OWEyYjg5YmRhYzU2MSIsImZpcnN0X25hbWUiOiJDb2RlciIsImxhc3RfbmFtZSI6IkhvdXNlIiwiZW1haWwiOiJoZWxsb0BsaXZlLmNvbS5hciIsImdlbmRlciI6IkkiLCJwYXNzd29yZCI6IiQyYiQwNiRadUFVY09JZm1ZSVJGTmd4ZFRGb00uNDIybVl0bFB3ZGtTbld3Mzk5VGRQTHRPYS5sdUxrQyIsImNhcnQiOiI2NGVmMjllMjU2NjlhMmI4OWJkYWM1NWYiLCJyb2wiOiJhZG1pbmlzdHJhZG9yIiwiX192IjowfSwiaWF0IjoxNjkzNDUzNjY1LCJleHAiOjE2OTM0NzE2NjV9.zgEjFnmTXTgJF5BWFze9G2nB6PO1Pb4Ep6atNXh5398'
         const response = await requester
         .post('/product')
+        .set('Authorization', `${testToken}`)
         .send(producto)
         //.use(authMiddlewareStub)
         
