@@ -54,7 +54,37 @@ describe('Test routes Products',()=>{
 
         expect(response.statusCode).to.be.eql(200)
         expect(response.request._data)
-
         //await deleteProduct()
     })
+/*
+    it('[POST] /cart',async()=>{
+        const cart={
+            title: 'test', 
+            description: 'test', 
+            price: 2, 
+            status: true, 
+            stock: 20, 
+            category: 'Prueba', 
+            //thumbnail: ['https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJOuVNDLModL1n3OGrKz2AiQD6YyXhidj6oA&usqp=CAU'], 
+            code: 'code1234',
+            //owner: '4521'
+        }  
+    
+        const login = {
+            email: 'hello@live.com.ar', 
+            password: 'Coder2023',
+            rol: 'administrador'
+        }      
+        const testToken = generateToken(login, '5h')
+        const response = await requester
+
+        .post('/product')
+        .set('Authorization', `${testToken}`)
+        .send(producto)
+
+        expect(response.statusCode).to.be.eql(200)
+        expect(response.request._data)
+        //await deleteProduct()
+    })
+    */
 })
