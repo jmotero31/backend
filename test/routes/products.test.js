@@ -21,14 +21,15 @@ describe('Test routes Products',()=>{
         const response = await requester
         .post('/session/login')
         .send(login)
-
-        expect(response.statusCode).to.be.eql(302)
+ 
+        expect(response.redirect).to.be.true
+        //expect(response.statusCode).to.be.eql(302)
     })
 
     it('[POST] /product',async()=>{
         const producto={
-            title: 'Prueba', 
-            description: 'Prueba', 
+            title: 'test', 
+            description: 'test', 
             price: 2, 
             status: true, 
             stock: 20, 
@@ -58,10 +59,10 @@ describe('Test routes Products',()=>{
         
         
         //console.log(response)
-        console.log(response)
+        //console.log(response)
         //expect(response)
-        //expect(response.statusCode).to.be.eql(200)
-        //expect(response.body.payload)
+        expect(response.statusCode).to.be.eql(200)
+        expect(response.request._data)
 
         //await deleteProduct()
     })
