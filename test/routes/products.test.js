@@ -3,6 +3,7 @@ import supertest from 'supertest'
 import {deleteProduct} from '../setup.test.js'
 import config from '../../src/config/config.js'
 //import sinon from 'sinon'
+import {generateToken} from '../../src/utils/jsontoken.js'
 
 const requester = supertest(`http://localhost:${config.port}`)
 
@@ -50,8 +51,13 @@ describe('Test routes Products',()=>{
             next 
         })
         
-*/
-        const testToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjY0ZWYyOWUyNTY2OWEyYjg5YmRhYzU2MSIsImZpcnN0X25hbWUiOiJDb2RlciIsImxhc3RfbmFtZSI6IkhvdXNlIiwiZW1haWwiOiJoZWxsb0BsaXZlLmNvbS5hciIsImdlbmRlciI6IkkiLCJwYXNzd29yZCI6IiQyYiQwNiRadUFVY09JZm1ZSVJGTmd4ZFRGb00uNDIybVl0bFB3ZGtTbld3Mzk5VGRQTHRPYS5sdUxrQyIsImNhcnQiOiI2NGVmMjllMjU2NjlhMmI4OWJkYWM1NWYiLCJyb2wiOiJhZG1pbmlzdHJhZG9yIiwiX192IjowfSwiaWF0IjoxNjkzNDUzNjY1LCJleHAiOjE2OTM0NzE2NjV9.zgEjFnmTXTgJF5BWFze9G2nB6PO1Pb4Ep6atNXh5398'
+*/      
+        const login = {
+            email: 'hello@live.com.ar', 
+            password: 'Coder2023',
+            rol: 'administrador'
+        }      
+        const testToken = generateToken(login, '5h')
         const response = await requester
         .post('/product')
         .set('Authorization', `${testToken}`)
@@ -59,7 +65,7 @@ describe('Test routes Products',()=>{
         //.use(authMiddlewareStub)
         
         
-        console.log(response)
+        //console.log(response)
         //console.log(response)
         //expect(response)
         expect(response.statusCode).to.be.eql(200)
