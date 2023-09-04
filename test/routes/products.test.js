@@ -2,7 +2,6 @@ import { expect } from "chai";
 import supertest from 'supertest'
 import {deleteProduct} from '../setup.test.js'
 import config from '../../src/config/config.js'
-//import sinon from 'sinon'
 import {generateToken} from '../../src/utils/jsontoken.js'
 
 const requester = supertest(`http://localhost:${config.port}`)

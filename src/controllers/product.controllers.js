@@ -3,6 +3,7 @@ import { findProduct, findPaginateProduct, findOneProduct, insertManyProduct, up
 import CustomError from '../services/errors/customError.js'
 import EErrors from '../services/errors/enums.js'
 import { generateProductErrorInfo } from '../services/errors/info.js'
+import { __dirname } from '../path.js'
 
 export const getProductAll = async (req, res)=>{
     try {
@@ -14,10 +15,15 @@ export const getProductAll = async (req, res)=>{
         if (category !== undefined) {filtro.category = category}
         if (status !== undefined) {filtro.status = status}
         if (sort !== undefined) {paginacion.sort = {price: parseInt(sort)}}
+        
         if(JSON.stringify(req.query) == '{}'){   
             //const producto = await productModel.find({},{__v: 0})
             const producto = await findProduct({},{__v: 0})
+
             const adapProducto = producto.map((p)=>p.toJSON())
+            
+            
+
             //res.status(200).send({status: 'success', payload: adapProducto})
             res.render('product',{ pro: adapProducto, valorNav: true, name:`Hola, ${req.user.first_name}` , rol: req.user.rol=="administrador"? true:false, carritoId: req.user.cart})           
         }else{  
@@ -59,7 +65,11 @@ export const postProduct = async (req, res)=>{
                 code: EErrors.INVALID_TYPES_ERROR
             })
         }
-        const objNuevo = { title: title, description: description, price: price, stock: stock, category: category, code: code, owner: req.user._id}
+        const thumbnails = []
+        for (const file of req.files) {
+            thumbnails.push('/img/products/' + file.filename)
+        }
+        const objNuevo = { title: title, description: description, price: price, stock: stock, category: category, thumbnail: thumbnails, code: code, owner: req.user._id}
         //const objProductoNew = req.body
         setTimeout(async()  =>{
             //await productModel.insertMany(objNuevo)

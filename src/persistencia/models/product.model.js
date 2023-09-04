@@ -27,7 +27,7 @@ const productSchema = new Schema({
         type: String,
         required: true
     },
-    thumbmail: [],
+    thumbnail: [],
     code: {
         type: String,
         unique: true,

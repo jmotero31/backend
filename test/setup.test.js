@@ -15,5 +15,6 @@ export const deleteProduct =async ()=>{
     await productModel.findOneAndDelete({}, { sort: { _id: -1 } })
 }
 export const deleteCart =async ()=>{
+    await deleteProductTheCartId()
     await cartModel.findOneAndDelete({}, { sort: { _id: -1 } })
 }
