@@ -66,3 +66,21 @@ export const updateUse = async(id, obj, owner)=>{
         return error
     }
 }
+export const updateUserLastConection = async(id, obj)=>{
+    try {
+        const last_connection = new Date().toLocaleString()
+        obj.last_connection = last_connection
+        const updateUser = await usersManager.updateOne(id, obj)
+        return updateUser
+    } catch (error) {
+        return error
+    }
+}
+export const updateOne = async(id, obj)=>{
+    try {
+        const updateUser = await usersManager.updateOne(id, obj)
+        return updateUser
+    } catch (error) {
+        return error
+    }
+}

@@ -4,8 +4,30 @@
     {{#with usu}}
         <ul> 
         {{#each this}}
-            <li>{{first_name}}<------>{{ rol }} </li>
+            <li>
+                {{first_name}} <------> {{ rol }}
+                <br>
+            </li>
         {{/each}}
         </ul>
     {{/with}}    
-  </div>
+</div>
+<div>
+    <img src="{{ usuario.documents.[0].reference}}" alt="{{usuario._id}} Foto de perfil">
+</div>
+<div>
+    <h2>Subir archivo DocumentIdent</h2>
+    <form action="/user/{{ usuario._id }}/documents" method="post" enctype="multipart/form-data">
+        <input type="text" name="filetype" value="DocumentIdent">
+        <input type="file" name="file" accept=".pdf, .doc, .docx">
+        <input type="submit" value="Subir DocumentIdent">
+    </form>
+    <br>
+
+    <h2>Subir archivo ProfileImagen</h2>
+    <form action="/user/{{usuario._id}}/documents" method="post" enctype="multipart/form-data">
+        <input type="text" name="filetype" value="ProfileImagen">
+        <input type="file" name="file" accept="image/*">
+        <input type="submit" value="Subir ProfileImagen">
+    </form>
+</div>

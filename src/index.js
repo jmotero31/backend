@@ -81,3 +81,5 @@ APP.use('/',express.static(__dirname + '/public')) //express.static()defino como
 // digo que en la direccions stactic vaya a la carpeta publica 
 APP.use('/product',express.static(__dirname + '/public'))
 APP.use('/cart',express.static(__dirname + '/public'))
+APP.use('/',express.static(__dirname + '/public'))
+APP.use('/user',express.static(__dirname + '/public'))

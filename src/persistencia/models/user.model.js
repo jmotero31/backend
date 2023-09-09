@@ -33,7 +33,26 @@ const userSchema = new Schema({
         type: String,
         enum: ["administrador", "usuario", "premium"],
         default: "usuario"
+    },
+    documents: {
+        type: [
+            {
+                name: {
+                    type: String,
+                    enum: ["ProfileImagen" ,"DocumentIdent", "DocumentCompDomi", "DocumentCompCuen"]
+                },
+                reference: String,
+                status: {
+                    type: Boolean,
+                    default: false
+                }
+            }
+        ],
+        default: []
+    },
+    last_connection: {
+        type: String
     }
-});
+})
 userSchema.plugin(paginate)
 export const userModel = model("users", userSchema);

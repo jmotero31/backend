@@ -1,6 +1,6 @@
 import {generateToken } from '../utils/jsontoken.js'
 import {verifypassword} from '../utils/nodemailer.js'
-import {findEmailUser, updateUser} from '../services/user.services.js'
+import {findEmailUser, updateUser, updateUserLastConection} from '../services/user.services.js'
 import config from '../config/config.js'
 import jwt from "jsonwebtoken"
 
@@ -71,10 +71,13 @@ export const destroySession = (req, res, next) =>{
     }
 }
 */
-export const destroyCookie = (req, res, next) =>{
+export const destroyCookie = async(req, res, next) =>{
     try {
         if(req.cookies['access_token']){
-            res.clearCookie('access_token')
+            res.clearCookie('access_token')      
+            req.user.last_connection = new Date().toLocaleString();
+            const userLast = req.user
+            await updateUserLastConection(userLast._id, userLast)
             delete req.user
             return res.redirect('/')         
         }else{
@@ -120,8 +123,8 @@ export const postLogiN = async(req, res, next)=>{
         //console.log(req.user)
         const access_token = generateToken(req.user, '5h') //luego del resgitro estaria generando el token
         //console.log('Token Login: ', access_token)
+        await updateUserLastConection(req.user._id, req.user)
         res.cookie('access_token', access_token).redirect('/product') //.status(200).json({message: access_token})
-
         //res.redirect('/product').json({status: 'success', access_token})
     } catch (error) {
         res.status(500).json({ message: error.message })
