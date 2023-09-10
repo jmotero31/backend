@@ -16,18 +16,32 @@
     <img src="{{ usuario.documents.[0].reference}}" alt="{{usuario._id}} Foto de perfil">
 </div>
 <div>
-    <h2>Subir archivo DocumentIdent</h2>
+    <h2>Foto de Perfil</h2>
+    <form action="/user/{{usuario._id}}/documents" method="post" enctype="multipart/form-data">
+        <input type="text" name="filetype" value="ProfileImagen" style="display: none;">
+        <input type="file" name="file" accept="image/*" required>
+        <input type="submit" value="AGREGAR">
+    </form>
+    <br>    
+    <h2>Documento de Identidad</h2>
     <form action="/user/{{ usuario._id }}/documents" method="post" enctype="multipart/form-data">
-        <input type="text" name="filetype" value="DocumentIdent">
-        <input type="file" name="file" accept=".pdf, .doc, .docx">
-        <input type="submit" value="Subir DocumentIdent">
+        <input type="text" name="filetype" value="DocumentIdent" style="display: none;">
+        <input type="file" name="file" accept=".pdf, .doc, .docx" required>
+        <input type="submit" value="AGREGAR">
     </form>
     <br>
 
-    <h2>Subir archivo ProfileImagen</h2>
+    <h2>Comprobante de domicilio</h2>
     <form action="/user/{{usuario._id}}/documents" method="post" enctype="multipart/form-data">
-        <input type="text" name="filetype" value="ProfileImagen">
-        <input type="file" name="file" accept="image/*">
-        <input type="submit" value="Subir ProfileImagen">
+        <input type="text" name="filetype" value="DocumentCompDomi" style="display: none;">
+        <input type="file" name="file" accept=".pdf, .doc, .docx" required>
+        <input type="submit" value="AGREGAR">
+    </form>
+    <br>
+    <h2>Comprobante de estado de cuenta</h2>
+    <form action="/user/{{usuario._id}}/documents" method="post" enctype="multipart/form-data">
+        <input type="text" name="filetype" value="DocumentCompCuen" style="display: none;">
+        <input type="file" name="file" accept=".pdf, .doc, .docx" required>
+        <input type="submit" value="AGREGAR">
     </form>
 </div>

@@ -65,10 +65,16 @@ export const postProduct = async (req, res)=>{
                 code: EErrors.INVALID_TYPES_ERROR
             })
         }
+        
         const thumbnails = []
+        const segmentos = req.files.destination.split('/')
+        console.log(req.files)
+        
         for (const file of req.files) {
-            thumbnails.push('/img/products/' + file.filename)
+            thumbnails.push(`${segmentos.slice(-2).join('/')}` + file.filename)
         }
+
+
         const objNuevo = { title: title, description: description, price: price, stock: stock, category: category, thumbnail: thumbnails, code: code, owner: req.user._id}
         //const objProductoNew = req.body
         setTimeout(async()  =>{

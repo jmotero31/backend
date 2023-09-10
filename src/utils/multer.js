@@ -1,4 +1,36 @@
 import multer from 'multer'
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb)=>{
+        //const doc = req.body.filetype
+        if(req.body.filetype == 'ProfileImagen'){
+            cb(null, 'src/public/img/profiles')
+        }else if(req.body.filetype == 'DocumentIdent' || req.body.filetype == 'DocumentCompDomi' || req.body.filetype == 'DocumentCompCuen'){
+            cb(null, 'src/public/documents')
+        }else if(req.body.filetype == 'products'){
+            cb(null, 'src/public/img/products')
+        }else{
+            return console.log('No location doc')
+        }
+    },
+    filename: (req, file, cb)=>{      
+        const usuario = req.params.uid ? req.params.uid : req.user._id
+        //const doc = req.body.filetype
+        //console.log(req.body.filetype + '_' + `IDuser ${usuario}`+ '_' + Date.now() + '_' +  file.originalname)
+        cb(null, req.body.filetype + '_' + `IDuser ${usuario}`+ '_' +  Date.now() + '_' +  file.originalname)
+    }
+})
+
+const upload = (multer({
+    storage: storage,
+    limits: {
+        fileSize: 1024 * 1024 * 5
+      },
+}))
+
+export default upload
+
+
 /*
 const storage = (destination, preNombre) => {
     return multer.diskStorage({
@@ -40,35 +72,3 @@ const upload = (multer({
       },
 }))
 */
-const storage = multer.diskStorage({
-    destination: (req, file, cb)=>{
-        const body = req.body
-        const doc = Object.values(body)[0]
-        if(doc == 'ProfileImagen'){
-            cb(null, 'src/public/img/profiles')
-        }else if(doc == 'DocumentIdent' || doc == 'DocumentCompDomi' || doc == 'DocumentCompCuen'){
-            cb(null, 'src/public/documents')
-        }else if(doc == 'products'){
-            cb(null, 'src/public/img/products')
-        }else{
-            return console.log('No location doc')
-        }
-    },
-    filename: (req, file, cb)=>{
-        
-        const usuario = req.params.uid ? req.params.uid : req.user._id
-        const body = req.body
-        const doc = Object.values(body)[0]
-        console.log(doc + '_' + `IDuser ${usuario}`+ '_' + Date.now() + '_' +  file.originalname)
-        cb(null, doc + '_' + `IDuser ${usuario}`+ '_' +  Date.now() + '_' +  file.originalname)
-    }
-})
-
-const upload = (multer({
-    storage: storage,
-    limits: {
-        fileSize: 1024 * 1024 * 5
-      },
-}))
-
-export default upload

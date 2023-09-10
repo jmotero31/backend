@@ -16,6 +16,7 @@ const auth = (req, res, next) =>{
 productRouter.get('/', authToken, getProductAll)
 productRouter.get('/:pid', authToken, getPoductId)
 // Para que funcione desde Postman sin ser admin
+productRouter.post('/', authToken, authPremiunAdmin, upload.array('file', 5), postProduct)
 //productRouter.post('/', authToken, authPremiunAdmin, upload('src/public/img/products', 'products').array('imagen', 5), postProduct)
 //productRouter.post('/', postProduct) //temporal
 productRouter.put('/:puid', authToken, authPremiunAdmin, putProductUpdateId)
