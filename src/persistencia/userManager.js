@@ -26,9 +26,9 @@ export default class userManager{
             return error
         }
     }  
-    async findAllOrderByLastName(){
+    async findAllOrderByLastName(bus,filter){
         try {     
-            const user = await userModel.find({},{_id: 0, __v: 0}).sort({last_name: 1})           
+            const user = await userModel.find(bus,filter).sort({last_name: 1})           
             return user
         } catch (error) {
             return error
@@ -58,5 +58,12 @@ export default class userManager{
           return error
         }
       }
-
+      async deleteMany(obj){
+        try {
+            deleteAllUser = await userModel.deleteMany(obj)
+            return deleteAllUser
+        } catch (error) {
+            return error
+        }
+      }
 }

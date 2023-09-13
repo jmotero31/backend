@@ -1,10 +1,9 @@
 //import { userModel } from "../models/Users.js"
-import { findAllOrderByLastName, updateUse, updateOne, findByIdUser } from "../services/user.services.js"
+import { findAllOrderByLastName, updateUse, updateOneUser, findByIdUser, findAll, deleteAllUsersInact } from "../services/user.services.js"
 
 export const getUserAll = async (req, res)=>{
     try {     
         const users = await findAllOrderByLastName()
-        
         if(users.length){
             //const userMapeado = users.map((p)=>p.toJSON())
             res.render('user',{usu: users, valorNav: true, usuario: req.user, name: req.user.nombre, rol: req.user.rol=="administrador"? true:false})      
@@ -71,12 +70,11 @@ export const updateProfile = async(req, res) =>{
             // Si no existe, agrega un nuevo documento
             user.documents.push({
                 name: req.body.filetype,
-                reference: `/${segmentos.slice(-2).join('/')}/${req.file.filename}`,
-                status: true
+                reference: `/${segmentos.slice(-2).join('/')}/${req.file.filename}`
             })
         }
-        const updateOneUser = await updateOne(req.params.uid, user)
-        if (updateOneUser) {
+        const updateUser = await updateOneUser(req.params.uid, user)
+        if (updateUser) {
             //return res.status(200).json({ status: 'success', payload: updateOneUser });
             res.status(200).redirect('/user') 
         } else {
@@ -86,6 +84,31 @@ export const updateProfile = async(req, res) =>{
         res.status(500).json({message: 'error', error})
     }
 }
+export const deleteUserInactiv = async (req, res)=>{
+    try {     
+        const users = await findAll()
+        if(users.length){
+            const currentDate = new Date().toISOString()
+            const usuariosInactivos = users.filter((usuario) => {
+                const date = new Date(usuario.last_connection).toISOString()
+                const timeDifference = new Date(currentDate) - new Date(date)    
+                const twoDaysInMillis = 2 * 24 * 60 * 60 * 1000 // 2 días en milisegundos
+                return twoDaysInMillis < timeDifference
+            })
+            const idsUsuariosInactivos = usuariosInactivos.map((usuario) => usuario._id)
+            const userDelete = await deleteAllUsersInact({ _id: { $in: idsUsuariosInactivos } })
+            if (!userDelete) return res.status(400).json({message: 'error'})    
+            res.status(200).json({status: 'success', payload: idsUsuariosInactivos })
+            //res.render('user',{usu: users, valorNav: true, usuario: req.user, name: req.user.nombre, rol: req.user.rol=="administrador"? true:false})                  
+        }else{
+            res.status(400).json({message: 'No users'})
+        }      
+    } catch (error) {
+        res.status(500).json({message: 'error', error})
+    }
+}
+
+/*
 export const updateDocumentIdent = async(req, res) =>{
     try {
         const user = await findByIdUser(req.params.uid)
@@ -112,3 +135,4 @@ export const updateDocumentIdent = async(req, res) =>{
         res.status(500).json({message: 'error', error})
     }
 }
+*/

@@ -30,7 +30,7 @@ export const findByIdUser = async(id)=>{
 }
 export const findAllOrderByLastName = async()=>{
     try {
-        const users = await usersManager.findAllOrderByLastName()
+        const users = await usersManager.findAllOrderByLastName({},{_id: 0, first_name: 1, last_name: 1 , email: 1, rol: 1})
         const adapUsuariosTodos = users.map((p)=>p.toJSON())
         return adapUsuariosTodos
     } catch (error) {
@@ -68,7 +68,7 @@ export const updateUse = async(id, obj, owner)=>{
 }
 export const updateUserLastConection = async(id, obj)=>{
     try {
-        const last_connection = new Date().toLocaleString()
+        const last_connection = new Date().toISOString()
         obj.last_connection = last_connection
         const updateUser = await usersManager.updateOne(id, obj)
         return updateUser
@@ -76,10 +76,18 @@ export const updateUserLastConection = async(id, obj)=>{
         return error
     }
 }
-export const updateOne = async(id, obj)=>{
+export const updateOneUser = async(id, obj)=>{
     try {
         const updateUser = await usersManager.updateOne(id, obj)
         return updateUser
+    } catch (error) {
+        return error
+    }
+}
+export const deleteAllUsersInact = async(userDelete)=>{
+    try {
+        const deleteUser = await usersManager.deleteMany(userDelete)
+        return deleteUser
     } catch (error) {
         return error
     }

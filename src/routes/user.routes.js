@@ -1,14 +1,15 @@
 import { Router } from "express"
-import { getUserAll, getFakerYou, updatePremierUser, updateProfile, updateDocumentIdent } from "../controllers/user.controllers.js" //  {, create}
+import { getUserAll, getFakerYou, updatePremierUser, updateProfile, deleteUserInactiv } from "../controllers/user.controllers.js" //  {, create}
 import { authToken, authAdmin } from "../utils/jsontoken.js"
 import upload from "../utils/multer.js"
 
 const userRoute = Router()
 
 userRoute.get('/', authToken, authAdmin, getUserAll)
-userRoute.get('/faker', getFakerYou)
+userRoute.get('/delete', deleteUserInactiv)
 userRoute.get('/premium/:uid', updatePremierUser)
 userRoute.post('/:uid/documents', upload.single('file'), updateProfile)
+userRoute.get('/faker', getFakerYou)
 
 
 //userRoute.post('/:uid/documents', upload('src/public/documents', 'DocumentIdent').single('DocumentIdent'))

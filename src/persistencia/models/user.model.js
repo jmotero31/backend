@@ -41,11 +41,7 @@ const userSchema = new Schema({
                     type: String,
                     enum: ["ProfileImagen" ,"DocumentIdent", "DocumentCompDomi", "DocumentCompCuen"]
                 },
-                reference: String,
-                status: {
-                    type: Boolean,
-                    default: false
-                }
+                reference: String
             }
         ],
         default: []

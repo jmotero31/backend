@@ -75,7 +75,7 @@ export const destroyCookie = async(req, res, next) =>{
     try {
         if(req.cookies['access_token']){
             res.clearCookie('access_token')      
-            req.user.last_connection = new Date().toLocaleString();
+            req.user.last_connection = new Date().toISOString();
             const userLast = req.user
             await updateUserLastConection(userLast._id, userLast)
             delete req.user
