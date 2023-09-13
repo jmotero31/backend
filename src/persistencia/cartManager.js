@@ -25,4 +25,12 @@ export default class cartManager{
             return error
         }       
     }
+    async deleteMany(obj){
+        try {
+            deleteAllUser = await cartModel.deleteMany(obj)
+            return deleteAllUser
+        } catch (error) {
+            return error
+        }
+      }
 }

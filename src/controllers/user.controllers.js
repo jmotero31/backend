@@ -1,6 +1,7 @@
 //import { userModel } from "../models/Users.js"
 import { findAllOrderByLastName, updateUse, updateOneUser, findByIdUser, findAll, deleteAllUsersInact } from "../services/user.services.js"
-
+import { deleteAllCartsInact } from '../services/cart.services.js'
+import { mailDeleteUser } from '../utils/nodemailer.js'
 export const getUserAll = async (req, res)=>{
     try {     
         const users = await findAllOrderByLastName()
@@ -96,8 +97,13 @@ export const deleteUserInactiv = async (req, res)=>{
                 return twoDaysInMillis < timeDifference
             })
             const idsUsuariosInactivos = usuariosInactivos.map((usuario) => usuario._id)
+            const idsCarritoUsuariosInactivos = usuariosInactivos.map((usuario) => usuario.cart)
             const userDelete = await deleteAllUsersInact({ _id: { $in: idsUsuariosInactivos } })
+            const cartDelete = await deleteAllCartsInact({_id: { $in: idsCarritoUsuariosInactivos }})
             if (!userDelete) return res.status(400).json({message: 'error'})    
+            usuariosInactivos.forEach(async (user) => {
+                await mailDeleteUser(user.email, user.last_name, user.first_name);
+              })
             res.status(200).json({status: 'success', payload: idsUsuariosInactivos })
             //res.render('user',{usu: users, valorNav: true, usuario: req.user, name: req.user.nombre, rol: req.user.rol=="administrador"? true:false})                  
         }else{

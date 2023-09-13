@@ -31,7 +31,7 @@ export const mailTicket = async(email, date, first_name, products, total, order)
             html: html
         })        
     } catch (error) {
-        console.log(error)
+        return error
     }
 }
 export const mailUser = async(email, last_name, first_name) => {
@@ -51,7 +51,7 @@ export const mailUser = async(email, last_name, first_name) => {
             html: html
         })        
     } catch (error) {
-        console.log(error)
+        return error
     }
 }
 export const verifypassword = async(email, last_name, first_name, link) => {
@@ -72,6 +72,25 @@ export const verifypassword = async(email, last_name, first_name, link) => {
             html: html
         })        
     } catch (error) {
-        console.log(error)
+        return error
+    }
+}
+export const mailDeleteUser = async(email, last_name, first_name)=>{
+    try {
+        const template = join(__dirname, '/views/template/userDelete.handlebars')
+        const data = await readFile(template, 'utf8')
+        const compiledTemplate = Handlebars.compile(data)
+        const html = compiledTemplate({
+            nombre: first_name,
+            apellido: last_name
+        })
+        await transporter.sendMail({
+            to: email,
+            subject: `Te esperamos pronto ${first_name} a Coder`,
+            //text: 'Prueba del primer correo desde el backend',
+            html: html
+        })        
+    } catch (error) {
+        return error
     }
 }

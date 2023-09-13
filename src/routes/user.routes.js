@@ -6,7 +6,7 @@ import upload from "../utils/multer.js"
 const userRoute = Router()
 
 userRoute.get('/', authToken, authAdmin, getUserAll)
-userRoute.get('/delete', deleteUserInactiv)
+userRoute.delete('/delete', authToken, authAdmin, deleteUserInactiv)
 userRoute.get('/premium/:uid', updatePremierUser)
 userRoute.post('/:uid/documents', upload.single('file'), updateProfile)
 userRoute.get('/faker', getFakerYou)

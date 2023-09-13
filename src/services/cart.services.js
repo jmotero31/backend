@@ -28,3 +28,11 @@ export const updateCart = async(id, obj)=>{
         return error
     }
 }
+export const deleteAllCartsInact = async(cartDelete)=>{
+    try {
+        const deleteCartUser = await cartsManager.deleteMany(cartDelete)
+        return deleteCartUser
+    } catch (error) {
+        return error
+    }
+}
