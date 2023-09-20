@@ -7,7 +7,7 @@ export const getUserAll = async (req, res)=>{
         const users = await findAllOrderByLastName()
         if(users.length){
             //const userMapeado = users.map((p)=>p.toJSON())
-            res.render('user',{usu: users, valorNav: true, usuario: req.user, name: req.user.nombre, rol: req.user.rol=="administrador"? true:false})      
+            res.render('user',{usu: users, valorNav: true, usuario: req.user, name:`Hola, ${req.user.first_name}`, rol: req.user.rol=="administrador"? true:false})      
             //res.status(200).json({message: 'Users found', users})
         }else{
             res.status(400).json({message: 'No users'})

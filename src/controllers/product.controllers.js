@@ -21,8 +21,7 @@ export const getProductAll = async (req, res)=>{
             const producto = await findProduct({},{__v: 0})
 
             const adapProducto = producto.map((p)=>p.toJSON())
-            
-            
+
 
             //res.status(200).send({status: 'success', payload: adapProducto})
             res.render('product',{ pro: adapProducto, valorNav: true, name:`Hola, ${req.user.first_name}` , rol: req.user.rol=="administrador"? true:false, carritoId: req.user.cart})           
@@ -44,9 +43,9 @@ export const getPoductId = async (req, res)=>{
         let pid = req.params.pid   
         //const productoId = await productModel.findOne({_id: pid}, {_id: 0, __v: 0})
         const productoId = await findOneProduct({_id: pid}, {_id: 0, __v: 0})
-        const adapProductoId = productoId.map((p)=>p.toJSON())     
+        const adapProductoId = productoId.map((p)=>p.toJSON())    
         if(productoId){
-            res.render('product', {producto: adapProductoId, valorNav: true, name:`Hola, ${req.user.first_name}`, rol: req.user.rol=="administrador"? true:false, carritoId: req.user.cart})
+            res.render('product', {producto: adapProductoId, valorNav: true, name:`Hola, ${req.user.first_name}`, rol: req.user.rol=="administrador"? true:false, carritoId: req.user.cart, cantidad: req.cant})
         }else{
             res.send(`No existe producto con ese Identificador = ${pid}`)
         }      

@@ -1,6 +1,7 @@
-import { Router } from "express";
-import { getRegister, getLogin, postLogiN, postRegisteR, failRegister, failLogin, destroyCookie, verifyPassword, newPassword, updatepass, newpass } from "../controllers/session.controllers.js";
-import passport from "passport";
+import { Router } from "express"
+import { getRegister, getLogin, postLogiN, postRegisteR, failRegister, failLogin, destroyCookie, verifyPassword, newPassword, updatepass, newpass } from "../controllers/session.controllers.js"
+import passport from "passport"
+import { authToken } from "../utils/jsontoken.js"
 
 const sessionRouter = Router()
 
@@ -11,7 +12,7 @@ sessionRouter.get('/register', getRegister)
 //Vista Login
 sessionRouter.get('/login', getLogin)
 //sessionRouter.post('/login', postLogin)  ahora pase el control a passport
-sessionRouter.get('/logout', destroyCookie) 
+sessionRouter.get('/logout', authToken, destroyCookie) 
 
 sessionRouter.get('/newpass', newpass)
 sessionRouter.post('/verify', verifyPassword)
@@ -28,11 +29,11 @@ sessionRouter.post('/verify/:token', updatepass)
 sessionRouter.post('/register', passport.authenticate('register', {failureRedirect: '/session/failRegister'}), postRegisteR)
 sessionRouter.get('/failRegister', failRegister)
 //Estategia Login
-sessionRouter.post('/login', passport.authenticate('login',{ failureRedirect: '/session/failLogin'}), postLogiN)  // tuve que hacer un cambio sobre el original de postLogin
+sessionRouter.post('/login', passport.authenticate('login',{ failureRedirect: '/session/login'}), postLogiN)  // tuve que hacer un cambio sobre el original de postLogin
 sessionRouter.get('/failLogin', failLogin)
 /*
 sessionRouter.get('/private', authToken, (req, res)=>{
-    console.log(req)
+    console.log(req)s
     res.json({message: 'ingrese con la autenticacion del token'})
 })
 */

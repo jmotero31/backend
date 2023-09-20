@@ -1,7 +1,4 @@
-
-<div>{{ dondeEstas }}</div>
-
-<div class="row h-100">
+<div class="row my-5 justify-content-center">
   <div class="col-md-4 my-5" >
     <form action="/chat" method="POST" class="card card-body rounded-0" id="chat">
       <h2 class="title" style="color:rgba(73, 177, 177, 0.665)">Consulta</h2>
@@ -9,18 +6,12 @@
       <input type="email" id="email" name="email" class="form-control" required>
       <br>
       <label for="sms" class="form-label">Mensaje: </label>
-      <textarea id="sms" name="sms" class="form-control" required></textarea>
+      <textarea id="txtComment" name="sms" class="form-control" required></textarea>
       <br>
       <button type="submit" class="btn btn-primary">Enviar</button>
     </form>
     <div id="alerta-enviado"></div>
-  </div>
- {{#if producto.length}}
-  <div class="col-md-8" id="productoshtml" style=" display: flex; flex-wrap: wrap; justify-content: space-evenly;">
- {{else}}
-    <div class="col-md-8" style=" display: flex; flex-wrap: wrap; justify-content: space-evenly;"><p>No se encontraron Productos en la BDD  {{ producto.length }}</p></div>
- {{/if}}   
-  </div>
+  </div>  
 </div>
 
 <script>
@@ -28,7 +19,7 @@
     $('#chat').submit((event) => {
       event.preventDefault();
       $('#email').val('');
-      $('#sms').val('');          
+      $('#txtComment').val('');          
     });
   });
 </script>

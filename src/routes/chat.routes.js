@@ -4,7 +4,7 @@ import { authToken, authUser } from "../utils/jsontoken.js";
 
 const chatRoute = Router()
 
-chatRoute.get('/', authToken, authUser, getChat)
-chatRoute.post('/', authToken, authUser, postChat)
+chatRoute.get('/', authToken, getChat)
+chatRoute.post('/', authToken, postChat)
 
 export default chatRoute

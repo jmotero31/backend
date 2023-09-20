@@ -15,8 +15,11 @@ export const getCartAll = async (req, res)=>{
         const valor = carrito.products.map((p)=>p.toJSON()) // mapeo xq cuando renderizo en el handlebars      
         if(valor.length){valor[0].idCarrito = id}
         req.cant = valor.length
+        //localStorage.setItem('cantidad', req.cant.toString())
+        
+
         //res.status(200).json({message:'Cart', carrito})
-        res.render('cart', {car: valor, idcarrito: id, valorNav: true, name:`Hola, ${req.user.first_name}` , rol: req.user.rol=="administrador"? true:false, cantidad: req.cant})       
+        res.render('cart', {car: valor, idcarrito: id, valorNav: true, name:`Hola, ${req.user.first_name}` , rol: req.user.rol=="administrador"? true:false})       
     } catch (error) {
         res.status(500).json({message: 'Error',error})
     }

@@ -1,4 +1,4 @@
-<div>{{ dondeEstas }}</div>
+<div class="row my-5 "></div>
 
 <div class="e">
             <table striped bordered hover class="i">
@@ -15,7 +15,7 @@
 {{#each car}}
 
             <tr class="aa">
-                <td ><img src="{{ this.id_prod.thumbmail}}" style= "width:60px;height:60px;padding:0.1rem" alt=""></img></td>
+                <td ><img src="{{ this.id_prod.thumbnail}}" style= "width:60px;height:60px;padding:0.1rem" alt=""></img></td>
                 <td>{{ this.id_prod.title }}</td>
                 <td>{{ this.cant }}</td>
                 <td>Unitario  $ {{this.id_prod.price}}</td>   
@@ -37,7 +37,7 @@
             <button data-cart-id="{{idcarrito}}" class="buttonAddCart buttonAddCart1 buttonAddCart2 purchaseCart" >Comprar</button>
             <button data-cart-id="{{idcarrito}}" class="buttonAddCart buttonAddCart1 buttonAddCart2 btndelete">Vaciar</button>
       </div>
-
+</div>
 <script>
   document.addEventListener('click', (event) => {
   if (event.target.classList.contains('btndelete')) {

@@ -74,7 +74,8 @@ export const destroySession = (req, res, next) =>{
 export const destroyCookie = async(req, res, next) =>{
     try {
         if(req.cookies['access_token']){
-            res.clearCookie('access_token')      
+            res.clearCookie('access_token') 
+            console.log(req.user)     
             req.user.last_connection = new Date().toISOString();
             const userLast = req.user
             await updateUserLastConection(userLast._id, userLast)
@@ -172,11 +173,9 @@ export const verifyPassword = async (req,res)=>{
         const email = req.body.email
         if(email){
             const user = await findEmailUser(email)
-            console.log(user)
             if (user){
                 const access_token = generateToken(user, '1h')
                 const linkpassword = `http://localhost:4000/session/verify/${access_token}`
-                console.log(linkpassword)
                 await verifypassword(user.email, user.last_name, user.first_name, linkpassword)
                 res.redirect('/session/login')
                 //res.status(200).json({message: 'Rebice su bandeja de entrada: el enlace para restablecer fue enviado =)'})
