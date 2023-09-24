@@ -1,9 +1,11 @@
 import { findProduct, findPaginateProduct, findOneProduct, insertManyProduct, updateOneProduct, deleteOneProduct } from '../services/product.services.js'
+import {findByIdUser} from '../services/user.services.js'
 //Importaciones de Manejador de errores
 import CustomError from '../services/errors/customError.js'
 import EErrors from '../services/errors/enums.js'
 import { generateProductErrorInfo } from '../services/errors/info.js'
 import { __dirname } from '../path.js'
+import { mailDeleteProductPremium } from '../utils/nodemailer.js'
 
 export const getProductAll = async (req, res)=>{
     try {
@@ -14,15 +16,11 @@ export const getProductAll = async (req, res)=>{
         const paginacion = {limit: limit, page: page}       
         if (category !== undefined) {filtro.category = category}
         if (status !== undefined) {filtro.status = status}
-        if (sort !== undefined) {paginacion.sort = {price: parseInt(sort)}}
-        
+        if (sort !== undefined) {paginacion.sort = {price: parseInt(sort)}}       
         if(JSON.stringify(req.query) == '{}'){   
             //const producto = await productModel.find({},{__v: 0})
             const producto = await findProduct({},{__v: 0})
-
             const adapProducto = producto.map((p)=>p.toJSON())
-
-
             //res.status(200).send({status: 'success', payload: adapProducto})
             res.render('product',{ pro: adapProducto, valorNav: true, name:`Hola, ${req.user.first_name}` , rol: req.user.rol=="administrador"? true:false, carritoId: req.user.cart})           
         }else{  
@@ -63,21 +61,21 @@ export const postProduct = async (req, res)=>{
                 message:'Error trying to create Product',
                 code: EErrors.INVALID_TYPES_ERROR
             })
-        }
-        
+        }      
         const thumbnails = []
-        const segmentos = req.files.destination.split('/')       
-        for (const file of req.files) {
-            thumbnails.push(`${segmentos.slice(-2).join('/')}` + file.filename)
+        if(!req.file){
+            const segmentos = req.files[0].destination.split('/') 
+            for (const file of req.files) {
+                thumbnails.push(`/${segmentos.slice(-2).join('/')}/` + file.filename)
+            }
+        }else{
+            const segmentos = req.file.destination.split('/')  
+            thumbnails.push(`/${segmentos.slice(-2).join('/')}/` + file.filename)
         }
         const objNuevo = { title: title, description: description, price: price, stock: stock, category: category, thumbnail: thumbnails, code: code, owner: req.user._id}
-        //const objProductoNew = req.body
-        setTimeout(async()  =>{
-            //await productModel.insertMany(objNuevo)
-            const newProduct = await insertManyProduct(objNuevo)
-            res.status(200).send({status: 'success', payload: newProduct})
-            //res.redirect('product') 
-        }, 1000);       
+        const newProduct = await insertManyProduct(objNuevo)
+        res.status(200).redirect('/product')
+        //res.status(200).send({status: 'success', payload: newProduct})       
     } catch (error) {
         res.send(error)
     }
@@ -98,15 +96,23 @@ export const putProductUpdateId = async (req, res) => {
 export const deleteProductId = async(req, res)=>{
     try {
         let pdid = req.params.did
+        const producto = await findOneProduct({_id: pdid})
+        if(!producto) return res.status(500).json({status: 'error', error: 'no existe producto'})
+        const IdUser = producto.owner._id
+        const user = await findByIdUser(IdUser)
         const deleteProduct = {}
-        if(req.user.rol === 'premiun') return deleteProduct = await deleteOneProduct({_id: pdid, owner: req.user._id})
+        if(user.rol === 'premiun'){
+            deleteProduct = await deleteOneProduct({_id: pdid})  
+            await mailDeleteProductPremium(user.email, user.last_name, user.first_name, producto.title)
+            return deleteProduct
+        }
         //await productModel.deleteOne({_id: pdid})
         deleteProduct = await deleteOneProduct({_id: pdid})
         //res.status(200).send({status: 'success', payload: deleteProduct})
-        res.send(deleteProduct)   
+        res.status(200).redirect('/user') 
     } catch (error) {
-        //res.status(500).send({status: 'error', error})
-        res.send(error)
+        res.status(500).send({status: 'error', error})
+        //res.send(error)
     }
 }
 export const getFakerYouProduct = async(req, res) =>{

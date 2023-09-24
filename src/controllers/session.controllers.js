@@ -1,6 +1,6 @@
 import {generateToken } from '../utils/jsontoken.js'
 import {verifypassword} from '../utils/nodemailer.js'
-import {findEmailUser, updateUser, updateUserLastConection} from '../services/user.services.js'
+import {findEmailUser, updateUser, updateUserLastConection, findByIdUser} from '../services/user.services.js'
 import config from '../config/config.js'
 import jwt from "jsonwebtoken"
 
@@ -75,10 +75,11 @@ export const destroyCookie = async(req, res, next) =>{
     try {
         if(req.cookies['access_token']){
             res.clearCookie('access_token') 
-            console.log(req.user)     
-            req.user.last_connection = new Date().toISOString();
-            const userLast = req.user
-            await updateUserLastConection(userLast._id, userLast)
+            res.clearCookie('connect.sid') 
+            //console.log(req.user)     
+            const user = await findByIdUser(req.user._id)
+            user.last_connection = new Date().toISOString()
+            await updateUserLastConection(user._id, user)
             delete req.user
             return res.redirect('/')         
         }else{
@@ -214,7 +215,7 @@ export const updatepass = async (req, res) =>{
          delete req.user._id
          delete req.user.__v
          const up = await updateUser(id, req.user)
-         res.redirect('/session/home')     
+         res.redirect('/session/login')     
     } catch (error) {
         return error
     }

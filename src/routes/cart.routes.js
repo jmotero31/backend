@@ -4,7 +4,7 @@ import { authToken, authUser, authPremiunUser } from '../utils/jsontoken.js'
 
 const cartRoute = Router()
 
-cartRoute.get('/', authToken, authUser, getCartAll)
+cartRoute.get('/', authToken, authPremiunUser, getCartAll)
 cartRoute.post('/', authToken, authUser, postCreateCart)
 cartRoute.get('/:cid', authToken, authUser, getCartId)
 
@@ -12,6 +12,6 @@ cartRoute.post('/:cid/product/:pid', authToken, authPremiunUser, postAddProductI
 cartRoute.put('/:cid/product/:pid', authToken, authUser, putSumProductInCart) // sabiendo que existe puedo aumentar o decrementar desde el carrito mismo
 cartRoute.delete('/:cid/product/:pid', authToken, authUser, deleteProductIdInCartId)
 cartRoute.delete('/:cid', authToken, authUser, deleteProductTheCartId)
-cartRoute.post('/:cid/purchase', authToken, authUser, purchaseCart)
+cartRoute.post('/:cid/purchase', authToken, authPremiunUser, purchaseCart)
 
 export default cartRoute

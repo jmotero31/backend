@@ -1,6 +1,6 @@
 <div class="row my-5 justify-content-center">
   <div class="col-md-4 my-5" >
-    <form action="/chat" method="POST" class="card card-body rounded-0" id="chat">
+    <form action="/chat" method="POST" class="card card-body rounded-0 shadow" id="chat">
       <h2 class="title" style="color:rgba(73, 177, 177, 0.665)">Consulta</h2>
       <label for="email" class="form-label">Correo: </label>
       <input type="email" id="email" name="email" class="form-control" required>
@@ -8,7 +8,7 @@
       <label for="sms" class="form-label">Mensaje: </label>
       <textarea id="txtComment" name="sms" class="form-control" required></textarea>
       <br>
-      <button type="submit" class="btn btn-primary">Enviar</button>
+      <button type="submit" class="btn btn-dark">Enviar</button>
     </form>
     <div id="alerta-enviado"></div>
   </div>  

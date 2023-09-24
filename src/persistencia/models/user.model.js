@@ -23,7 +23,7 @@ const userSchema = new Schema({
     },
     password: {
         type: String,
-        require: true
+        required: true
     },
     cart: {      
             type: Schema.Types.ObjectId,
@@ -44,7 +44,10 @@ const userSchema = new Schema({
                 reference: String
             }
         ],
-        default: []
+        default: [{name:
+            "ProfileImagen",
+            reference:
+            "/img/profiles/perfilImage.png"}]
     },
     last_connection: {
         type: String

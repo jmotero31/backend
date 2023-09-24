@@ -94,3 +94,23 @@ export const mailDeleteUser = async(email, last_name, first_name)=>{
         return error
     }
 }
+export const mailDeleteProductPremium = async(email, last_name, first_name, product)=>{
+    try {
+        const template = join(__dirname, '/views/template/productDelete.handlebars')
+        const data = await readFile(template, 'utf8')
+        const compiledTemplate = Handlebars.compile(data)
+        const html = compiledTemplate({
+            nombre: first_name,
+            apellido: last_name,
+            producto: product
+        })
+        await transporter.sendMail({
+            to: email,
+            subject: `Notificaciones ${first_name} sobre tu producto`,
+            //text: 'Prueba del primer correo desde el backend',
+            html: html
+        })        
+    } catch (error) {
+        return error
+    }
+}

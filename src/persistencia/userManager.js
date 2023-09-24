@@ -20,7 +20,7 @@ export default class userManager{
     }
     async findById(id){
         try {
-            const user = await userModel.findById(id)
+            const user = await userModel.findById({_id: id})
             return user
         } catch (error) {
             return error

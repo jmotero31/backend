@@ -1,13 +1,15 @@
 //import { userModel } from "../models/Users.js"
-import { findAllOrderByLastName, updateUse, updateOneUser, findByIdUser, findAll, deleteAllUsersInact } from "../services/user.services.js"
-import { deleteAllCartsInact } from '../services/cart.services.js'
+import { findAllOrderByLastName, updateUse, updateOneUser, findByIdUser, findAll, deleteAllUsersInact, deleteUserone } from "../services/user.services.js"
+import { deleteAllCartsInact, deleteOneCart } from '../services/cart.services.js'
 import { mailDeleteUser } from '../utils/nodemailer.js'
 export const getUserAll = async (req, res)=>{
     try {     
         const users = await findAllOrderByLastName()
+        const useLogin = await findByIdUser(req.user._id)
+        const perfil = useLogin.documents.find(objeto=> objeto.name == 'ProfileImagen') 
         if(users.length){
             //const userMapeado = users.map((p)=>p.toJSON())
-            res.render('user',{usu: users, valorNav: true, usuario: req.user, name:`Hola, ${req.user.first_name}`, rol: req.user.rol=="administrador"? true:false})      
+            res.render('user',{usu: users, valorNav: true, roles: useLogin.rol, image: perfil.reference, usuario: req.user, name:`Hola, ${req.user.first_name}`, rol: req.user.rol=="administrador"? true:false})      
             //res.status(200).json({message: 'Users found', users})
         }else{
             res.status(400).json({message: 'No users'})
@@ -34,8 +36,7 @@ export const updatePremierUser = async(req, res) =>{
         const nombresBuscados = ['DocumentCompCuen', 'DocumentIdent', 'DocumentCompDomi']
         const allsDocuments = nombresBuscados.every(nombre => {
             return obj.documents.some(documento => documento.name === nombre)
-        })
-        
+        })       
         if(obj){
             if(obj.rol == 'usuario' && allsDocuments){
                 const owner = 'premium'             
@@ -52,7 +53,7 @@ export const updatePremierUser = async(req, res) =>{
             }
         }else{
             return res.status(401).json({message: 'No existe usuario'})
-        }
+        }      
     } catch (error) {
         res.status(500).json({message: 'error', error})
     }
@@ -113,7 +114,17 @@ export const deleteUserInactiv = async (req, res)=>{
         res.status(500).json({message: 'error', error})
     }
 }
-
+export const deleteUser = async (req, res)=>{
+    try {
+        const userOne = await findByIdUser(req.params.uid)
+        const users = await deleteUserone(userOne._id)
+        const usersCart = await deleteOneCart(userOne.cart)
+        if(users) return res.status(200).redirect('/user')
+        return res.status(500).redirect('/user')
+    } catch (error) {
+        res.status(500).json({message: 'error', error})
+    }    
+}
 /*
 export const updateDocumentIdent = async(req, res) =>{
     try {

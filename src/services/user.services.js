@@ -30,7 +30,7 @@ export const findByIdUser = async(id)=>{
 }
 export const findAllOrderByLastName = async()=>{
     try {
-        const users = await usersManager.findAllOrderByLastName({},{_id: 0, first_name: 1, last_name: 1 , email: 1, rol: 1})
+        const users = await usersManager.findAllOrderByLastName({},{_id: 1, first_name: 1, last_name: 1 , email: 1, rol: 1})
         const adapUsuariosTodos = users.map((p)=>p.toJSON())
         return adapUsuariosTodos
     } catch (error) {
@@ -90,5 +90,13 @@ export const deleteAllUsersInact = async(userDelete)=>{
         return deleteUser
     } catch (error) {
         return error
+    }
+}
+export const deleteUserone = async(id)=>{
+    try {
+        const deleteUser = await usersManager.deleteOne(id)
+        return deleteUser
+    } catch (error) {
+        return error   
     }
 }

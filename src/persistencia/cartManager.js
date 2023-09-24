@@ -33,4 +33,12 @@ export default class cartManager{
             return error
         }
       }
+    async deleteOneCart(id){
+        try {
+            deleteAllUser = await cartModel.deleteOne({_id: id})
+            return deleteAllUser
+        } catch (error) {
+            return error
+        }
+    }
 }

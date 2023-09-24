@@ -9,7 +9,8 @@ export const getRaiz =  async (req, res)=>{
           console.log('cokki', req.cookies['access_token'])
             jwt.verify(req.cookies['access_token'], config.jwt_private_key, (error, Credential) => {
               if (error) {
-                return res.status(403).json({ error: 'Not authorized' });
+                return res.status(403).redirect('/session/login')
+                //return res.status(403).json({ error: 'Not authorized' })
               }
               const userData = Credential.user
               //const cantidadEnCarrito = parseInt(localStorage.getItem('cantidad')) || 0    
