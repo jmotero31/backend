@@ -1,22 +1,23 @@
 <div class="row my-5 justify-content-center">
-{{#if rol}}
+  {{#if rol}}
   <div class='justify-content-center' style="display: flex; flex-wrap: wrap; margin-top: 2rem;" id="products-container"
     data-carrito-id="{{ carritoId }}">
     {{#each pro}}
     <div class="card"
       style="width: 300px; margin: 10px; padding: 20px; background-color: #fff; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); border-radius: 5px;">
 
-      <img src="{{ this.thumbnail.[0] }}" class="card-img-top " alt="{{ this.thumbnail.[0] }}">
+      <img src="{{ this.thumbnail.[0] }}" class="card-img-top " alt="{{ this.thumbnail.[0] }}"
+        style="width: 100%; height: 200px; object-fit: cover;">
 
       <div class="card-body">
         <p class="list-group-item"
-          style="background-color: rgba(73, 177, 177, 0.665); color: azure; font-family: 'Times New Roman', Times, serif; font-weight: 900; font-size: x-large; border-radius: 0.5rem">
+          style="background-color: rgba(73, 177, 177, 0.665); color: azure; font-family: 'Times New Roman', Times, serif; font-weight: 900; font-size: 18px; border-radius: 0.5rem; padding: 5px 10px; text-overflow: ellipsis;">
           {{ this.category }}</p>
-        <h5 class="card-title" style="overflow: hidden">{{ this.title }}</h5>
+        <h5 class="card-title" style="overflow: hidden; font-size: 18px;text-overflow: ellipsis; white-space: nowrap;">
+          {{ this.title }}</h5>
       </div>
       <ul class="list-group list-group-flush">
-        <li class="list-group-item"> {{ this._id }} </li>
-        <li class="list-group-item">{{ this.stock }} </li>
+        <li class="list-group-item">Stock {{ this.stock }} </li>
         <li class="list-group-item">$ {{ this.price }}</li>
       </ul>
       <div class="card-body">
@@ -30,30 +31,31 @@
             style="border: none; background-color: #f1f1f1; padding: 5px 10px; font-size: 16px; cursor: pointer;"
             onclick="increaseQuantity(this)">+</button>
         </div>
-        <a href="/product/{{this._id}}" class="btn btn-dark">Eliminar</a>
+        <br>
+        <a href="/product/{{this._id}}" class="btn btn-dark btnAddCart" style="display: block; margin: 0 auto;">Eliminar</a>
       </div>
     </div>
     {{/each}}
   </div>
-{{else}}
-
+  {{else}}
   <div class='justify-content-center' style="display: flex; flex-wrap: wrap; margin-top: 2rem;" id="products-container"
     data-carrito-id="{{ carritoId }}">
     {{#each pro}}
     <div class="card"
       style="width: 300px; margin: 10px; padding: 20px; background-color: #fff; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); border-radius: 5px;">
 
-      <img src="{{ this.thumbnail.[0] }}" class="card-img-top " alt="{{ this.thumbnail.[0] }}">
+      <img src="{{ this.thumbnail.[0] }}" class="card-img-top " alt="{{ this.thumbnail.[0] }}"
+        style="width: 100%; height: 200px; object-fit: cover;">
 
       <div class="card-body">
         <p class="list-group-item"
-          style="background-color: rgba(73, 177, 177, 0.665); color: azure; font-family: 'Times New Roman', Times, serif; font-weight: 900; font-size: x-large; border-radius: 0.5rem">
+          style="background-color: rgba(73, 177, 177, 0.665); color: azure; font-family: 'Times New Roman', Times, serif; font-weight: 900; font-size: 18px; border-radius: 0.5rem; padding: 5px 10px; text-overflow: ellipsis;">
           {{ this.category }}</p>
-        <h5 class="card-title" style="overflow: hidden">{{ this.title }}</h5>
+        <h5 class="card-title" style="overflow: hidden; font-size: 18px;text-overflow: ellipsis; white-space: nowrap;">
+          {{ this.title }}</h5>
       </div>
       <ul class="list-group list-group-flush">
-        <li class="list-group-item"> {{ this._id }} </li>
-        <li class="list-group-item">{{ this.stock }} </li>
+        <li class="list-group-item">Stock {{ this.stock }} </li>
         <li class="list-group-item">$ {{ this.price }}</li>
       </ul>
       <div class="card-body">
@@ -67,8 +69,10 @@
             style="border: none; background-color: #f1f1f1; padding: 5px 10px; font-size: 16px; cursor: pointer;"
             onclick="increaseQuantity(this)">+</button>
         </div>
-        <button data-producto-id="{{ this._id }}" data-carrito-id="{{ carritoId }}" style="margin: 1rem"
-          class="btn btn-dark btnAddCart" onclick="addToCart(this)">Agregar al carrito</button>
+        <br>
+        <button data-producto-id="{{ this._id }}" data-carrito-id="{{ carritoId }}"
+          style="display: block; margin: 0 auto;" class="btn btn-dark btnAddCart" onclick="addToCart(this)">Agregar al
+          carrito</button>
       </div>
     </div>
     {{/each}}
