@@ -1,11 +1,16 @@
 
-<div class="row justify-content-center align-items-center my-3">
+<div class="row justify-content-center align-items-center" style="margin-top: 5rem">
     <div class="col-sm-12 col-md-4">
-        <img src="{{ image }}" alt="{{usuario._id}} Foto de perfil">
+        <img src="{{ image }}" alt="{{usuario._id}} Foto de perfil" style="width: 300px; height: 300px; max-width: 100%; height: auto;border-radius: 50%">
         <h3 class="my-4">{{ usuario.first_name }}</h3>
         <h5 class="">{{ roles }}</h5>
         <br><br>
+        {{#if rolet}}
+        <a href="/user/premium/{{usuario._id}}" class="btn btn-dark">Volver a Usuario!!!</a>
+        {{/if }}
+        {{#unless rolet}}
         <a href="/user/premium/{{usuario._id}}" class="btn btn-dark">Quiero Ser Premium!!!</a>
+        {{/unless}}
     </div>
     <div class="col-sm-12 col-md-8" style="margin-top: 5rem;">
         <div class="card">
@@ -63,7 +68,7 @@
         {{/unless}}
     </div>
 </div>
-{{#unless rol}}
+{{#if rolet}}
 <div class="row my-2 justify-content-center align-items-center">
   <div class="col-md-12">
     <div class="card">
@@ -112,7 +117,7 @@
     </div>
    </div>  
 </div>
-{{/unless}}
+{{/if}}
 
 
 {{#if rol}}

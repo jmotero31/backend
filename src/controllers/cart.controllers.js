@@ -12,14 +12,18 @@ export const getCartAll = async (req, res)=>{
     try {      
         const id = req.user.cart
         const carrito = await findOneIdCartPopulate(id, {__v: 0})
-        const valor = carrito.products.map((p)=>p.toJSON()) // mapeo xq cuando renderizo en el handlebars      
+        let total = 0
+        const valor = carrito.products.map((p)=>p.toJSON()) // mapeo xq cuando renderizo en el handlebars  
+        valor.forEach(producto => {
+            const subtotal = producto.id_prod.price * producto.cant
+            producto.subtotal = subtotal
+            total += subtotal
+          })
         if(valor.length){valor[0].idCarrito = id}
         req.cant = valor.length
         //localStorage.setItem('cantidad', req.cant.toString())
-        
-
         //res.status(200).json({message:'Cart', carrito})
-        res.render('cart', {car: valor, idcarrito: id, valorNav: true, name:`Hola, ${req.user.first_name}` , rol: req.user.rol=="administrador"? true:false})       
+        res.render('cart', {car: valor, idcarrito: id, valorNav: true, name:`Hola, ${req.user.first_name}` , rol: req.user.rol=="administrador"? true:false, total: total})       
     } catch (error) {
         res.status(500).json({message: 'Error',error})
     }
@@ -53,11 +57,13 @@ export const postAddProductInCart = async (req, res)=>{
         const carritoCid = await findOneIdCartPopulate(cid, {})       
         const productoPid = await findOneProduct({_id: pid}, {})          
         if(productoPid && carritoCid){
-            const valor = carritoCid.products.find(car => car.id_prod == pid)
+            console.log('carrito', carritoCid.products)
+            const valor = carritoCid.products.find(car => car.id_prod._id == pid)
+            console.log('existe',valor)
             if(valor){
                 if(parseInt(quantity) <= productoPid.stock){
                     // si el producto ya se encuentra en el carrito | actualizo la cantidad
-                    const indexProductoId = carritoCid.products.findIndex(car => car.id_prod == pid)
+                    const indexProductoId = carritoCid.products.findIndex(car => car.id_prod._id == pid)
                     carritoCid.products[indexProductoId].cant = carritoCid.products[indexProductoId].cant + parseInt(quantity)
                     const cartUpdate = await updateCart(cid, carritoCid)                    
                     //res.send(carritoCid)

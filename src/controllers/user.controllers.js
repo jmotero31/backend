@@ -9,7 +9,7 @@ export const getUserAll = async (req, res)=>{
         const perfil = useLogin.documents.find(objeto=> objeto.name == 'ProfileImagen') 
         if(users.length){
             //const userMapeado = users.map((p)=>p.toJSON())
-            res.render('user',{usu: users, valorNav: true, roles: useLogin.rol, image: perfil.reference, usuario: req.user, name:`Hola, ${req.user.first_name}`, rol: req.user.rol=="administrador"? true:false})      
+            res.render('user',{usu: users, valorNav: true, roles: useLogin.rol.toUpperCase(), image: perfil.reference, usuario: req.user, name:`Hola, ${req.user.first_name}`, rol: req.user.rol=="administrador"? true:false,  rolet: useLogin.rol=="premium"? true:false})      
             //res.status(200).json({message: 'Users found', users})
         }else{
             res.status(400).json({message: 'No users'})

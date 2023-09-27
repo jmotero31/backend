@@ -1,44 +1,43 @@
-<div class="row my-5">
-
-<div class="e">
-            <table striped bordered hover class="i">
-            <thead class="o">
-              <tr>
-                <th>Producto</th>
-                <th></th>
-                <th>Cant</th>
-                <th>Subtotal</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody id="carrito-container" class="er">
-{{#each car}}
-
-            <tr class="aa">
-                <td ><img src="{{ this.id_prod.thumbnail}}" style= "width:60px;height:60px;padding:0.1rem" alt=""></img></td>
-                <td>{{ this.id_prod.title }}</td>
-                <td>{{ this.cant }}</td>
-                <td>Unitario  $ {{this.id_prod.price}}</td>   
-                <td><button data-producto-id="{{ this.id_prod._id }}" class="buttondel cartdelete" data-cart-id="{{this.idCarrito}}"> X </button></td>        
-              </tr>
-{{/each}}
-            </tbody>
-            <br /><br />
-            <tfoot>
-              <tr class="u">
-                <td>TOTAL</td>
-                <td></td>
-                <td>$ </td>
-                <td></td>
-                <td></td>
-              </tr>
-            </tfoot>
-            </table>
-            <button data-cart-id="{{idcarrito}}" class="buttonAddCart buttonAddCart1 buttonAddCart2 purchaseCart bg-black">Comprar</button>
-            <button data-cart-id="{{idcarrito}}" class="buttonAddCart buttonAddCart1 buttonAddCart2 btndelete ">Vaciar</button>
-      </div>
+<div class="row" style="margin-top: 5rem;">
+  <div class="col-12">
+    <div class="table-responsive d-flex justify-content-center">
+      <table class="table table-borderless table-hover" style="max-width: 70%;">
+        <thead class="thead-light">
+          <tr>
+            <th style="border: none;">Producto</th>
+            <th style="border: none;"></th>
+            <th style="border: none;">Cant</th>
+            <th style="border: none;">Subtotal</th>
+            <th style="border: none;"></th>
+          </tr>
+        </thead>
+        <tbody id="carrito-container">
+          {{#each car}}
+          <tr>
+            <td class="align-middle"><img src="{{ this.id_prod.thumbnail }}" alt="{{ this.id_prod.title }}" style="max-width: 60px; max-height: 60px;" class="img-thumbnail"></td>
+            <td class="align-middle">{{ this.id_prod.title }}</td>
+            <td class="align-middle">{{ this.cant }}</td>
+            <td class="align-middle"> $ {{ this.subtotal }}</td>
+            <td class="align-middle"><button data-producto-id="{{ this.id_prod._id }}" class="btn btn-danger btn-sm buttondel cartdelete" data-cart-id="{{ this.idCarrito }}">X</button></td>
+          </tr>
+          {{/each}}
+        </tbody>
+        <tfoot class="u">
+          <tr>
+            <td colspan="5" class="text-center">TOTAL     ${{ total }}</td>
+      
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+    <div class="text-center">
+      <button data-cart-id="{{ idcarrito }}" class="btn btn-dark purchaseCart">Comprar</button>
+      <button data-cart-id="{{ idcarrito }}" class="btn btn-dark btndelete">Vaciar</button>
+    </div>
+  </div>
 </div>
-</div>
+
+
 <script>
   document.addEventListener('click', (event) => {
   if (event.target.classList.contains('btndelete')) {
@@ -62,9 +61,7 @@
           showConfirmButton: false,
           timer: 2000
         }).then(() => {
-          const carritoContainer = document.getElementById('carrito-container');
-          carritoContainer.innerHTML = ''; // Eliminar los elementos del carrito 
-          //location.reload(); // Recargar la página
+          location.reload(); // Recargar la página
           }) 
       })
       .catch(error => {
