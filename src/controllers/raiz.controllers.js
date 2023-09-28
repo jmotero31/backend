@@ -6,7 +6,6 @@ export const getRaiz =  async (req, res)=>{
     try {
         req.logger.warning(`${req.method} en ${req.url} - ${new Date().toLocaleTimeString()}`)
         if (req.cookies['access_token']) {
-          console.log('cokki', req.cookies['access_token'])
             jwt.verify(req.cookies['access_token'], config.jwt_private_key, (error, Credential) => {
               if (error) {
                 return res.status(403).redirect('/session/login')
@@ -22,7 +21,7 @@ export const getRaiz =  async (req, res)=>{
               })
             })
           } else {
-            res.redirect('/session/login')
+            res.render('home')
           }
 
     } catch (error) {
