@@ -21,5 +21,6 @@ export default{
     twilio_token: process.env.TWILIO_AUTH_TOKEN,
     twilio_SID: process.env.TWILIO_ACCOUNT_SID,
     twilio_number: process.env.TWILIO_PHONE_NUMBER,
-    around: process.env.AROUND  
+    around: process.env.AROUND, 
+    stripe: process.env.STRIPE
 }

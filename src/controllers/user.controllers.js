@@ -12,7 +12,8 @@ export const getUserAll = async (req, res)=>{
             res.render('user',{usu: users, valorNav: true, roles: useLogin.rol.toUpperCase(), image: perfil.reference, usuario: req.user, name:`Hola, ${req.user.first_name}`, rol: req.user.rol=="administrador"? true:false,  rolet: useLogin.rol=="premium"? true:false})      
             //res.status(200).json({message: 'Users found', users})
         }else{
-            res.status(400).json({message: 'No users'})
+            res.status(401).render('401')
+            //res.status(400).json({message: 'No users'})
         }      
     } catch (error) {
         res.status(500).json({message: 'error', error})
@@ -52,7 +53,7 @@ export const updatePremierUser = async(req, res) =>{
                 res.status(500).json({message: 'faltan comprobantes'})
             }
         }else{
-            return res.status(401).json({message: 'No existe usuario'})
+            return res.status(401).render('401')   //json({message: 'No existe usuario'})
         }      
     } catch (error) {
         res.status(500).json({message: 'error', error})

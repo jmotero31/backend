@@ -20,7 +20,7 @@ productRouter.post('/', authToken, authPremiunAdmin, upload.array('file', 5), po
 //productRouter.post('/', authToken, authPremiunAdmin, upload('src/public/img/products', 'products').array('imagen', 5), postProduct)
 //productRouter.post('/', postProduct) //temporal
 productRouter.put('/:puid', authToken, authPremiunAdmin, putProductUpdateId)
-productRouter.delete('/:did', authToken, authPremiunAdmin, deleteProductId)
+productRouter.get('/delete/:did', authToken, authPremiunAdmin, deleteProductId)
 productRouter.get('/mockingproducts', getFakerYouProduct)
 
 export default productRouter

@@ -95,21 +95,27 @@ export const putProductUpdateId = async (req, res) => {
 }
 export const deleteProductId = async(req, res)=>{
     try {
+        console.log(req.params.did)
         let pdid = req.params.did
         const producto = await findOneProduct({_id: pdid})
+        console.log(producto)
         if(!producto) return res.status(500).json({status: 'error', error: 'no existe producto'})
-        const IdUser = producto.owner._id
+        const IdUser = producto.owner
+
+        console.log(IdUser)
         const user = await findByIdUser(IdUser)
-        const deleteProduct = {}
-        if(user.rol === 'premiun'){
+        console.log(user)
+        let deleteProduct = {}
+        if(user.rol === 'premium'){
             deleteProduct = await deleteOneProduct({_id: pdid})  
-            await mailDeleteProductPremium(user.email, user.last_name, user.first_name, producto.title)
-            return deleteProduct
+            await mailDeleteProductPremium(user.email, user.last_name, user.first_name, deleteProduct.title)
+            return res.status(200).redirect('/product')//deleteProduct
         }
         //await productModel.deleteOne({_id: pdid})
         deleteProduct = await deleteOneProduct({_id: pdid})
         //res.status(200).send({status: 'success', payload: deleteProduct})
-        res.status(200).redirect('/user') 
+        console.log('hola')
+        res.status(200).redirect('/product')
     } catch (error) {
         res.status(500).send({status: 'error', error})
         //res.send(error)
