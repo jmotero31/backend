@@ -8,12 +8,9 @@ export const getUserAll = async (req, res)=>{
         const useLogin = await findByIdUser(req.user._id)
         const perfil = useLogin.documents.find(objeto=> objeto.name == 'ProfileImagen') 
         if(users.length){
-            //const userMapeado = users.map((p)=>p.toJSON())
             res.render('user',{usu: users, valorNav: true, roles: useLogin.rol.toUpperCase(), image: perfil.reference, usuario: req.user, name:`Hola, ${req.user.first_name}`, rol: req.user.rol=="administrador"? true:false,  rolet: useLogin.rol=="premium"? true:false})      
-            //res.status(200).json({message: 'Users found', users})
         }else{
             res.status(401).render('401')
-            //res.status(400).json({message: 'No users'})
         }      
     } catch (error) {
         res.status(500).json({message: 'error', error})
@@ -43,17 +40,15 @@ export const updatePremierUser = async(req, res) =>{
                 const owner = 'premium'             
                 const updateUserPremium = await updateUse(id, obj, owner)
                 return res.status(200).redirect('/user')
-                //return res.status(200).json({status: 'success', payload: updateUserPremium})
             }else if(obj.rol == 'premium'){
                 const owner = 'usuario'             
                 const updateUserPremium = await updateUse(id, obj, owner)
                 return res.status(200).redirect('/user')
-                //return res.status(200).json({status: 'success', payload: updateUserPremium})
             }else{
                 res.status(500).json({message: 'faltan comprobantes'})
             }
         }else{
-            return res.status(401).render('401')   //json({message: 'No existe usuario'})
+            return res.status(401).render('401')
         }      
     } catch (error) {
         res.status(500).json({message: 'error', error})
@@ -62,12 +57,10 @@ export const updatePremierUser = async(req, res) =>{
 export const updateProfile = async(req, res) =>{
     try {
         const segmentos = req.file.destination.split('/');
-        //const parteDeseada = '/' + segmentos.slice(-2).join('/');
         const user = await findByIdUser(req.params.uid)
         if(!user) return res.status(401).json({message: 'No existe usuario'})     
         const existingDocumentIndex = user.documents.findIndex(doc => doc.name === req.body.filetype);
         if (existingDocumentIndex !== -1) {
-            //user.documents[existingDocumentIndex].reference = `/img/profiles/${req.file.filename}`
             user.documents[existingDocumentIndex].reference = `/${segmentos.slice(-2).join('/')}/${req.file.filename}`
         } else {
             // Si no existe, agrega un nuevo documento
@@ -78,7 +71,6 @@ export const updateProfile = async(req, res) =>{
         }
         const updateUser = await updateOneUser(req.params.uid, user)
         if (updateUser) {
-            //return res.status(200).json({ status: 'success', payload: updateOneUser });
             res.status(200).redirect('/user') 
         } else {
             return res.status(500).json({ message: 'Error al actualizar el usuario' });
@@ -106,8 +98,7 @@ export const deleteUserInactiv = async (req, res)=>{
             usuariosInactivos.forEach(async (user) => {
                 await mailDeleteUser(user.email, user.last_name, user.first_name);
               })
-            res.status(200).json({status: 'success', payload: idsUsuariosInactivos })
-            //res.render('user',{usu: users, valorNav: true, usuario: req.user, name: req.user.nombre, rol: req.user.rol=="administrador"? true:false})                  
+            res.status(200).json({status: 'success', payload: idsUsuariosInactivos })        
         }else{
             res.status(400).json({message: 'No users'})
         }      
@@ -126,31 +117,3 @@ export const deleteUser = async (req, res)=>{
         res.status(500).json({message: 'error', error})
     }    
 }
-/*
-export const updateDocumentIdent = async(req, res) =>{
-    try {
-        const user = await findByIdUser(req.params.uid)
-        if(!user) return res.status(401).json({message: 'No existe usuario'})     
-        const existingDocumentIndex = user.documents.findIndex(doc => doc.name === `${req.file.fieldname}`) // esto se modifica
-        if (existingDocumentIndex !== -1) {
-        const imgProfilesPath = '/' + path.relative('src/public', destination)
-          user.documents[existingDocumentIndex].reference = `/${path.relative('src/public', req.file.destination)}/${req.file.filename}`  // esto se modifica
-        } else {
-          // Si no existe, agrega un nuevo documento
-          user.documents.push({
-            name: `${req.file.fieldname}`, // esto se modifica
-            reference: `/documents/${req.file.filename}`,// esto se modifica
-            status: true
-          })
-        }
-        const updateOneUser = await updateOne(req.params.uid, user)
-        if (updateOneUser) {
-            return res.status(200).json({ status: 'success', payload: updateOneUser });
-          } else {
-            return res.status(500).json({ message: 'Error al actualizar el usuario' });
-          }
-    } catch (error) {
-        res.status(500).json({message: 'error', error})
-    }
-}
-*/

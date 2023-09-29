@@ -12,10 +12,4 @@ userRoute.get('/delete/:uid', deleteUser)
 userRoute.post('/:uid/documents', upload.single('file'), updateProfile)
 userRoute.get('/faker', getFakerYou)
 
-
-//userRoute.post('/:uid/documents', upload('src/public/documents', 'DocumentIdent').single('DocumentIdent'))
-//userRoute.post('/:uid/documents', upload('src/public/img/profiles', 'ProfileImagen').single('ProfileImagen'), updateProfile)
-//userRoute.post('/:uid/documents', upload('src/public/documents', 'DocumentCompDomi').array('DocumentCompDomi', 5), updateDocument('DocumentCompDomi'))
-//userRoute.post('/:uid/documents', upload('src/public/documents', 'DocumentCompCuen').array('DocumentCompCuen', 5), updateDocument('DocumentCompCuen'))
-
 export default userRoute

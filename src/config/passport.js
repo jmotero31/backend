@@ -1,21 +1,15 @@
 import passport from 'passport' //Importo el core de passport
 import local from 'passport-local' //Importo la estrategia a utilizar
-//import { Strategy as LocalStrategy } from 'passport-local'; otra alternativa como la de abajo para trabajar con las estarategias
 import { Strategy as GithubStrategy } from 'passport-github2';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
-//import jwt, { ExtractJwt } from 'passport-jwt'
-//import { buscarUser, buscarUserId, createUser, createUserPassport } from "../controllers/user.controllers.js";
-//import { postCreateCart } from '../controllers/cart.controllers.js'
 import { validatePassword } from '../utils/bcrypt.js'
 import config from './config.js';
 import { findEmailUser, findByIdUser, createUser } from '../services/user.services.js'
 import { createCart } from '../services/cart.services.js'
 import { mailUser } from '../utils/nodemailer.js'
 
-const LocalStrategy = local.Strategy //Defino mi estrategia
-//const GitHubStrategy = GitHub.Strategy // o en su defecto no hago esto y puedo hacer desde paspport.use('github', new GitHubStrategy), pero importando GitHubStrategy
+const LocalStrategy = local.Strategy
 
-//const JWTStrategy = jwt.Strategy
 const cookieExtractor = req =>{
     const token = (req && req.cookies) ? req.cookies['access_token'] : null
     return token
@@ -29,14 +23,12 @@ const initializePassport = () => {
             const { first_name, last_name, email, gender } = req.body  
             if (!first_name || !last_name || !email || !gender || !password) return done(null, { status: "error", error: "Incomplete values" })     
             try {
-                const user = await findEmailUser(username) //Busco un usuario con el mail ingresado y verifico si ya existe en la base
+                const user = await findEmailUser(username) 
                 if (user) {
-                    return done(null, false) //Usuario ya registrado, false no se creo ningun usuario
+                    return done(null, false) 
                 }
-                //Usuario no existe
-                //const passwordHash = createHash(password)
-                const carrito = await createCart() // FALTA TRAER EL SERVICIO DE CART
-                const cart = carrito._id.toString()  // FALTA TRAER EL SERVICIO DE CART
+                const carrito = await createCart() 
+                const cart = carrito._id.toString()  
                 const userCreated =  await createUser({
                     first_name: first_name,
                     last_name: last_name,
@@ -51,21 +43,14 @@ const initializePassport = () => {
                 return done(error)
             }
         }))
-    //Login de usuarios
     passport.use('login', new LocalStrategy({ usernameField: 'email' }, async (username, password, done) => {
         try {
             const user = await findEmailUser(username)  
-             ///username es el email
-            if (!user) { //Usuario no encontrado
-                //req.logger.warning(`${req.method} en ${req.url} usuario no encontrado - ${new Date().toLocaleTimeString()}`)
-                //console.log('usuario no encontrado')
+            if (!user) { 
                 return done(null, false)
-                //return res.status(401).jsos({status: ' error', error: ' Invalid credentials'})
             }
             if (!validatePassword(password, user.password)) {
-                //req.logger.warning(`${req.method} en ${req.url} Contraseña no valida - ${new Date().toLocaleTimeString()}`)
-                //console.log('Contraseña no valida')
-                return done(null, false)        //Contraseña no valida
+                return done(null, false) 
             }     
             return done(null, user)
         } catch (error) {
@@ -85,7 +70,6 @@ const initializePassport = () => {
             if (user) return done(null, user)
             const carrito = await createCart()
             const cart = carrito._id.toString()
-            
             const newUser = await createUser({
                 first_name: profile._json.name.split(' ')[0],
                 last_name: profile._json.name.split(' ')[1] || '',
@@ -127,25 +111,7 @@ const initializePassport = () => {
             return cb('Error to login with Google')
         }
     }
-    ));
-    //-----------------------------------------------------------------------------------------------------------------------------
-    // Defino mi estrategia = JWT
-    //------------------------------------------------------------------------------------------------------------------------------
-    /*
-    passport.use('jwt', new JWTStrategy({
-        jwtFromRequest: ExtractJwt.fromExtractors([cookieExtractor]),
-        secretOrKey: config.jwt_private_key
-    }, async(jwt_payload, done)=>{
-        try {
-            return done(null, jwt_payload)
-        } catch (error) {
-            return done(error)
-        }
-    }))
-    */
-    //-----------------------------------------------------------------------------------------------------------------------------
-    //Configuracion de passport para sessiones
-    // Durante el registro de un nuevo usuario solamente me quedo con el id para obtener sus datos luego
+    ))
     passport.serializeUser((user, done) => {
         done(null, user._id)
     })

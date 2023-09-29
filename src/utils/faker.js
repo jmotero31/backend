@@ -8,7 +8,6 @@ export const generateUser = () =>{
         gender: fakerEs.person.gender().charAt(0),
         psssword: fakerEs.internet.password({ length: 8 }),
         cart: fakerEs.database.mongodbObjectId()
-        //,rol
     }
 }
 export const generateProduct = ()=>{

@@ -32,7 +32,7 @@
             onclick="increaseQuantity(this)">+</button>
         </div>
         <br>
-        <a href="/product/delete/{{this._id}}" class="btn btn-dark btnAddCart" style="display: block; margin: 0 auto;">Eliminar</a>
+        <a data-product-id="{{this._id}}" class="btn btn-dark btndelet" style="display: block; margin: 0 auto;">Eliminar</a>
       </div>
     </div>
     {{/each}}
@@ -82,23 +82,14 @@
 
 
 <script>
-  document.getElementById('btnMostrarFormulario').addEventListener('click', () => {
-    let formulario = document.getElementById('formulario')
-    if (formulario.style.display === 'none') {
-      formulario.style.display = 'block'
-    } else {
-      formulario.style.display = 'none'
-    }
-  })
+
 
   function addToCart(button) {
     const cartId = button.closest('#products-container').dataset.carritoId; // Reemplaza con el ID real del carrito
-    console.log(cartId)
     const productoId = button.dataset.productoId;
     const quantityInput = button.parentNode.querySelector('.quantity-input');
     const quantity = quantityInput.value;
     const url = 'http://localhost:4000/cart/' + cartId + '/product/' + productoId;
-    console.log(url);
     const data = { quantity: quantity };
 
     fetch(url, {
@@ -136,5 +127,38 @@
     var quantityInput = button.parentNode.querySelector('.quantity-input');
     quantityInput.value = parseInt(quantityInput.value) + 1;
   }
+
+
+
+    document.addEventListener('click', (event) => {
+  if (event.target.classList.contains('btndelet')) {
+    const productId = event.target.dataset.productId//'64749e36cf5a2f56927e9d30'//event.target.dataset.cartId; // Reemplaza con el ID real del carrito
+    const url = 'http://localhost:4000/product/' + productId
+    const data={}
+    fetch(url, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data); 
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Producto Eliminado',
+          showConfirmButton: false,
+          timer: 2000
+        }).then(() => {
+          location.reload()
+          }) 
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }
+})
 
 </script>

@@ -2,7 +2,6 @@ import { findOneIdCartPopulate, createCart, updateCart } from '../services/cart.
 import { findOneProduct, updateOneProduct, findProduct } from "../services/product.services.js"
 import { createTicket } from '../services/ticket.services.js'
 import { mailTicket } from '../utils/nodemailer.js'
-//Importaciones de Manejador de errores
 import CustomError from '../services/errors/customError.js'
 import EErrors from '../services/errors/enums.js'
 import { generateCartErrorInfo } from '../services/errors/info.js'
@@ -21,8 +20,6 @@ export const getCartAll = async (req, res)=>{
           })
         if(valor.length){valor[0].idCarrito = id}
         req.cant = valor.length
-        //localStorage.setItem('cantidad', req.cant.toString())
-        //res.status(200).json({message:'Cart', carrito})
         res.render('cart', {car: valor, idcarrito: id, valorNav: true, name:`Hola, ${req.user.first_name}` , rol: req.user.rol=="administrador"? true:false, total: total})       
     } catch (error) {
         res.status(500).json({message: 'Error',error})
@@ -31,7 +28,6 @@ export const getCartAll = async (req, res)=>{
 export const postCreateCart = async(req,res) =>{
     try {
         const carrito = await createCart({})
-        //res.send({status:"success", payload: carrito})
         res.status(200).json({message:'Create Cart', carrito})       
     } catch (error) {
         res.status(500).json({message: 'Error',error})
@@ -42,8 +38,7 @@ export const getCartId = async (req, res)=>{
         let cid = req.params.cid
         const carritoCid = await findOneIdCartPopulate(cid, {_id: 0, __v: 0})       
         const valor = carritoCid.products.map((p)=>p.toJSON())  // mapeo xq cuando renderizo en el handlebars 
-        res.render('cart', {car: valor, valorNav: true, name: `Hola, ${req.user.first_name}`, rol: req.user.rol=="administrador"? true:false})  
-        //res.status(200).json({message:'Cart', carritoCid})         
+        res.render('cart', {car: valor, valorNav: true, name: `Hola, ${req.user.first_name}`, rol: req.user.rol=="administrador"? true:false})          
     } catch (error) {
         res.status(500).json({message: 'Error',error})
     }
@@ -66,11 +61,9 @@ export const postAddProductInCart = async (req, res)=>{
                     const indexProductoId = carritoCid.products.findIndex(car => car.id_prod._id == pid)
                     carritoCid.products[indexProductoId].cant = carritoCid.products[indexProductoId].cant + parseInt(quantity)
                     const cartUpdate = await updateCart(cid, carritoCid)                    
-                    //res.send(carritoCid)
                     res.status(200).json({message:'Product in the Cart Update', cartUpdate}) 
                 }else{
                     console.log(`La cantidad es superior al stock`)
-                    //res.send(`La cantidad es superior al stock`)
                     res.status(201).json({message:'La cantidad es superior al stock'}) 
                 }
             }else{
@@ -78,7 +71,6 @@ export const postAddProductInCart = async (req, res)=>{
                 if(parseInt(quantity) <= productoPid.stock){
                     carritoCid.products.push({id_prod: pid, cant: parseInt(quantity)})
                     const cartUpdate = await updateCart(cid, carritoCid)
-                    //res.send(carritoCid)
                     res.status(200).json({message:'Product in the Cart Update', cartUpdate})
                 }else{
                     //No podes ingresar un producto al carrito si la cantidad es superior a el stock declarado
@@ -95,13 +87,11 @@ export const postAddProductInCart = async (req, res)=>{
                 message:'Error add Product in Cart',
                 code: EErrors.INVALID_TYPES_ERROR
             })
-            //res.status(201).json({message:'No existe CARRO o PRODUCTO.'})
         }    
     } catch (error) {
         res.status(500).json({message: 'Error',error})
     }
 }
-
 export const putSumProductInCart = async (req, res) => {
     try {
         let cid = req.params.cid   
@@ -120,10 +110,8 @@ export const putSumProductInCart = async (req, res) => {
 export const deleteProductTheCartId = async(req, res)=>{
     try {
         let cid = req.params.cid
-        //const carritoCid = await cartModel.findOne({_id: cid})
         const carritoCid = await findOneIdCartPopulate(cid)
         carritoCid.products = []
-        //await cartModel.updateOne({_id: cid}, carritoCid)
         await updateCart(cid, carritoCid)
         res.send(carritoCid)   
     } catch (error) {
@@ -134,12 +122,10 @@ export const deleteProductIdInCartId = async(req, res)=>{
     try { 
         let cid = req.params.cid   
         let pid = req.params.pid 
-        //const carritoCid = await cartModel.findOne({_id: cid})
         const carritoCid = await findOneIdCartPopulate(cid, {})
         const indexProductoId = carritoCid.products.findIndex(car => car.id_prod == pid)
         carritoCid.products.splice(indexProductoId,1)  
         const cartUpdate = await updateCart(cid, carritoCid)   
-        //res.send(carritoCid)
         res.status(200).json({message:'Product in the Cart Update', cartUpdate})
     } catch (error) {
         res.status(500).json({message: 'Error',error})
@@ -183,14 +169,6 @@ export const purchaseCart = async(req, res) =>{
         const prod = prodTicket.map((p)=>p.toJSON())
         await mailTicket(req.user.email, newTicket[0].purchase_datetime, req.user.first_name, prod, newTicket[0].amount, newTicket[0]._id)
         res.status(200).json({message: 'Generate Ticket', newTicket})    
-        /*
-        res.status(201).json({
-            ticketMessage: 'Ticket creado exitosamente',
-            ticket: newTicket,
-            cartSinTicketMessage: 'Productos faltantes',
-            cartSinTicketProducts: cartSinTicket
-          });
-          */
     } catch (error) {
         res.status(500).json({message: 'Error',error})
     }

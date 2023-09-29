@@ -46,7 +46,7 @@ export const mailUser = async(email, last_name, first_name) => {
         })
         await transporter.sendMail({
             to: email,
-            subject: `Bienvenido ${first_name} a Coder`,
+            subject: `Bienvenido ${first_name} a Nuevos Aires`,
             //text: 'Prueba del primer correo desde el backend',
             html: html
         })        
@@ -86,7 +86,7 @@ export const mailDeleteUser = async(email, last_name, first_name)=>{
         })
         await transporter.sendMail({
             to: email,
-            subject: `Te esperamos pronto ${first_name} a Coder`,
+            subject: `Te esperamos pronto ${first_name} a Nuevos Aires`,
             //text: 'Prueba del primer correo desde el backend',
             html: html
         })        
@@ -107,7 +107,6 @@ export const mailDeleteProductPremium = async(email, last_name, first_name, prod
         await transporter.sendMail({
             to: email,
             subject: `Notificaciones ${first_name} sobre tu producto`,
-            //text: 'Prueba del primer correo desde el backend',
             html: html
         })        
     } catch (error) {

@@ -15,6 +15,5 @@ const swaggerOptions = {
         }
     },
     apis: [`${__dirname}/docs/**/*.yaml`]
-    //apis: [`${process.cwd()}/srv/docs/**/*.yaml`]
 }
 export const spec = swaggerJSDoc(swaggerOptions) // constante de espera

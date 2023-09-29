@@ -18,18 +18,16 @@ import initializePassport from './config/passport.js'
 import config from './config/config.js' // vos vas a manejar las variables de entorno para poder modificarlas dependiendo en que condiciones estemos debug, developer, admin
 import './config/dbConfig.js' // ejecuto la conexion a la base de datos
 import errorHandler from './middlewares/error.js'
-//import { addLogger } from './utils/logger.js'
-//import logger from './utils/logger.js' // prueba para que funciones logger
 import logger from './utils/logger.js'
 import swaggerUiExpress from 'swagger-ui-express'
 import { spec } from './config/doc.js'
-//Configuracion express
+
 const APP = express()
-//console.log(process)
+
 const server = APP.listen(config.port || 4000, ()=>{
     console.log(`Server on Port ${config.port || 4000}`)
 }) 
-// logger.debug('hola') // prueba para que funciones logger
+
 APP.engine('handlebars', engine()) // voy a usar handlebars
 APP.set('view engine', 'handlebars') //setea una valor, asignar a una constatnte un valor / en mis vistas voy a implementar handlebars
 APP.set('views', path.resolve(__dirname, './views')) // paht resolve concatena ruta //src mas /views  ---- dirname devuellve la carpeta actual concatena con el valor ./view
