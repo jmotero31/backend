@@ -52,9 +52,7 @@ export const postAddProductInCart = async (req, res)=>{
         const carritoCid = await findOneIdCartPopulate(cid, {})       
         const productoPid = await findOneProduct({_id: pid}, {})          
         if(productoPid && carritoCid){
-            console.log('carrito', carritoCid.products)
             const valor = carritoCid.products.find(car => car.id_prod._id == pid)
-            console.log('existe',valor)
             if(valor){
                 if(parseInt(quantity) <= productoPid.stock){
                     // si el producto ya se encuentra en el carrito | actualizo la cantidad

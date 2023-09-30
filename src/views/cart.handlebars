@@ -43,7 +43,7 @@
   document.addEventListener('click', (event) => {
   if (event.target.classList.contains('btndelete')) {
     const cartId = event.target.dataset.cartId;//'64749e36cf5a2f56927e9d30'//event.target.dataset.cartId; // Reemplaza con el ID real del carrito
-    const url = 'http://localhost:4000/cart/' + cartId;
+    const url = 'https://backend-production-2dd1.up.railway.app/cart/' + cartId;
     const data={}
     fetch(url, {
       method: 'DELETE',
@@ -76,7 +76,7 @@
   if (event.target.classList.contains('cartdelete')) {
     const cartId = event.target.dataset.cartId;
     const productoId = event.target.dataset.productoId;
-    const url = 'http://localhost:4000/cart/' + cartId + '/product/' + productoId ;
+    const url = 'https://backend-production-2dd1.up.railway.app/cart/' + cartId + '/product/' + productoId ;
     const data={}
     fetch(url, {
       method: 'DELETE',
@@ -107,7 +107,7 @@
   document.addEventListener('click', (event) => {
   if (event.target.classList.contains('purchaseCart')) {
     const cartId = event.target.dataset.cartId;//'64749e36cf5a2f56927e9d30'//event.target.dataset.cartId; // Reemplaza con el ID real del carrito
-    const url = 'http://localhost:4000/cart/' + cartId + '/purchase';
+    const url = 'https://backend-production-2dd1.up.railway.app/cart/' + cartId + '/purchase';
     console.log(url)
     const data={}
     fetch(url, {
