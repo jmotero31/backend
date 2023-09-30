@@ -14,7 +14,7 @@ const ticketSchema = new Schema({
     },
     amount: {
         type: Number,
-        require: true
+        required: true
     },
     purchaser: {
         type: String,
