@@ -186,14 +186,11 @@ export const purchaseCarte = async (req, res) => {
       let total = 0;
       const prodTicket = [];
       const prodCarts = [];
-  
       // Actualizar el stock de los productos de manera síncrona
       for (const prodCart of carritoCid.products) {
-        const id1 = prodCart.id_prod.toString();
-  
+        const id1 = prodCart.id_prod._id.toString()
         for (const prod of productos) {
           const id2 = prod._id.toString();
-  
           if (id1 === id2) {
             prodCart.id_prod.stock = prod.stock;
             if (prodCart.cant <= prodCart.id_prod.stock) {
@@ -207,15 +204,12 @@ export const purchaseCarte = async (req, res) => {
           }
         }
       }
-  
       carritoCid.products = prodCarts;
-     
-  
       const cartSinTicket = await updateCart(cid, carritoCid); // productos que vuelven al carrito porque no se procesaron
       const newTicket = await createTicket({
         amount: total,
         purchaser: req.user.email,
-        products: prodTicket,
+        products: prodTicket
       });
   
       
