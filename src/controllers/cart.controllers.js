@@ -180,11 +180,11 @@ export const purchaseCart = async(req, res) =>{
 export const purchaseCarte = async (req, res) => {
     try {
       const cid = req.params.cid;
-      console.log('params', cid);
+     
       const carritoCid = await findOneIdCartPopulate(cid, { __v: 0 });
-      console.log('carrito', carritoCid);
+      
       const productos = await findProduct({}, { __v: 0 });
-      console.log('producto', productos);
+      
   
       if (!carritoCid.products.length) {
         return res.status(201).send({ status: 'error', message: 'No existe productos en el carro' });
@@ -216,8 +216,7 @@ export const purchaseCarte = async (req, res) => {
       }
   
       carritoCid.products = prodCarts;
-      console.log('producto', prodTicket);
-      console.log('total', total);
+     
   
       const cartSinTicket = await updateCart(cid, carritoCid); // productos que vuelven al carrito porque no se procesaron
       const newTicket = await createTicket({
@@ -226,7 +225,7 @@ export const purchaseCarte = async (req, res) => {
         products: prodTicket,
       });
   
-      console.log(newTicket);
+      
   
       const prod = prodTicket.map((p) => p.toJSON());
       await mailTicket(req.user.email, newTicket[0].purchase_datetime, req.user.first_name, prod, newTicket[0].amount, newTicket[0]._id);
