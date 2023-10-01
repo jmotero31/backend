@@ -92,6 +92,7 @@ const initializePassport = () => {
         callbackURL: config.google_url
      }, async(accessToken, refreshToken, profile, cb) =>{       
         try {
+            console.log(profile)
             const user = await findEmailUser(profile._json.name)
             if (user) return cb(null, user)
 

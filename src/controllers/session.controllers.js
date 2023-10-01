@@ -72,7 +72,7 @@ export const verifyPassword = async (req,res)=>{
             const user = await findEmailUser(email)
             if (user){
                 const access_token = generateToken(user, '1h')
-                const linkpassword = `http://localhost:4000/session/verify/${access_token}`
+                const linkpassword = `https://nuevosaires.up.railway.app/session/verify/${access_token}`
                 await verifypassword(user.email, user.last_name, user.first_name, linkpassword)
                 res.redirect('/session/login')
             }else{
