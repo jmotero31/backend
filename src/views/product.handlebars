@@ -85,7 +85,7 @@
 
 
   function addToCart(button) {
-    const cartId = button.closest('#products-container').dataset.carritoId; // Reemplaza con el ID real del carrito
+    const cartId = button.closest('#products-container').dataset.carritoId;
     const productoId = button.dataset.productoId;
     const quantityInput = button.parentNode.querySelector('.quantity-input');
     const quantity = quantityInput.value;
@@ -102,7 +102,7 @@
       .then(response => response.json())
       .then(data => {
         console.log(data);
-        quantityInput.value = '';
+        quantityInput.value = 1;
         Swal.fire({
           position: 'top-end',
           icon: 'success',
