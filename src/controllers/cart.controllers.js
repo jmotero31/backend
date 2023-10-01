@@ -164,8 +164,8 @@ export const purchaseCart = async(req, res) =>{
         const cartSinTicket = await updateCart(cid, carritoCid) // productos que vuelven al carrito porque no se procesaron
         const newTicket = await createTicket({
             amount: 15,
-            purchaser: req.user.email,
-            products: prodTicket
+            purchaser: 'hola',
+            products:['prodTicket']
         })      
         const prod = prodTicket.map((p)=>p.toJSON())
         await mailTicket(req.user.email, newTicket[0].purchase_datetime, req.user.first_name, prod, newTicket[0].amount, newTicket[0]._id)
