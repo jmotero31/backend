@@ -131,12 +131,9 @@ export const deleteProductIdInCartId = async(req, res)=>{
 }
 export const purchaseCart = async(req, res) =>{
     try {
-        const cid = req.params.cid
-        
-        const carritoCid = await findOneIdCartPopulate(cid, {__v: 0})
-        
-        const productos = await findProduct({}, {__v: 0})      
-        
+        const cid = req.params.cid   
+        const carritoCid = await findOneIdCartPopulate(cid, {__v: 0})        
+        const productos = await findProduct({}, {__v: 0})             
         if(!carritoCid.products.length){return res.status(201).send({status: 'error', message:'No existe productos en el carro'})}
         let total = 0
         const prodTicket = []
@@ -174,52 +171,3 @@ export const purchaseCart = async(req, res) =>{
         res.status(500).json({message: 'Error', error: error})
     }
 }
-/*
-export const purchaseCarte = async (req, res) => {
-    try {
-      const cid = req.params.cid;
-      const carritoCid = await findOneIdCartPopulate(cid, { __v: 0 });
-      const productos = await findProduct({}, { __v: 0 });
-      if (!carritoCid.products.length) {
-        return res.status(201).send({ status: 'error', message: 'No existe productos en el carro' });
-      }
-      let total = 0;
-      const prodTicket = [];
-      const prodCarts = [];
-      // Actualizar el stock de los productos de manera síncrona
-      for (const prodCart of carritoCid.products) {
-        const id1 = prodCart.id_prod._id.toString()
-        for (const prod of productos) {
-          const id2 = prod._id.toString();
-          if (id1 === id2) {
-            prodCart.id_prod.stock = prod.stock;
-            if (prodCart.cant <= prodCart.id_prod.stock) {
-              prodTicket.push(prodCart);
-              const subtotal = prodCart.id_prod.price * prodCart.cant;
-              total += subtotal;
-              await updateOneProduct({ _id: id1 }, { stock: prod.stock - prodCart.cant });
-            } else {
-              prodCarts.push(prodCart);
-            }
-          }
-        }
-      }
-      carritoCid.products = prodCarts;
-      const cartSinTicket = await updateCart(cid, carritoCid); // productos que vuelven al carrito porque no se procesaron
-      const newTicket = await createTicket({
-        amount: total,
-        purchaser: req.user.email,
-        products: prodTicket
-      });
-  
-      
-  
-      //const prod = prodTicket.map((p) => p.toJSON());
-      //await mailTicket(req.user.email, newTicket[0].purchase_datetime, req.user.first_name, prod, newTicket[0].amount, newTicket[0]._id);
-      
-      res.status(200).json({ message: 'Generate Ticket', payload: newTicket });
-    } catch (error) {
-      res.status(500).json({ message: 'Error', error: error });
-    }
-  };
-  */
