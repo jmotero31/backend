@@ -204,8 +204,8 @@ export const purchaseCarte = async (req, res) => {
           }
         }
       }
-      //carritoCid.products = prodCarts;
-      //const cartSinTicket = await updateCart(cid, carritoCid); // productos que vuelven al carrito porque no se procesaron
+      carritoCid.products = prodCarts;
+      const cartSinTicket = await updateCart(cid, carritoCid); // productos que vuelven al carrito porque no se procesaron
       const newTicket = await createTicket({
         amount: total,
         purchaser: req.user.email,
