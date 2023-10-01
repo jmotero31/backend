@@ -161,7 +161,7 @@ export const purchaseCart = async(req, res) =>{
             })
         })
         carritoCid.products = prodCarts
-        console.log(prodCarts)
+        console.log('producto',prodTicket)
         console.log('total',total)
         const cartSinTicket = await updateCart(cid, carritoCid) // productos que vuelven al carrito porque no se procesaron
         const newTicket = await createTicket({

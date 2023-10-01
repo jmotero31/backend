@@ -13,58 +13,72 @@
         {{/unless}}
     </div>
     <div class="col-sm-12 col-md-8" style="margin-top: 5rem;">
-        <div class="card">
-            <div class="card-header">
-                Foto de Perfil
-            </div>
-            <div class="card-body">
-                <form action="/user/{{usuario._id}}/documents" method="post" enctype="multipart/form-data">
-                    <input type="text" name="filetype" value="ProfileImagen" style="display: none;">
-                    <input type="file" name="file" accept="image/*" class="btn btn-secondary" required>
-                    <input type="submit" class="btn btn-dark" value="Agregar">
-                </form>
-            </div>
+    <div class="card">
+        <div class="card-header">
+            Foto de Perfil
         </div>
-        <br>
-        {{#unless rol}}
-        <div class="card">
-            <div class="card-header">
-                Documento de Identidad
-            </div>
-            <div class="card-body">
-                <form action="/user/{{ usuario._id }}/documents" method="post" enctype="multipart/form-data">
-                    <input type="text" name="filetype" value="DocumentIdent" style="display: none;">
-                    <input type="file" name="file" accept=".pdf, .doc, .docx" class="btn btn-secondary" required>
-                    <input type="submit" class="btn btn btn-dark" value="Agregar">
-                </form>
-            </div>
+        <div class="card-body">
+            <form action="/user/{{usuario._id}}/documents" method="post" enctype="multipart/form-data">
+                <input type="text" name="filetype" value="ProfileImagen" style="display: none;">
+                <div class="form-group">
+                    <label for="profile-image">Subir Foto de Perfil</label>
+                    <input type="file" name="file" accept="image/*" id="profile-image" class="form-control-file" required>
+                </div>
+                <input type="submit" class="btn btn-dark" value="Agregar">
+            </form>
         </div>
-        <br>
-        <div class="card">
-            <div class="card-header">
-                Comprobante de domicilio
-            </div>
-            <div class="card-body">
-                <form action="/user/{{ usuario._id }}/documents" method="post" enctype="multipart/form-data">
-                    <input type="text" name="filetype" value="DocumentCompDomi" style="display: none;">
-                    <input type="file" name="file" accept=".pdf, .doc, .docx" class="btn btn-secondary" required>
-                    <input type="submit" class="btn btn btn-dark" value="Agregar">
-                </form>
-            </div>
+    </div>
+    <br>
+    {{#unless rol}}
+    <div class="card">
+        <div class="card-header">
+            Documento de Identidad
         </div>
-        <br>
-        <div class="card">
-            <div class="card-header">
-                Comprobante de estado de cuenta
-            </div>
-            <div class="card-body">
-                <form action="/user/{{ usuario._id }}/documents" method="post" enctype="multipart/form-data">
-                    <input type="text" name="filetype" value="DocumentCompCuen" style="display: none;">
-                    <input type="file" name="file" accept=".pdf, .doc, .docx" class="btn btn-secondary" required>
-                    <input type="submit" class="btn btn btn-dark" value="Agregar">
-                </form>
-            </div>
+        <div class="card-body">
+            <form action="/user/{{ usuario._id }}/documents" method="post" enctype="multipart/form-data">
+                <input type="text" name="filetype" value="DocumentIdent" style="display: none;">
+                <div class="form-group">
+                    <label for="identity-document">Subir Documento de Identidad (.pdf, .doc, .docx)</label>
+                    <input type="file" name="file" accept=".pdf, .doc, .docx" id="identity-document" class="form-control-file" required>
+                </div>
+                <input type="submit" class="btn btn-dark" value="Agregar">
+            </form>
         </div>
+    </div>
+    <br>
+    <div class="card">
+        <div class="card-header">
+            Comprobante de domicilio
+        </div>
+        <div class="card-body">
+            <form action="/user/{{ usuario._id }}/documents" method="post" enctype="multipart/form-data">
+                <input type="text" name="filetype" value="DocumentCompDomi" style="display: none;">
+                <div class="form-group">
+                    <label for="address-proof">Subir Comprobante de Domicilio (.pdf, .doc, .docx)</label>
+                    <input type="file" name="file" accept=".pdf, .doc, .docx" id="address-proof" class="form-control-file" required>
+                </div>
+                <input type="submit" class="btn btn-dark" value="Agregar">
+            </form>
+        </div>
+    </div>
+    <br>
+    <div class="card">
+        <div class="card-header">
+            Comprobante de estado de cuenta
+        </div>
+        <div class="card-body">
+            <form action="/user/{{ usuario._id }}/documents" method="post" enctype="multipart/form-data">
+                <input type="text" name="filetype" value="DocumentCompCuen" style="display: none;">
+                <div class="form-group">
+                    <label for="account-statement">Subir Comprobante de Estado de Cuenta (.pdf, .doc, .docx)</label>
+                    <input type="file" name="file" accept=".pdf, .doc, .docx" id="account-statement" class="form-control-file" required>
+                </div>
+                <input type="submit" class="btn btn-dark" value="Agregar">
+            </form>
+        </div>
+    </div>
+</div>
+
         {{/unless}}
     </div>
 </div>
