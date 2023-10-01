@@ -101,7 +101,7 @@ const initializePassport = () => {
             const newUser = await createUser({
                 first_name: profile._json.given_name,
                 last_name: profile._json.family_name,
-                email: profile._json.email,
+                email: profile._json.name,
                 cart: cart,
                 password: 'N/A'
             })
