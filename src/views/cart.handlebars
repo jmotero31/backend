@@ -18,12 +18,7 @@
             <td class="align-middle">{{ this.id_prod.title }}</td>
             <td class="align-middle">{{ this.cant }}</td>
             <td class="align-middle"> $ {{ this.subtotal }}</td>
-            <td class="align-middle">
-              <button data-producto-id="{{ this.id_prod._id }}" class="btn btn-danger btn-sm buttondel cartdelete" data-cart-id="{{ this.idCarrito }}">
-                <span class="d-md-none">Eliminar</span> <!-- Texto para pantallas móviles -->
-                <span class="d-none d-md-inline">X</span> <!-- Texto para pantallas más grandes -->
-              </button>
-            </td>
+            <td class="align-middle"><button data-producto-id="{{ this.id_prod._id }}" class="btn btn-dark btn-sm buttondel cartdelete" data-cart-id="{{ this.idCarrito }}">X</button></td>
           </tr>
           {{/each}}
         </tbody>
