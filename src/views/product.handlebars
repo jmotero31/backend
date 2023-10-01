@@ -89,7 +89,7 @@
     const productoId = button.dataset.productoId;
     const quantityInput = button.parentNode.querySelector('.quantity-input');
     const quantity = quantityInput.value;
-    const url = 'https://backend-production-2dd1.up.railway.app/cart/' + cartId + '/product/' + productoId;
+    const url = 'https://nuevosaires.up.railway.app/cart/' + cartId + '/product/' + productoId;
     const data = { quantity: quantity };
 
     fetch(url, {
@@ -133,7 +133,7 @@
     document.addEventListener('click', (event) => {
   if (event.target.classList.contains('btndelet')) {
     const productId = event.target.dataset.productId//'64749e36cf5a2f56927e9d30'//event.target.dataset.cartId; // Reemplaza con el ID real del carrito
-    const url = 'https://backend-production-2dd1.up.railway.app/product/' + productId
+    const url = 'https://nuevosaires.up.railway.app/product/' + productId
     const data={}
     fetch(url, {
       method: 'DELETE',
