@@ -217,7 +217,7 @@ export const purchaseCarte = async (req, res) => {
       //const prod = prodTicket.map((p) => p.toJSON());
       //await mailTicket(req.user.email, newTicket[0].purchase_datetime, req.user.first_name, prod, newTicket[0].amount, newTicket[0]._id);
       
-      res.status(200).json({ message: 'Generate Ticket', newTicket });
+      res.status(200).json({ message: 'Generate Ticket', payload: newTicket });
     } catch (error) {
       res.status(500).json({ message: 'Error', error: error });
     }
