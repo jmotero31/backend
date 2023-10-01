@@ -163,7 +163,7 @@ export const purchaseCart = async(req, res) =>{
         carritoCid.products = prodCarts  
         const cartSinTicket = await updateCart(cid, carritoCid) // productos que vuelven al carrito porque no se procesaron
         const newTicket = await createTicket({
-            amount: total,
+            amount: 15,
             purchaser: req.user.email,
             products: prodTicket
         })      
