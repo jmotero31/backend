@@ -163,9 +163,9 @@ export const purchaseCart = async(req, res) =>{
         carritoCid.products = prodCarts  
         const cartSinTicket = await updateCart(cid, carritoCid) // productos que vuelven al carrito porque no se procesaron
         const newTicket = await createTicket({
-            amount: 15,
-            purchaser: 'hola',
-            products:['prodTicket']
+            amount: total,
+            purchaser: req.user.email,
+            products: prodTicket
         })      
         const prod = prodTicket.map((p)=>p.toJSON())
         await mailTicket(req.user.email, newTicket[0].purchase_datetime, req.user.first_name, prod, newTicket[0].amount, newTicket[0]._id)
@@ -174,7 +174,7 @@ export const purchaseCart = async(req, res) =>{
         res.status(500).json({message: 'Error', error: error})
     }
 }
-
+/*
 export const purchaseCarte = async (req, res) => {
     try {
       const cid = req.params.cid;
@@ -222,4 +222,4 @@ export const purchaseCarte = async (req, res) => {
       res.status(500).json({ message: 'Error', error: error });
     }
   };
-  
+  */

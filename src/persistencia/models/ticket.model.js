@@ -1,24 +1,25 @@
-import { Schema, model } from "mongoose";
+import { Schema, model } from "mongoose"
+import crypto from "crypto"
 
 const ticketSchema = new Schema({
     code: {
         type: String,
-        //required: true,
-        //unique: true,
+        required: true,
+        unique: true,
         default: () => crypto.randomUUID()
     },
     purchase_datetime: {
         type: Date,
-        //required: true,
+        required: true,
         default: Date.now
     },
     amount: {
         type: Number,
-        //required: true
+        required: true
     },
     purchaser: {
         type: String,
-        //required: true
+        required: true
     },
     products: {
         type: [
