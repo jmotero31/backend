@@ -196,7 +196,7 @@ export const purchaseCarte = async (req, res) => {
   
       // Actualizar el stock de los productos de manera síncrona
       for (const prodCart of carritoCid.products) {
-        const id1 = prodCart.id_prod._id.toString();
+        const id1 = prodCart.id_prod.toString();
   
         for (const prod of productos) {
           const id2 = prod._id.toString();
